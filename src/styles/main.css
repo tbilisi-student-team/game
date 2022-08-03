@@ -62,5 +62,66 @@ body {
 .main-description {
   font-size: 20px;
   text-align: center;
+}
 
+.signin__container {
+  display: flex;
+  flex-direction: row;
+}
+
+.left-character {
+  width: 35%;
+}
+
+.signup {
+  width: 30%;
+}
+
+.right-character {
+  width: 35%;
+}
+
+.input-basic {
+  padding: 3% 0%;
+  width: 100%;
+}
+
+.input-decoration {
+  height: 50px;
+  width: 100%;
+  border-radius: 10px;
+  background-color: white;
+  opacity: 50%;
+  border: 1px solid grey;
+  color: white;
+  text-align: center;
+}
+
+.button {
+  background-color: white;
+  width: 50%;
+  margin: 8% auto 1% auto;
+  height: 50px;
+  opacity: 80%;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.button:focus {
+  opacity: 100%;
+}
+
+.button-title {
+  margin: 0 auto;
+  color: black;
+  opacity: 100%;
+}
+
+.signup-link {
+  text-align: center;
+}
+
+.signup-link:focus {
+  color: red
 }

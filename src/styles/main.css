@@ -1,0 +1,66 @@
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  font-family: "Averia Serif Libre";
+  color: white;
+  background: url(../assets/background.jpeg) no-repeat;
+  background-size: 100% 100%;
+}
+
+.main__container {
+  padding: 2% 5%;
+  display: flex;
+  flex-direction: column;
+}
+
+.header__container {
+  width: 100%;
+  height: 5%;
+  display: flex;
+  flex-direction: row;
+}
+
+.left__container {
+  width: 50%;
+}
+
+.right__container {
+  width: 50%;
+  display: flex;
+  justify-content: flex-end
+}
+
+.header-link {
+  text-decoration: none;
+  color: white;
+}
+
+.hidden {
+  display: none;
+}
+
+.main {
+  padding: 7% 0%;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-title {
+  font-size: 120px;
+  text-align: center;
+}
+
+.main-description {
+  font-size: 20px;
+  text-align: center;
+
+}

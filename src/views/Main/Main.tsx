@@ -1,6 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 import Header from '../../components/Header';
-import Input from '../../components/Input'
+import Input from '../../components/Input';
+import Button from '../../components/Button';
 
 export function Main () {
   return (
@@ -21,11 +24,10 @@ export function Main () {
         <div className='signup'>
           <Input title='login'/>
           <Input title='password'/>
-          <div className='button-basic'>
-            <div className='button'>
-              <div className='button-title'>Sign in</div>
-            </div>
-          </div>
+          <Link className='header-link' to='/Main'>
+            <Button title={'Sign in'}/>
+          </Link>
+
           <div className='signup-link'>
             {'I\'m new here'}
           </div>

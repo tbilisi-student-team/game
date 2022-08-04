@@ -31,7 +31,7 @@ export function SignIn () {
         <div className='left-character__signin'>
           <img src='../../assets/buddy-1.png' />
         </div>
-        <form className='signup'>
+        <form className='signin-form'>
           <Input name='login' value={login} setValue={setLogin}/>
           <Input name='password' value={password} setValue={setPassword}/>
           <Link className='header-link' to={RoutePaths.Main}>

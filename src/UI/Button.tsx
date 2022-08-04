@@ -8,11 +8,9 @@ type ButtonProps = {
 export const Button = (props: ButtonProps) => {
 
   return (
-    <div className='button-basic'>
-      <div className='button'>
-        <div className='button-title' onClick={props.onSubmit}>{props.title}</div>
-      </div>
-    </div>
+    <button className='button'>
+      <div className='button-title' onClick={props.onSubmit}>{props.title}</div>
+    </button>
   )
 }
 

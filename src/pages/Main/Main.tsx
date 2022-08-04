@@ -17,7 +17,7 @@ export function Main () {
       </div>
       <div className='signin__container'>
         <div className='left-character__main'>
-          <img src='../../assets/buddy-1.png' />
+          <img src='../../assets/buddy-1.png' alt='' />
         </div>
         <div className='description'>
           <p>
@@ -25,7 +25,7 @@ export function Main () {
           </p>
         </div>
         <div className='right-character__main'>
-          <img src='../../assets/buddy-2-otr.png' />
+          <img src='../../assets/buddy-2-otr.png' alt='' />
         </div>
       </div>
     </div>

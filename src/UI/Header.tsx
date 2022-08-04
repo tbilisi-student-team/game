@@ -20,7 +20,7 @@ export const Header = () => {
         </div>
         <div className='deriver'> | </div>
         <div className='signup-link'>
-          <Link className='header-link' to='/sign-in'>Sign up</Link>
+          <Link className='header-link' to='/sign-up'>Sign up</Link>
         </div>
         <div className='profile-button hidden'></div>
       </div>

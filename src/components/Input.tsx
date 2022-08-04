@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 type inputProps = {
-  title: string
+  title: string,
+  value: string,
+  setValue: ((arg: string) => void)
 }
 
 export const Input = (props: inputProps) => {
 
-  const [ value, setValue ] = useState('')
+  // const [ value, setValue ] = useState('')
 
 
-  const handleValue = (e: React.ChangeEvent<HTMLInputElement>) => setValue(e?.target.value)
+  const handleValue = (e: React.ChangeEvent<HTMLInputElement>) => props.setValue(e?.target.value)
 
   return (
     <div className='input-basic'>
@@ -18,7 +20,7 @@ export const Input = (props: inputProps) => {
         placeholder={props.title} 
         name={props.title} 
         onChange={handleValue} 
-        value={value}
+        value={props.value}
       />
     </div>  
   )

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import Header from '../../components/Header';
@@ -6,6 +6,14 @@ import Input from '../../components/Input';
 import Button from '../../components/Button';
 
 export function Main () {
+  const [ login, setLogin ] = useState('')
+  const [ password, setPassword ] = useState('')
+
+
+  const onSubmit = () => {
+    console.log(login, password)
+  }
+
   return (
     <div className='main__container'>
       {<Header/>}
@@ -22,10 +30,10 @@ export function Main () {
           <img src='../../assets/buddy-1.png' />
         </div>
         <div className='signup'>
-          <Input title='login'/>
-          <Input title='password'/>
+          <Input title='login' value={login} setValue={setLogin}/>
+          <Input title='password' value={password} setValue={setPassword}/>
           <Link className='header-link' to='/main'>
-            <Button title={'Sign in'}/>
+            <Button title={'Sign in'} onSubmit={onSubmit}/>
           </Link>
 
           <div className='signup-link'>

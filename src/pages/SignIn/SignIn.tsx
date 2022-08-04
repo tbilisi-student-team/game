@@ -5,6 +5,8 @@ import Header from '../../UI/Header';
 import Input from '../../UI/Input';
 import Button from '../../UI/Button';
 
+import { RoutePaths } from '../../types/RoutePaths'
+
 export function SignIn () {
   const [ login, setLogin ] = useState('')
   const [ password, setPassword ] = useState('')
@@ -15,7 +17,7 @@ export function SignIn () {
   }
 
   return (
-    <div className='main__container'>
+    <div className='wrapper'>
       {<Header/>}
       <div className='main'>
         <div className='main-title'>
@@ -30,14 +32,14 @@ export function SignIn () {
           <img src='../../assets/buddy-1.png' />
         </div>
         <form className='signup'>
-          <Input title='login' value={login} setValue={setLogin}/>
-          <Input title='password' value={password} setValue={setPassword}/>
-          <Link className='header-link' to='/main'>
+          <Input name='login' value={login} setValue={setLogin}/>
+          <Input name='password' value={password} setValue={setPassword}/>
+          <Link className='header-link' to={RoutePaths.Main}>
             <Button title={'Sign in'} onSubmit={onSubmit}/>
           </Link>
 
           <div className='signup-link'>
-            <Link className='header-link' to='/sign-up'>{'I\'m new here'}</Link>
+            <Link className='header-link' to={RoutePaths.SignUp}>{'I\'m new here'}</Link>
           </div>
         </form>
         <div className='right-character__signin'>

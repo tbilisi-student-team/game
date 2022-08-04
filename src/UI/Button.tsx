@@ -1,11 +1,11 @@
 import React from 'react';
 
-type buttonProps = {
+type ButtonProps = {
   title: string,
   onSubmit: () => void
 }
 
-export const Button = (props: buttonProps) => {
+export const Button = (props: ButtonProps) => {
 
   return (
     <div className='button-basic'>

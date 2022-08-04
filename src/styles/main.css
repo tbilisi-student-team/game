@@ -17,13 +17,13 @@ body {
   background-size: 100% 100%;
 }
 
-.main__container {
+.wrapper {
   padding: 2% 5%;
   display: flex;
   flex-direction: column;
 }
 
-.header__container {
+.header {
   width: 100%;
   height: 5%;
   display: flex;
@@ -100,7 +100,7 @@ body {
   width: 35%;
 }
 
-.input-basic {
+.input {
   padding: 3% 0%;
   width: 100%;
 }

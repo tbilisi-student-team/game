@@ -5,7 +5,7 @@ import Header from '../../UI/Header';
 export function Main () {
 
   return (
-    <div className='main__container'>
+    <div className='wrapper'>
       {<Header/>}
       <div className='main'>
         <div className='main-title'>

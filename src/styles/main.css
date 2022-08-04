@@ -93,8 +93,13 @@ body {
   background-color: white;
   opacity: 50%;
   border: 1px solid grey;
-  color: white;
   text-align: center;
+  outline: none;
+}
+
+.input-focus {
+  border: 1px solid white;
+  opacity: 70%;
 }
 
 .button {
@@ -108,7 +113,7 @@ body {
   align-items: center;
 }
 
-.button:focus {
+.button:hover {
   opacity: 100%;
 }
 
@@ -122,6 +127,7 @@ body {
   text-align: center;
 }
 
-.signup-link:focus {
-  color: red
+.signup-link:hover {
+  color: grey;
+  cursor: pointer;
 }

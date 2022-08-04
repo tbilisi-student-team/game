@@ -24,12 +24,12 @@ export function Main () {
         <div className='signup'>
           <Input title='login'/>
           <Input title='password'/>
-          <Link className='header-link' to='/Main'>
+          <Link className='header-link' to='/main'>
             <Button title={'Sign in'}/>
           </Link>
 
           <div className='signup-link'>
-            {'I\'m new here'}
+            <Link className='header-link' to='/sign-up'>{'I\'m new here'}</Link>
           </div>
         </div>
         <div className='right-character'>

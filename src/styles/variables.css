@@ -1,6 +1,4 @@
 :root {
-    --background: red;
-    --second-color: yellow;
-    --white: white
-
+    --white: #ffffff;
+    --grey: #c9c9c9;
 }

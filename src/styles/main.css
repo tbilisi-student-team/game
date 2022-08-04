@@ -11,7 +11,7 @@ body {
   padding: 0;
   width: 100%;
   font-family: "Averia Serif Libre";
-  color: white;
+  color: var(--white);
   background: url(../assets/background.jpeg) no-repeat;
   background-attachment: fixed;
   background-size: 100% 100%;
@@ -44,7 +44,7 @@ body {
 
 .header-link {
   text-decoration: none;
-  color: white;
+  color: var(--white);
 }
 
 .deriver {
@@ -109,20 +109,20 @@ body {
   height: 50px;
   width: 100%;
   border-radius: 10px;
-  background-color: white;
+  background-color: var(--white);
   opacity: 50%;
-  border: 1px solid grey;
+  border: 1px solid var(--grey);
   text-align: center;
   outline: none;
 }
 
 .input-focus {
-  border: 1px solid white;
+  border: 1px solid var(--white);
   opacity: 70%;
 }
 
 .button {
-  background-color: white;
+  background-color: var(--white);
   width: 50%;
   margin: 8% auto 1% auto;
   height: 50px;

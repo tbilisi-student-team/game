@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import Header from '../../components/Header';
-import Input from '../../components/Input';
-import Button from '../../components/Button';
+import Header from '../../UI/Header';
+import Input from '../../UI/Input';
+import Button from '../../UI/Button';
 
-export function Main () {
+export function SignIn () {
   const [ login, setLogin ] = useState('')
   const [ password, setPassword ] = useState('')
 
@@ -26,7 +26,7 @@ export function Main () {
         </div>
       </div>
       <div className='signin__container'>
-        <div className='left-character'>
+        <div className='left-character__signin'>
           <img src='../../assets/buddy-1.png' />
         </div>
         <div className='signup'>
@@ -40,7 +40,7 @@ export function Main () {
             <Link className='header-link' to='/sign-up'>{'I\'m new here'}</Link>
           </div>
         </div>
-        <div className='right-character'>
+        <div className='right-character__signin'>
           <img src='../../assets/buddy-2-otr.png' />
         </div>
       </div>

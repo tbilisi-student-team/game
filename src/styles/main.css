@@ -13,6 +13,7 @@ body {
   font-family: "Averia Serif Libre";
   color: white;
   background: url(../assets/background.jpeg) no-repeat;
+  background-attachment: fixed;
   background-size: 100% 100%;
 }
 
@@ -30,18 +31,24 @@ body {
 }
 
 .left__container {
+  display: flex;
+  flex-direction: row;
   width: 50%;
 }
 
 .right__container {
   width: 50%;
   display: flex;
-  justify-content: flex-end
+  justify-content: flex-end;
 }
 
 .header-link {
   text-decoration: none;
   color: white;
+}
+
+.deriver {
+  margin: 0 2% 0 2%;
 }
 
 .hidden {
@@ -69,7 +76,11 @@ body {
   flex-direction: row;
 }
 
-.left-character {
+.left-character__main {
+  width: 20%;
+}
+
+.left-character__signin {
   width: 35%;
 }
 
@@ -77,7 +88,15 @@ body {
   width: 30%;
 }
 
-.right-character {
+.description {
+  width: 60%;
+}
+
+.right-character__main {
+  width: 20%;
+}
+
+.right-character__signin {
   width: 35%;
 }
 

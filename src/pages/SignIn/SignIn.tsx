@@ -29,7 +29,7 @@ export function SignIn () {
         <div className='left-character__signin'>
           <img src='../../assets/buddy-1.png' />
         </div>
-        <div className='signup'>
+        <form className='signup'>
           <Input title='login' value={login} setValue={setLogin}/>
           <Input title='password' value={password} setValue={setPassword}/>
           <Link className='header-link' to='/main'>
@@ -39,7 +39,7 @@ export function SignIn () {
           <div className='signup-link'>
             <Link className='header-link' to='/sign-up'>{'I\'m new here'}</Link>
           </div>
-        </div>
+        </form>
         <div className='right-character__signin'>
           <img src='../../assets/buddy-2-otr.png' />
         </div>

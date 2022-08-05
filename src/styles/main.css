@@ -1,0 +1,152 @@
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  font-family: "Averia Serif Libre";
+  color: var(--white);
+  background: url(../assets/background.jpeg) no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+}
+
+.wrapper {
+  padding: 2% 5%;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  width: 100%;
+  height: 5%;
+  display: flex;
+  flex-direction: row;
+}
+
+.left__container {
+  display: flex;
+  flex-direction: row;
+  width: 50%;
+}
+
+.right__container {
+  width: 50%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.header-link {
+  text-decoration: none;
+  color: var(--white);
+}
+
+.deriver {
+  margin: 0 2% 0 2%;
+}
+
+.hidden {
+  display: none;
+}
+
+.main {
+  padding: 7% 0%;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-title {
+  font-size: 120px;
+  text-align: center;
+}
+
+.main-description {
+  font-size: 20px;
+  text-align: center;
+}
+
+.signin__container {
+  display: flex;
+  flex-direction: row;
+}
+
+.left-character__main {
+  width: 20%;
+}
+
+.left-character__signin {
+  width: 35%;
+}
+
+.signin-form {
+  width: 30%;
+}
+
+.description {
+  width: 60%;
+}
+
+.right-character__main {
+  width: 20%;
+}
+
+.right-character__signin {
+  width: 35%;
+}
+
+.input {
+  padding: 3% 0%;
+  width: 100%;
+}
+
+.input-decoration {
+  height: 50px;
+  width: 100%;
+  border-radius: 10px;
+  background-color: var(--white);
+  opacity: 50%;
+  border: 1px solid var(--grey);
+  text-align: center;
+  outline: none;
+}
+
+.input-focus {
+  border: 1px solid var(--white);
+  opacity: 70%;
+}
+
+.button {
+  background-color: var(--white);
+  width: 50%;
+  margin: 8% auto 1% auto;
+  height: 50px;
+  opacity: 80%;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.button:hover {
+  opacity: 100%;
+}
+
+.button-title {
+  margin: 0 auto;
+  color: black;
+  opacity: 100%;
+}
+
+.signup-link {
+  text-align: center;
+}
+
+.signup-link:hover {
+  color: grey;
+  cursor: pointer;
+}

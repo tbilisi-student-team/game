@@ -5,6 +5,8 @@ import { RoutePaths } from '../../types';
 
 import { Forum, Game, Leaderboard, Main, NotFound, SignIn, SignUp, User } from '../index';
 
+import '@fontsource/averia-serif-libre';
+
 export function App () {
   return (
     <>

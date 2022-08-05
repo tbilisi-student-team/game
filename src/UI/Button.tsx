@@ -8,8 +8,8 @@ type ButtonProps = {
 export const Button = (props: ButtonProps) => {
 
   return (
-    <button className='button'>
-      <div className='button-title' onClick={props.onSubmit}>{props.title}</div>
+    <button className='button' onClick={props.onSubmit}>
+      <div className='button-title'>{props.title}</div>
     </button>
   )
 }

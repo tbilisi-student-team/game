@@ -32,8 +32,8 @@ export function SignIn () {
           <img src='../../assets/buddy-1.png' />
         </div>
         <form className='signin-form'>
-          <Input name='login' value={login} setValue={setLogin}/>
-          <Input name='password' value={password} setValue={setPassword}/>
+          <Input type='text' name='login' value={login} setValue={setLogin}/>
+          <Input type='password' name='password' value={password} setValue={setPassword}/>
           <Link className='header-link' to={RoutePaths.Main}>
             <Button title={'Sign in'} onSubmit={onSubmit}/>
           </Link>

@@ -2,6 +2,7 @@ import React from 'react';
 
 type InputProps = {
   name: string,
+  type: string,
   value: string,
   setValue: ((arg: string) => void)
 }
@@ -13,6 +14,7 @@ export const Input = (props: InputProps) => {
   return (
     <div className='input'>
       <input 
+        type={props.type}
         className='input-decoration' 
         placeholder={props.name} 
         name={props.name} 

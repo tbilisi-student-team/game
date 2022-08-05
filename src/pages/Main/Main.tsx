@@ -2,6 +2,9 @@ import React from 'react';
 
 import Header from '../../UI/Header';
 
+import buddy1 from '../../assets/buddy-1.png';
+import buddy2 from '../../assets/buddy-2-otr.png';
+
 export function Main () {
 
   return (
@@ -17,7 +20,7 @@ export function Main () {
       </div>
       <div className='signin__container'>
         <div className='left-character__main'>
-          <img src='../../assets/buddy-1.png' alt='' />
+          <img src={buddy1} alt='Buddy One' />
         </div>
         <div className='description'>
           <p>
@@ -25,7 +28,7 @@ export function Main () {
           </p>
         </div>
         <div className='right-character__main'>
-          <img src='../../assets/buddy-2-otr.png' alt='' />
+          <img src={buddy2} alt='Buddy Two' />
         </div>
       </div>
     </div>

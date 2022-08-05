@@ -108,6 +108,7 @@ body {
 .input-decoration {
   height: 50px;
   width: 100%;
+  font-size: 16px;
   border-radius: 10px;
   background-color: var(--white);
   opacity: 50%;
@@ -130,6 +131,8 @@ body {
   border-radius: 10px;
   display: flex;
   align-items: center;
+  border-style: solid;
+  border: 1px solid var(--white)
 }
 
 .button:hover {
@@ -142,11 +145,16 @@ body {
   opacity: 100%;
 }
 
-.signup-link {
+.signup-link, .signin-link {
   text-align: center;
 }
 
 .signup-link:hover {
   color: grey;
   cursor: pointer;
+}
+
+.signup-title {
+  font-size: 30px;
+  text-align: center;
 }

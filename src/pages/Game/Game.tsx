@@ -6,22 +6,22 @@ import buddyFront from '../../assets/buddy-1-front.png';
 import buddyBack from '../../assets/buddy-1-back.png';
 
 const PEW_FADE_TIME = 1000;
-const BULLET_START_X = 370;
-const BULLET_START_Y = 210;
+const BUDDY_START_X = 100;
+const BUDDY_START_Y = 200;
+const BULLET_START_X = BUDDY_START_X + 270;
+const BULLET_START_Y = BUDDY_START_Y + 110;
 
 const buddyImgFront = new Image();
 const buddyImgBack = new Image();
 
 const imagesToLoad = [ buddyImgFront, buddyImgBack ];
 
-let moduleVar = 0;
-
 export function Game (props: GameProps) {
   console.log('Game init');
 
   const varsRef = useRef({
-    buddyX: 100,
-    buddyY: 100,
+    buddyX: BUDDY_START_X,
+    buddyY: BUDDY_START_Y,
     pews: [],
     bullets: []
   } as GameVars);
@@ -31,6 +31,20 @@ export function Game (props: GameProps) {
   const drawCountRef = useRef(0);
 
   const [ isPaused, setPaused ] = useState(false);
+  const [ areImagesReady, setImagesReady ] = useState(false);
+
+  if (!areImagesReady) {
+    Promise.all(imagesToLoad.map((img) => {
+      return new Promise((resolve) => {
+        img.onload = img.onerror = resolve;
+      })
+    })).then(() => {
+      setImagesReady(true);
+    });
+
+    buddyImgFront.src = buddyFront;
+    buddyImgBack.src = buddyBack;
+  }
 
   const onKeyDown = useCallback(function onKeyDown(e: KeyboardEvent) {
     if (e.key === ' ') {
@@ -53,18 +67,13 @@ export function Game (props: GameProps) {
   useLayoutEffect(function () {
     console.log('layoutEffect');
 
-    if (!isPaused) {
-      Promise.all(imagesToLoad.map((img) => {
-        return new Promise((resolve) => {
-          img.onload = img.onerror = resolve;
-        })
-      })).then(() => {
-        draw();
-      });
+    if (!areImagesReady) {
+      return;
     }
 
-    buddyImgFront.src = buddyFront;
-    buddyImgBack.src = buddyBack;
+    if (!isPaused) {
+      draw();
+    }
 
     document.addEventListener('keydown', onKeyDown);
 
@@ -72,7 +81,7 @@ export function Game (props: GameProps) {
       cancelAnimationFrame(rafIdRef.current);
       document.removeEventListener('keydown', onKeyDown);
     }
-  }, [ isPaused ]);
+  }, [ isPaused, areImagesReady ]);
 
   function draw() {
     console.log('draw');
@@ -96,7 +105,6 @@ export function Game (props: GameProps) {
         });
 
         drawDrawCount(ctx, drawCountRef.current++);
-        drawModuleVar(ctx, moduleVar++);
       }
     }
     vars.pews = vars.pews.filter((pew) => ((performance.now() - pew.startTime) <= PEW_FADE_TIME));
@@ -151,8 +159,4 @@ function drawDrawCount(ctx: CanvasRenderingContext2D, drawCount: number, dx = -1
   ctx.fillStyle = '#000';
   ctx.strokeText(drawCount.toString(), ctx.canvas.width + dx, ctx.canvas.height + dy);
   ctx.fillText(drawCount.toString(), ctx.canvas.width + dx, ctx.canvas.height + dy);
-}
-
-function drawModuleVar(ctx: CanvasRenderingContext2D, drawCount: number) {
-  drawDrawCount(ctx, drawCount, -200);
 }

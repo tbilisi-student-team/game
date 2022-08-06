@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useRef, } from 'react';
+import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 
 import { GameProps, GameVars, Bullet, Pew } from './types';
 
@@ -14,6 +14,8 @@ const buddyImgBack = new Image();
 
 const imagesToLoad = [ buddyImgFront, buddyImgBack ];
 
+let moduleVar = 0;
+
 export function Game (props: GameProps) {
   console.log('Game init');
 
@@ -25,7 +27,10 @@ export function Game (props: GameProps) {
   } as GameVars);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const rafIdRef = useRef<number>(0);
+  const rafIdRef = useRef(0);
+  const drawCountRef = useRef(0);
+
+  const [ isPaused, setPaused ] = useState(false);
 
   const onKeyDown = useCallback(function onKeyDown(e: KeyboardEvent) {
     if (e.key === ' ') {
@@ -40,18 +45,23 @@ export function Game (props: GameProps) {
         startTime: performance.now(),
       })
     }
-  }, []);
+    else if (e.key === 'p') {
+      setPaused(!isPaused);
+    }
+  }, [ isPaused ]);
 
   useLayoutEffect(function () {
     console.log('layoutEffect');
 
-    Promise.all(imagesToLoad.map((img) => {
-      return new Promise((resolve) => {
-        img.onload = img.onerror = resolve;
-      })
-    })).then(() => {
-      draw();
-    });
+    if (!isPaused) {
+      Promise.all(imagesToLoad.map((img) => {
+        return new Promise((resolve) => {
+          img.onload = img.onerror = resolve;
+        })
+      })).then(() => {
+        draw();
+      });
+    }
 
     buddyImgFront.src = buddyFront;
     buddyImgBack.src = buddyBack;
@@ -62,7 +72,7 @@ export function Game (props: GameProps) {
       cancelAnimationFrame(rafIdRef.current);
       document.removeEventListener('keydown', onKeyDown);
     }
-  });
+  }, [ isPaused ]);
 
   function draw() {
     console.log('draw');
@@ -73,7 +83,6 @@ export function Game (props: GameProps) {
 
       if (ctx) {
         ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-        // ctx.restore();
 
         ctx.drawImage(buddyImgBack, vars.buddyX, vars.buddyY);
 
@@ -85,6 +94,9 @@ export function Game (props: GameProps) {
         vars.pews.forEach(function (pew) {
           drawPew(ctx, pew);
         });
+
+        drawDrawCount(ctx, drawCountRef.current++);
+        drawModuleVar(ctx, moduleVar++);
       }
     }
     vars.pews = vars.pews.filter((pew) => ((performance.now() - pew.startTime) <= PEW_FADE_TIME));
@@ -131,4 +143,16 @@ function drawBullet(ctx: CanvasRenderingContext2D, bullet: Bullet) {
   const y = BULLET_START_Y - bullet.v * time + 0.01 * time**2;
 
   drawCircle(ctx, x, y, 20);
+}
+
+function drawDrawCount(ctx: CanvasRenderingContext2D, drawCount: number, dx = -100, dy = -100) {
+  ctx.font = '40px averia-serif-libre';
+  ctx.strokeStyle = '#fff';
+  ctx.fillStyle = '#000';
+  ctx.strokeText(drawCount.toString(), ctx.canvas.width + dx, ctx.canvas.height + dy);
+  ctx.fillText(drawCount.toString(), ctx.canvas.width + dx, ctx.canvas.height + dy);
+}
+
+function drawModuleVar(ctx: CanvasRenderingContext2D, drawCount: number) {
+  drawDrawCount(ctx, drawCount, -200);
 }

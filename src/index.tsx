@@ -4,10 +4,13 @@ import { BrowserRouter } from 'react-router-dom';
 
 import './styles/index.css';
 import { App } from './pages';
+import { AppContextProvider } from './AppContext';
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App/>
+      <AppContextProvider>
+        <App/>
+      </AppContextProvider>
     </BrowserRouter>
   </React.StrictMode>, document.getElementById('root'));

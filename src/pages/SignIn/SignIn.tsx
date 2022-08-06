@@ -5,7 +5,10 @@ import Header from '../../UI/Header';
 import Input from '../../UI/Input';
 import Button from '../../UI/Button';
 
-import { RoutePaths } from '../../types/RoutePaths'
+import { RoutePaths } from '../../types'
+
+import buddy1 from '../../assets/buddy-1.png';
+import buddy2 from '../../assets/buddy-2-otr.png';
 
 export function SignIn () {
   const [ login, setLogin ] = useState('')
@@ -29,7 +32,7 @@ export function SignIn () {
       </div>
       <div className='signin__container'>
         <div className='left-character__signin'>
-          <img src='../../assets/buddy-1.png' />
+          <img src={buddy1} alt='Buddy One' />
         </div>
         <form className='signin-form'>
           <Input type='text' name='login' value={login} setValue={setLogin}/>
@@ -43,7 +46,7 @@ export function SignIn () {
           </div>
         </form>
         <div className='right-character__signin'>
-          <img src='../../assets/buddy-2-otr.png' />
+          <img src={buddy2} alt='Buddy Two' />
         </div>
       </div>
     </div>

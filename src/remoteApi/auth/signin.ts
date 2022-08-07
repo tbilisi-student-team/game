@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from 'axios';
 
-import { httpClient } from '../../Core';
+import { httpClient } from 'core';
 
 export type SignInRequest = {
   login: string,

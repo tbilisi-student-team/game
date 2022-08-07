@@ -3,11 +3,14 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 
 import './styles/index.css';
+import { ErrorBoundary } from './Components';
 import { App } from './pages';
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App/>
-    </BrowserRouter>
+    <ErrorBoundary>
+      <BrowserRouter>
+        <App/>
+      </BrowserRouter>
+    </ErrorBoundary>
   </React.StrictMode>, document.getElementById('root'));

@@ -6,14 +6,14 @@ export function Main () {
 
   return (
     <div className='wrapper'>
-      {<Header/>}
+      <Header/>
       <div className='main'>
-        <div className='main-title'>
+        <h1 className='main-title'>
           Pew!
-        </div>
-        <div className='main-description'>
+        </h1>
+        <h3 className='main-description'>
           Study project of Tbilisi Team
-        </div>
+        </h3>
       </div>
       <div className='signin__container'>
         <div className='left-character__main'>

@@ -13,10 +13,12 @@ export const Input = (props: InputProps) => {
 
   return (
     <div className='input'>
+      <label htmlFor={props.name} className='label'>{props.name}</label>
       <input 
         type={props.type}
+        id={props.name}
         className='input-decoration' 
-        placeholder={props.name} 
+        // placeholder={props.name} 
         name={props.name} 
         onChange={handleValue} 
         value={props.value}

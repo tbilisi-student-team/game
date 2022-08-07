@@ -18,14 +18,14 @@ export function SignIn () {
 
   return (
     <div className='wrapper'>
-      {<Header/>}
+      <Header/>
       <div className='main'>
-        <div className='main-title'>
+        <h1 className='main-title'>
           Pew!
-        </div>
-        <div className='main-description'>
+        </h1>
+        <h3 className='main-description'>
           Study project of Tbilisi Team
-        </div>
+        </h3>
       </div>
       <div className='signin__container'>
         <div className='left-character__signin'>
@@ -38,7 +38,7 @@ export function SignIn () {
             <Button title={'Sign in'} onSubmit={onSubmit}/>
           </Link>
 
-          <div className='signup-link'>
+          <div className='sign-link'>
             <Link className='header-link' to={RoutePaths.SignUp}>{'I\'m new here'}</Link>
           </div>
         </form>

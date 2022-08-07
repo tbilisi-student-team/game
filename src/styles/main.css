@@ -47,6 +47,10 @@ body {
   color: var(--white);
 }
 
+.header-link:hover {
+  color: var(--grey);
+}
+
 .deriver {
   margin: 0 2% 0 2%;
 }
@@ -64,11 +68,13 @@ body {
 .main-title {
   font-size: 120px;
   text-align: center;
+  margin: 0;
 }
 
 .main-description {
   font-size: 20px;
   text-align: center;
+  margin: 0;
 }
 
 .signin__container {
@@ -110,11 +116,12 @@ body {
   width: 100%;
   font-size: 16px;
   border-radius: 10px;
-  background-color: var(--white);
-  opacity: 50%;
+  background-color: var(--whiteinput);
   border: 1px solid var(--grey);
   text-align: center;
   outline: none;
+  margin-top: 3px;
+  color: var(--white)
 }
 
 .input-focus {
@@ -122,10 +129,14 @@ body {
   opacity: 70%;
 }
 
+.label {
+  color: var(--grey);
+  height: 18px;
+}
 .button {
   background-color: var(--white);
   width: 50%;
-  margin: 8% auto 1% auto;
+  margin: 8% auto 3% auto;
   height: 50px;
   opacity: 80%;
   border-radius: 10px;
@@ -145,13 +156,8 @@ body {
   opacity: 100%;
 }
 
-.signup-link, .signin-link {
+.sign-link {
   text-align: center;
-}
-
-.signup-link:hover {
-  color: grey;
-  cursor: pointer;
 }
 
 .signup-title {

@@ -14,7 +14,16 @@ module.exports = {
     historyApiFallback: true,
   },
   resolve: {
-    extensions: [ '.tsx', '.ts', '.js' ]
+    extensions: [ '.tsx', '.ts', '.js' ],
+    alias: {
+      assets: path.resolve(__dirname, 'src/assets'),
+      components: path.resolve(__dirname, 'src/components'),
+      core: path.resolve(__dirname, 'src/core'),
+      pages: path.resolve(__dirname, 'src/pages'),
+      remoteApi: path.resolve(__dirname, 'src/remoteApi'),
+      styles: path.resolve(__dirname, 'src/styles'),
+      types: path.resolve(__dirname, 'src/types'),
+    }
   },
   module: {
     rules: [

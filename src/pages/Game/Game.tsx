@@ -6,18 +6,10 @@ import { drawCircle } from './utils/CanvasUtils';
 import { drawFrame } from './utils/drawFrame';
 import * as CONST from './consts';
 
-import buddyFront from '../../assets/buddy-1-front.png';
-import buddyBack from '../../assets/buddy-1-back.png';
-
 const BUDDY_START_X = 100;
 const BUDDY_START_Y = 400;
 const BULLET_START_X = BUDDY_START_X + 270;
 const BULLET_START_Y = BUDDY_START_Y + 110;
-
-const buddyImgFront = new Image();
-const buddyImgBack = new Image();
-
-const imagesToLoad = [ buddyImgFront, buddyImgBack ];
 
 const FRUITS_LOCS: Loc[] = [
   { x: 1289, y: 146 },
@@ -44,20 +36,6 @@ export function Game (props: GameProps) {
   const drawCountRef = useRef(0);
 
   const [ isPaused, setPaused ] = useState(false);
-  const [ areImagesReady, setImagesReady ] = useState(false);
-
-  if (!areImagesReady) {
-    Promise.all(imagesToLoad.map((img) => {
-      return new Promise((resolve) => {
-        img.onload = img.onerror = resolve;
-      })
-    })).then(() => {
-      setImagesReady(true);
-    });
-
-    buddyImgFront.src = buddyFront;
-    buddyImgBack.src = buddyBack;
-  }
 
   const onKeyDown = useCallback(function onKeyDown(e: KeyboardEvent) {
     if (e.key === ' ') {
@@ -123,10 +101,6 @@ export function Game (props: GameProps) {
   useLayoutEffect(function mainLayoutEffect() {
     console.log('mainLayoutEffect');
 
-    if (!areImagesReady) {
-      return;
-    }
-
     if (!isPaused) {
       onAnimationFrame();
     }
@@ -134,7 +108,7 @@ export function Game (props: GameProps) {
     return function() {
       cancelAnimationFrame(rafIdRef.current);
     }
-  }, [ isPaused, areImagesReady ]);
+  }, [ isPaused ]);
 
   useInterval(() => {
     //TODO пока первый падает, второй может уже расти?

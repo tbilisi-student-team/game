@@ -11,7 +11,8 @@ export type Pew = {
 
 export type Bullet = {
   startTime: number;
-  v: number;
+  vx: number;
+  vy: number;
 }
 
 export type GameVars = {

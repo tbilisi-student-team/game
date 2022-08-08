@@ -7,9 +7,10 @@ import buddyBack from '../../assets/buddy-1-back.png';
 
 const PEW_FADE_TIME = 1000;
 const BUDDY_START_X = 100;
-const BUDDY_START_Y = 200;
+const BUDDY_START_Y = 400;
 const BULLET_START_X = BUDDY_START_X + 270;
 const BULLET_START_Y = BUDDY_START_Y + 110;
+const g = 0.001;
 
 const buddyImgFront = new Image();
 const buddyImgBack = new Image();
@@ -19,12 +20,12 @@ const imagesToLoad = [ buddyImgFront, buddyImgBack ];
 export function Game (props: GameProps) {
   console.log('Game init');
 
-  const varsRef = useRef({
+  const stateRef = useRef<GameVars>({
     buddyX: BUDDY_START_X,
     buddyY: BUDDY_START_Y,
     pews: [],
     bullets: []
-  } as GameVars);
+  });
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafIdRef = useRef(0);
@@ -48,21 +49,70 @@ export function Game (props: GameProps) {
 
   const onKeyDown = useCallback(function onKeyDown(e: KeyboardEvent) {
     if (e.key === ' ') {
-      console.log('Pew!');
-      varsRef.current.pews.push({
-        x: 200 + Math.random()*200,
-        y: 100 + Math.random()*200,
-        startTime: performance.now(),
-      });
-      varsRef.current.bullets.push({
-        v: 2 + 2*Math.random(),
-        startTime: performance.now(),
-      })
+      pew(100, 100);
     }
     else if (e.key === 'p') {
       setPaused(!isPaused);
     }
   }, [ isPaused ]);
+
+  const mouseStateRef = useRef({
+    x: 0,
+    y: 0,
+    isPressed: false,
+    pressX: 0,
+    pressY: 0
+  });
+
+  const onMouse = useCallback(function (e: MouseEvent) {
+    console.log(e.type, e.clientX, e.clientY);
+    switch (e.type) {
+      case 'mousemove':
+        mouseStateRef.current.x = e.clientX;
+        mouseStateRef.current.y = e.clientY;
+        break;
+      case 'mousedown':
+        mouseStateRef.current.pressX = e.clientX;
+        mouseStateRef.current.pressY = e.clientY;
+        mouseStateRef.current.isPressed = true;
+        break;
+      case 'mouseup':
+        mouseStateRef.current.isPressed = false;
+        pew(mouseStateRef.current.pressX - e.x, mouseStateRef.current.pressY - e.y);
+        break;
+    }
+  }, [])
+
+  function pew(dx: number, dy: number) {
+    console.log('pew');
+    stateRef.current.pews.push({
+      x: 200 + Math.random()*200,
+      y: BUDDY_START_Y - 300 + Math.random()*200,
+      startTime: performance.now(),
+    });
+    stateRef.current.bullets.push({
+      vx: dx/100,
+      vy: -dy/100,
+      startTime: performance.now(),
+    })
+  }
+
+  useLayoutEffect(function addListeners() {
+    const canvas = canvasRef.current;
+
+    document.addEventListener('keydown', onKeyDown);
+    canvas?.addEventListener('mousedown', onMouse);
+    canvas?.addEventListener('mousemove', onMouse);
+    canvas?.addEventListener('mouseup', onMouse);
+
+    return function () {
+      document.removeEventListener('keydown', onKeyDown);
+      canvas?.removeEventListener('mousedown', onMouse);
+      canvas?.removeEventListener('mousemove', onMouse);
+      canvas?.removeEventListener('mouseup', onMouse);
+    }
+  }, [])
+
 
   useLayoutEffect(function () {
     console.log('layoutEffect');
@@ -75,37 +125,33 @@ export function Game (props: GameProps) {
       draw();
     }
 
-    document.addEventListener('keydown', onKeyDown);
-
     return function() {
       cancelAnimationFrame(rafIdRef.current);
-      document.removeEventListener('keydown', onKeyDown);
     }
   }, [ isPaused, areImagesReady ]);
 
   function draw() {
     console.log('draw');
-    const vars = varsRef.current;
+    const vars = stateRef.current;
 
-    if (canvasRef && canvasRef.current) {
-      const ctx = canvasRef.current.getContext('2d');
+    const ctx = canvasRef?.current?.getContext('2d');
 
-      if (ctx) {
-        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+    if (ctx) {
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-        ctx.drawImage(buddyImgBack, vars.buddyX, vars.buddyY);
+      ctx.drawImage(buddyImgBack, vars.buddyX, vars.buddyY);
 
-        vars.bullets.forEach(function (bullet) {
-          drawBullet(ctx, bullet);
-        })
+      vars.bullets.forEach(function (bullet) {
+        drawBullet(ctx, bullet);
+      })
 
-        ctx.drawImage(buddyImgFront, vars.buddyX, vars.buddyY);
-        vars.pews.forEach(function (pew) {
-          drawPew(ctx, pew);
-        });
+      ctx.drawImage(buddyImgFront, vars.buddyX, vars.buddyY);
+      vars.pews.forEach(function (pew) {
+        drawPew(ctx, pew);
+      });
 
-        drawDebugInfo(ctx, `${drawCountRef.current++}`);
-      }
+      drawDebugInfo(ctx,
+        `mouseX: ${mouseStateRef.current.x}, mouseY: ${mouseStateRef.current.y}, ${drawCountRef.current++}`);
     }
     vars.pews = vars.pews.filter((pew) => ((performance.now() - pew.startTime) <= PEW_FADE_TIME));
     rafIdRef.current = requestAnimationFrame(draw);
@@ -113,11 +159,10 @@ export function Game (props: GameProps) {
 
   return (
     <>
-      <h1>Game</h1>
       <canvas
         ref={canvasRef}
-        width={props.width || document.body.clientWidth}
-        height={props.height || (window.innerHeight - 100)}>
+        width={props.width || visualViewport.width}
+        height={props.height || visualViewport.height}>
       </canvas>
     </>
   )
@@ -147,8 +192,8 @@ function drawPew(ctx: CanvasRenderingContext2D, pew: Pew) {
 
 function drawBullet(ctx: CanvasRenderingContext2D, bullet: Bullet) {
   const time = performance.now() - bullet.startTime;
-  const x = BULLET_START_X + bullet.v * time;
-  const y = BULLET_START_Y - bullet.v * time + 0.01 * time**2;
+  const x = BULLET_START_X + bullet.vx * time;
+  const y = BULLET_START_Y - bullet.vy * time + g * time**2;
 
   drawCircle(ctx, x, y, 20);
 }

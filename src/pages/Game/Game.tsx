@@ -104,7 +104,7 @@ export function Game (props: GameProps) {
           drawPew(ctx, pew);
         });
 
-        drawDrawCount(ctx, drawCountRef.current++);
+        drawDebugInfo(ctx, `${drawCountRef.current++}`);
       }
     }
     vars.pews = vars.pews.filter((pew) => ((performance.now() - pew.startTime) <= PEW_FADE_TIME));
@@ -153,10 +153,14 @@ function drawBullet(ctx: CanvasRenderingContext2D, bullet: Bullet) {
   drawCircle(ctx, x, y, 20);
 }
 
-function drawDrawCount(ctx: CanvasRenderingContext2D, drawCount: number, dx = -100, dy = -100) {
+function drawDebugInfo(ctx: CanvasRenderingContext2D, debugInfo: string) {
+  const padding = 10;
+
   ctx.font = '40px averia-serif-libre';
   ctx.strokeStyle = '#fff';
   ctx.fillStyle = '#000';
-  ctx.strokeText(drawCount.toString(), ctx.canvas.width + dx, ctx.canvas.height + dy);
-  ctx.fillText(drawCount.toString(), ctx.canvas.width + dx, ctx.canvas.height + dy);
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'bottom'
+  ctx.strokeText(debugInfo, ctx.canvas.width - padding, ctx.canvas.height - padding);
+  ctx.fillText(debugInfo.toString(), ctx.canvas.width - padding, ctx.canvas.height - padding);
 }

@@ -96,6 +96,8 @@ export function Game (props: GameProps) {
       vx: dx/100,
       vy: -dy/100,
       startTime: performance.now(),
+      x: BULLET_START_X,
+      y: BULLET_START_Y
     })
   }
 
@@ -160,7 +162,7 @@ export function Game (props: GameProps) {
         `mouseX: ${mouseStateRef.current.x}, mouseY: ${mouseStateRef.current.y}, ${drawCountRef.current++}`);
     }
     vars.pews = vars.pews.filter((pew) => ((performance.now() - pew.startTime) <= PEW_FADE_TIME));
-    vars.bullets = vars.bullets.filter((pew) => ((performance.now() - pew.startTime) <= PEW_FADE_TIME));
+    vars.bullets = vars.bullets.filter((bullet) => bullet.x < CANVAS_BASE_WIDTH && bullet.y < CANVAS_BASE_HEIGHT);
     rafIdRef.current = requestAnimationFrame(draw);
   }
 
@@ -213,10 +215,10 @@ function drawPew(ctx: CanvasRenderingContext2D, pew: Pew) {
 
 function drawBullet(ctx: CanvasRenderingContext2D, bullet: Bullet) {
   const time = performance.now() - bullet.startTime;
-  const x = BULLET_START_X + bullet.vx * time;
-  const y = BULLET_START_Y - bullet.vy * time + g * time**2;
 
-  drawCircle(ctx, x, y, 20);
+  bullet.x = BULLET_START_X + bullet.vx * time;
+  bullet.y = BULLET_START_Y - bullet.vy * time + g * time**2;
+  drawCircle(ctx, bullet.x, bullet.y, 20);
 }
 
 function drawDebugInfo(ctx: CanvasRenderingContext2D, debugInfo: string) {

@@ -13,6 +13,8 @@ export type Bullet = {
   startTime: number;
   vx: number;
   vy: number;
+  x: number;
+  y: number;
 }
 
 export type GameVars = {

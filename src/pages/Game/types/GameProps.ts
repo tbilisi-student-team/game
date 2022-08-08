@@ -11,7 +11,7 @@ export type Pew = {
   y: number;
 }
 
-export type GameVars = {
+export type GameState = {
   buddyX: number;
   buddyY: number;
   pews: Pew[],

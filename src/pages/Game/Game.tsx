@@ -1,5 +1,5 @@
 import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
-import Bullet, { GameProps, GameVars, Pew } from './types';
+import Bullet, { GameProps, GameState, Pew } from './types';
 
 import buddyFront from '../../assets/buddy-1-front.png';
 import buddyBack from '../../assets/buddy-1-back.png';
@@ -21,7 +21,7 @@ const imagesToLoad = [ buddyImgFront, buddyImgBack ];
 export function Game (props: GameProps) {
   console.log('Game init');
 
-  const stateRef = useRef<GameVars>({
+  const stateRef = useRef<GameState>({
     buddyX: BUDDY_START_X,
     buddyY: BUDDY_START_Y,
     pews: [],
@@ -50,7 +50,7 @@ export function Game (props: GameProps) {
 
   const onKeyDown = useCallback(function onKeyDown(e: KeyboardEvent) {
     if (e.key === ' ') {
-      pew(100, 100);
+      pew(100, -100);
     }
     else if (e.key === 'p') {
       setPaused(!isPaused);

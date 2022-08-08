@@ -12,6 +12,9 @@ const BULLET_START_X = BUDDY_START_X + 270;
 const BULLET_START_Y = BUDDY_START_Y + 110;
 const g = 0.001;
 
+const CANVAS_BASE_WIDTH = 1920;
+const CANVAS_BASE_HEIGHT = 948;
+
 const buddyImgFront = new Image();
 const buddyImgBack = new Image();
 
@@ -65,7 +68,6 @@ export function Game (props: GameProps) {
   });
 
   const onMouse = useCallback(function (e: MouseEvent) {
-    console.log(e.type, e.clientX, e.clientY);
     switch (e.type) {
       case 'mousemove':
         mouseStateRef.current.x = e.clientX;
@@ -114,7 +116,7 @@ export function Game (props: GameProps) {
   }, [])
 
 
-  useLayoutEffect(function () {
+  useLayoutEffect(function mainLayoutEffect() {
     console.log('layoutEffect');
 
     if (!areImagesReady) {
@@ -134,10 +136,12 @@ export function Game (props: GameProps) {
     console.log('draw');
     const vars = stateRef.current;
 
-    const ctx = canvasRef?.current?.getContext('2d');
+    const ctx = canvasRef.current?.getContext('2d');
 
     if (ctx) {
+      ctx.resetTransform();
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx.scale(ctx.canvas.width / CANVAS_BASE_WIDTH, ctx.canvas.height/ CANVAS_BASE_HEIGHT);//TODO aspect ratio, resize
 
       ctx.drawImage(buddyImgBack, vars.buddyX, vars.buddyY);
 
@@ -154,6 +158,7 @@ export function Game (props: GameProps) {
         `mouseX: ${mouseStateRef.current.x}, mouseY: ${mouseStateRef.current.y}, ${drawCountRef.current++}`);
     }
     vars.pews = vars.pews.filter((pew) => ((performance.now() - pew.startTime) <= PEW_FADE_TIME));
+    vars.bullets = vars.bullets.filter((pew) => ((performance.now() - pew.startTime) <= PEW_FADE_TIME));
     rafIdRef.current = requestAnimationFrame(draw);
   }
 

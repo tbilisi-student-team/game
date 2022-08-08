@@ -1,3 +1,5 @@
+import Bullet from './Bullet';
+
 export type GameProps = {
   width?: number;
   height?: number;
@@ -5,14 +7,6 @@ export type GameProps = {
 
 export type Pew = {
   startTime: number;
-  x: number;
-  y: number;
-}
-
-export type Bullet = {
-  startTime: number;
-  vx: number;
-  vy: number;
   x: number;
   y: number;
 }

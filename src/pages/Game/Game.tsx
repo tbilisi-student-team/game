@@ -1,6 +1,5 @@
 import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
-
-import { GameProps, GameVars, Bullet, Pew } from './types';
+import Bullet, { GameProps, GameVars, Pew } from './types';
 
 import buddyFront from '../../assets/buddy-1-front.png';
 import buddyBack from '../../assets/buddy-1-back.png';
@@ -10,7 +9,6 @@ const BUDDY_START_X = 100;
 const BUDDY_START_Y = 400;
 const BULLET_START_X = BUDDY_START_X + 270;
 const BULLET_START_Y = BUDDY_START_Y + 110;
-const g = 0.001;
 
 const CANVAS_BASE_WIDTH = 1920;
 const CANVAS_BASE_HEIGHT = 948;
@@ -92,13 +90,7 @@ export function Game (props: GameProps) {
       y: BUDDY_START_Y - 300 + Math.random()*200,
       startTime: performance.now(),
     });
-    stateRef.current.bullets.push({
-      vx: dx/100,
-      vy: -dy/100,
-      startTime: performance.now(),
-      x: BULLET_START_X,
-      y: BULLET_START_Y
-    })
+    stateRef.current.bullets.push(new Bullet(BULLET_START_X, BULLET_START_Y, dx/100, -dy/100));
   }
 
   useLayoutEffect(function addListeners() {
@@ -150,8 +142,9 @@ export function Game (props: GameProps) {
       ctx.drawImage(buddyImgBack, vars.buddyX, vars.buddyY);
 
       vars.bullets.forEach(function (bullet) {
-        drawBullet(ctx, bullet);
-      })
+        bullet.updatePosition();
+        bullet.draw(ctx);
+      });
 
       ctx.drawImage(buddyImgFront, vars.buddyX, vars.buddyY);
       vars.pews.forEach(function (pew) {
@@ -191,17 +184,6 @@ export function Game (props: GameProps) {
   )
 }
 
-function drawCircle(context: CanvasRenderingContext2D, x: number, y: number, r: number) {
-  context.beginPath();
-  context.fillStyle = '#0077aa';
-  context.strokeStyle = '#0077aa47';
-  context.lineWidth = 2;
-
-  context.arc(x, y, r, 0, 2 * Math.PI, false);
-  context.fill();
-  context.stroke();
-}
-
 function drawPew(ctx: CanvasRenderingContext2D, pew: Pew) {
   const now = performance.now();
   const alpha = Math.max((PEW_FADE_TIME - (now - pew.startTime)) / PEW_FADE_TIME, 0);
@@ -211,14 +193,6 @@ function drawPew(ctx: CanvasRenderingContext2D, pew: Pew) {
   ctx.fillStyle = 'rgba(255, 255, 255, ' + alpha + ')';
   ctx.strokeText('Pew!', pew.x, pew.y);
   ctx.fillText('Pew!', pew.x, pew.y);
-}
-
-function drawBullet(ctx: CanvasRenderingContext2D, bullet: Bullet) {
-  const time = performance.now() - bullet.startTime;
-
-  bullet.x = BULLET_START_X + bullet.vx * time;
-  bullet.y = BULLET_START_Y - bullet.vy * time + g * time**2;
-  drawCircle(ctx, bullet.x, bullet.y, 20);
 }
 
 function drawDebugInfo(ctx: CanvasRenderingContext2D, debugInfo: string) {

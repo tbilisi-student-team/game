@@ -1,1 +1,1 @@
-// export {CONST} from './Const';
+export const g = 0.001;

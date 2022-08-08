@@ -13,6 +13,7 @@ export type Pew = {
 }
 
 export type GameState = {
+  score: number;
   buddyX: number;
   buddyY: number;
   pews: Pew[],

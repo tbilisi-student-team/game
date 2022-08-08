@@ -21,8 +21,10 @@ export class Fruit {
   dropTime = 0;
   state = FruitState.New;
   isDropping = false;
-
   radius = 10;
+
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  onRot() {}
 
   updateState() {
     if (this.isDropping) {
@@ -36,6 +38,9 @@ export class Fruit {
       this.state = Math.floor(time / 2000);
       if (this.state === FruitState.Rotten) {
         this.drop();
+
+        //TODO temporary
+        this.onRot();
       }
     }
   }

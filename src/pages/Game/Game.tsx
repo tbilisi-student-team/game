@@ -31,7 +31,8 @@ export function Game (props: GameProps) {
     buddyY: BUDDY_START_Y,
     pews: [],
     bullets: [],
-    fruits: []
+    fruits: [],
+    score: 0
   });
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -135,6 +136,9 @@ export function Game (props: GameProps) {
   useInterval(() => {
     const fruit = new Fruit(FRUITS_X + 400*Math.random(), FRUITS_Y + 400*Math.random());
 
+    fruit.onRot = function() {
+      stateRef.current.score -= 1;
+    };
     stateRef.current.fruits.push(fruit);
   }, 2000);
 
@@ -178,6 +182,7 @@ export function Game (props: GameProps) {
         vars.fruits.filter((fruit) => !fruit.isDropping).every((fruit) => {
           //TODO снаряд может пролететь через фрукт между кадрами!
           if (checkIntersection(bullet, fruit)) {
+            vars.score += (fruit.state > 1 ? fruit.state - 1 : 0);
             fruit.drop();
             drawCircle(ctx, bullet.x, bullet.y, bullet.radius, { fillStyle: '#fff' });
             vars.bullets.splice(b, 1);
@@ -186,6 +191,8 @@ export function Game (props: GameProps) {
           return true;
         });
       }
+
+      drawScore(ctx, vars.score);
     }
     vars.pews = vars.pews.filter((pew) => ((performance.now() - pew.startTime) <= PEW_FADE_TIME));
     vars.bullets = vars.bullets.filter((bullet) => bullet.x < CANVAS_BASE_WIDTH && bullet.y < CANVAS_BASE_HEIGHT);
@@ -238,6 +245,20 @@ function drawDebugInfo(ctx: CanvasRenderingContext2D, debugInfo: string) {
   ctx.textBaseline = 'bottom';
   ctx.strokeText(debugInfo, CANVAS_BASE_WIDTH - padding, CANVAS_BASE_HEIGHT - padding);
   ctx.fillText(debugInfo.toString(), CANVAS_BASE_WIDTH - padding, CANVAS_BASE_HEIGHT - padding);
+}
+
+function drawScore(ctx: CanvasRenderingContext2D, score: number) {
+  const text = `Score: ${score}`;
+  const padding = 10;
+
+  ctx.font = '40px averia-serif-libre';
+  ctx.strokeStyle = '#fff';
+  ctx.fillStyle = '#000';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+
+  ctx.strokeText(text, CANVAS_BASE_WIDTH/2, padding);
+  ctx.fillText(text.toString(), CANVAS_BASE_WIDTH/2, padding);
 }
 
 function checkIntersection(bullet: Bullet, fruit: Fruit) {

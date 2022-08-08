@@ -1,7 +1,8 @@
 import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import useInterval from './hooks/useInterval';
-
 import { GameProps, GameState, Pew, Bullet, Fruit } from './types';
+import { drawCircle } from './utils/CanvasUtils';
+
 import buddyFront from '../../assets/buddy-1-front.png';
 import buddyBack from '../../assets/buddy-1-back.png';
 
@@ -169,6 +170,22 @@ export function Game (props: GameProps) {
 
       drawDebugInfo(ctx,
         `mouseX: ${mouseStateRef.current.x}, mouseY: ${mouseStateRef.current.y}, ${drawCountRef.current++}`);
+
+      //TODO bullet может быть только 1
+      for (let b = 0; b < vars.bullets.length; b++) {
+        const bullet = vars.bullets[b];
+
+        vars.fruits.filter((fruit) => !fruit.isDropping).every((fruit) => {
+          //TODO снаряд может пролететь через фрукт между кадрами!
+          if (checkIntersection(bullet, fruit)) {
+            fruit.drop();
+            drawCircle(ctx, bullet.x, bullet.y, bullet.radius, { fillStyle: '#fff' });
+            vars.bullets.splice(b, 1);
+            return false;
+          }
+          return true;
+        });
+      }
     }
     vars.pews = vars.pews.filter((pew) => ((performance.now() - pew.startTime) <= PEW_FADE_TIME));
     vars.bullets = vars.bullets.filter((bullet) => bullet.x < CANVAS_BASE_WIDTH && bullet.y < CANVAS_BASE_HEIGHT);
@@ -221,4 +238,10 @@ function drawDebugInfo(ctx: CanvasRenderingContext2D, debugInfo: string) {
   ctx.textBaseline = 'bottom';
   ctx.strokeText(debugInfo, CANVAS_BASE_WIDTH - padding, CANVAS_BASE_HEIGHT - padding);
   ctx.fillText(debugInfo.toString(), CANVAS_BASE_WIDTH - padding, CANVAS_BASE_HEIGHT - padding);
+}
+
+function checkIntersection(bullet: Bullet, fruit: Fruit) {
+  const distance = Math.sqrt((bullet.x - fruit.x)**2 + (bullet.y - fruit.y)**2);
+
+  return distance <= (bullet.radius + fruit.radius);
 }

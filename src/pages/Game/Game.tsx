@@ -141,7 +141,9 @@ export function Game (props: GameProps) {
     if (ctx) {
       ctx.resetTransform();
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-      ctx.scale(ctx.canvas.width / CANVAS_BASE_WIDTH, ctx.canvas.height/ CANVAS_BASE_HEIGHT);//TODO aspect ratio, resize
+      ctx.strokeStyle = '#000';
+      ctx.strokeRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx.scale(ctx.canvas.width / CANVAS_BASE_WIDTH, ctx.canvas.height / CANVAS_BASE_HEIGHT);//TODO resize
 
       ctx.drawImage(buddyImgBack, vars.buddyX, vars.buddyY);
 
@@ -162,12 +164,26 @@ export function Game (props: GameProps) {
     rafIdRef.current = requestAnimationFrame(draw);
   }
 
+  let canvasWidth = props.width || visualViewport.width;
+  let canvasHeight = props.height || visualViewport.height;
+  const currentAspect = canvasWidth / canvasHeight;
+  const desiredAspect = CANVAS_BASE_WIDTH / CANVAS_BASE_HEIGHT;
+
+  if (currentAspect > desiredAspect) {
+    canvasWidth = desiredAspect * canvasHeight;
+  }
+  else if (currentAspect < desiredAspect) {
+    canvasHeight = canvasWidth / desiredAspect;
+  }
+
+  //TODO canvas align middle
+
   return (
     <>
       <canvas
         ref={canvasRef}
-        width={props.width || visualViewport.width}
-        height={props.height || visualViewport.height}>
+        width={canvasWidth}
+        height={canvasHeight}>
       </canvas>
     </>
   )
@@ -210,7 +226,7 @@ function drawDebugInfo(ctx: CanvasRenderingContext2D, debugInfo: string) {
   ctx.strokeStyle = '#fff';
   ctx.fillStyle = '#000';
   ctx.textAlign = 'right';
-  ctx.textBaseline = 'bottom'
-  ctx.strokeText(debugInfo, ctx.canvas.width - padding, ctx.canvas.height - padding);
-  ctx.fillText(debugInfo.toString(), ctx.canvas.width - padding, ctx.canvas.height - padding);
+  ctx.textBaseline = 'bottom';
+  ctx.strokeText(debugInfo, CANVAS_BASE_WIDTH - padding, CANVAS_BASE_HEIGHT - padding);
+  ctx.fillText(debugInfo.toString(), CANVAS_BASE_WIDTH - padding, CANVAS_BASE_HEIGHT - padding);
 }

@@ -1,4 +1,5 @@
-import Bullet from './Bullet';
+import { Bullet } from './Bullet';
+import { Fruit } from './Fruit';
 
 export type GameProps = {
   width?: number;
@@ -15,5 +16,6 @@ export type GameState = {
   buddyX: number;
   buddyY: number;
   pews: Pew[],
-  bullets: Bullet[]
+  bullets: Bullet[],
+  fruits: Fruit[]
 }

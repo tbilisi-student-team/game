@@ -1,2 +1,3 @@
 export * from './GameProps';
-export { default } from './Bullet';
+export { Bullet } from './Bullet';
+export { Fruit } from './Fruit';

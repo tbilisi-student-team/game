@@ -1,7 +1,7 @@
 import { drawCircle } from '../utils/CanvasUtils';
 import * as CONST from '../consts';
 
-export default class Bullet {
+export class Bullet {
   constructor(x: number, y: number, vx: number, vy: number) {
     this.x = this.startX = x;
     this.y = this.startY = y;
@@ -18,6 +18,8 @@ export default class Bullet {
   startY: number;
   startTime: number;
 
+  readonly radius = 20;
+
   updatePosition() {
     const time = performance.now() - this.startTime;
 
@@ -26,6 +28,6 @@ export default class Bullet {
   }
 
   draw(ctx: CanvasRenderingContext2D) {
-    drawCircle(ctx, this.x, this.y, 20);
+    drawCircle(ctx, this.x, this.y, this.radius, { fillStyle: '#00f' });
   }
 }

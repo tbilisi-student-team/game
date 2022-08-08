@@ -1,8 +1,12 @@
 import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
-import Bullet, { GameProps, GameState, Pew } from './types';
+import useInterval from './hooks/useInterval';
 
+import { GameProps, GameState, Pew, Bullet, Fruit } from './types';
 import buddyFront from '../../assets/buddy-1-front.png';
 import buddyBack from '../../assets/buddy-1-back.png';
+
+const CANVAS_BASE_WIDTH = 1920;
+const CANVAS_BASE_HEIGHT = 948;
 
 const PEW_FADE_TIME = 1000;
 const BUDDY_START_X = 100;
@@ -10,8 +14,8 @@ const BUDDY_START_Y = 400;
 const BULLET_START_X = BUDDY_START_X + 270;
 const BULLET_START_Y = BUDDY_START_Y + 110;
 
-const CANVAS_BASE_WIDTH = 1920;
-const CANVAS_BASE_HEIGHT = 948;
+const FRUITS_X = CANVAS_BASE_WIDTH - 500;
+const FRUITS_Y = 100;
 
 const buddyImgFront = new Image();
 const buddyImgBack = new Image();
@@ -25,7 +29,8 @@ export function Game (props: GameProps) {
     buddyX: BUDDY_START_X,
     buddyY: BUDDY_START_Y,
     pews: [],
-    bullets: []
+    bullets: [],
+    fruits: []
   });
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -126,6 +131,12 @@ export function Game (props: GameProps) {
     }
   }, [ isPaused, areImagesReady ]);
 
+  useInterval(() => {
+    const fruit = new Fruit(FRUITS_X + 400*Math.random(), FRUITS_Y + 400*Math.random());
+
+    stateRef.current.fruits.push(fruit);
+  }, 2000);
+
   function draw() {
     console.log('draw');
     const vars = stateRef.current;
@@ -140,6 +151,11 @@ export function Game (props: GameProps) {
       ctx.scale(ctx.canvas.width / CANVAS_BASE_WIDTH, ctx.canvas.height / CANVAS_BASE_HEIGHT);//TODO resize
 
       ctx.drawImage(buddyImgBack, vars.buddyX, vars.buddyY);
+
+      vars.fruits.forEach(function (fruit) {
+        fruit.updateState();
+        fruit.draw(ctx);
+      })
 
       vars.bullets.forEach(function (bullet) {
         bullet.updatePosition();
@@ -188,7 +204,7 @@ function drawPew(ctx: CanvasRenderingContext2D, pew: Pew) {
   const now = performance.now();
   const alpha = Math.max((PEW_FADE_TIME - (now - pew.startTime)) / PEW_FADE_TIME, 0);
 
-  ctx.font = '40px averia-serif-libre';
+  ctx.font = '50px averia-serif-libre';
   ctx.strokeStyle = 'rgba(0, 0, 0, ' + alpha + ')';
   ctx.fillStyle = 'rgba(255, 255, 255, ' + alpha + ')';
   ctx.strokeText('Pew!', pew.x, pew.y);

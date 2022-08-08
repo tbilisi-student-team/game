@@ -2,7 +2,10 @@ import React from 'react';
 
 type InputProps = {
   name: string,
+  id: string,
   type: string,
+  placeholder: string,
+  required: boolean,
   value: string,
   setValue: ((arg: string) => void)
 }
@@ -13,15 +16,14 @@ export const Input = (props: InputProps) => {
 
   return (
     <div className='input'>
-      <label htmlFor={props.name} className='label'>{props.name}</label>
+      <label htmlFor={props.id} className='label'>{props.name}</label>
       <input 
         type={props.type}
-        id={props.name}
+        id={props.id}
+        name={props.name}
         className='input-decoration' 
-        // placeholder={props.name} 
-        name={props.name} 
-        onChange={handleValue} 
-        value={props.value}
+        value={props.value} 
+        onChange={handleValue}
       />
     </div>  
   )

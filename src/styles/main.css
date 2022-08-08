@@ -143,7 +143,7 @@ body {
   display: flex;
   align-items: center;
   border-style: solid;
-  border: 1px solid var(--white)
+  border: 1px solid var(--white);
 }
 
 .button:hover {
@@ -154,6 +154,26 @@ body {
   margin: 0 auto;
   color: black;
   opacity: 100%;
+}
+
+.submit-button {
+  background-color: var(--white);
+  width: 50%;
+  margin: 8% auto 3% auto;
+  height: 50px;
+  opacity: 80%;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  border-style: solid;
+  border: 1px solid var(--white);
+  justify-content: center;
+  color: black;
+}
+
+.submit-button:hover {
+  opacity: 100%;
+  cursor: pointer;
 }
 
 .sign-link {

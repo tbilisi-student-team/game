@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Header from '../../UI/Header';
 import Input from '../../UI/Input';
-import Button from '../../UI/Button';
+import SubmitButton from '../../UI/SubmitButton';
 
 import { RoutePaths } from '../../types/RoutePaths'
 
@@ -12,7 +12,8 @@ export function SignIn () {
   const [ password, setPassword ] = useState('')
 
 
-  const onSubmit = () => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     console.log(login, password)
   }
 
@@ -31,12 +32,24 @@ export function SignIn () {
         <div className='left-character__signin'>
           <img src='../../assets/buddy-1.png' />
         </div>
-        <form className='signin-form'>
-          <Input type='text' name='login' value={login} setValue={setLogin}/>
-          <Input type='password' name='password' value={password} setValue={setPassword}/>
-          <Link className='header-link' to={RoutePaths.Main}>
-            <Button title={'Sign in'} onSubmit={onSubmit}/>
-          </Link>
+        <form className='signin-form' onSubmit={onSubmit}>
+          <Input 
+            type='text'
+            name='login'
+            id='login'
+            placeholder='login'
+            required={true}
+            value={login}
+            setValue={setLogin}/>
+          <Input
+            type='password'
+            name='password'
+            id='password'
+            placeholder='password'
+            required={true}
+            value={password}
+            setValue={setPassword}/>
+          <SubmitButton title={'Sign in'}/>
 
           <div className='sign-link'>
             <Link className='header-link' to={RoutePaths.SignUp}>{'I\'m new here'}</Link>

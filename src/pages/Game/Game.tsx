@@ -1,6 +1,7 @@
 import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import useInterval from './hooks/useInterval';
-import { GameProps, GameState, Pew, Bullet, Fruit } from './types';
+import { GameProps, GameState, Pew } from './types';
+import { Bullet, Fruit } from './models';
 import { drawCircle } from './utils/CanvasUtils';
 
 import buddyFront from '../../assets/buddy-1-front.png';

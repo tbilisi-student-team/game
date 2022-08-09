@@ -1,4 +1,5 @@
 :root {
     --white: #ffffff;
-    --grey: #c9c9c9;
+    --grey: #d3d3d3;
+    --whiteinput: rgba(255,255,255, 0.5);
 }

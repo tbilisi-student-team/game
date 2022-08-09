@@ -1,6 +1,6 @@
 import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import useInterval from './hooks/useInterval';
-import { GameProps, GameState, Pew } from './types';
+import { GameProps, GameState } from './types';
 import { Bullet, Fruit } from './models';
 import { drawCircle } from './utils/CanvasUtils';
 import * as CONST from './consts';
@@ -10,7 +10,6 @@ import buddyFront from '../../assets/buddy-1-front.png';
 import buddyBack from '../../assets/buddy-1-back.png';
 import { drawFrame } from 'pages/Game/utils/drawFrame';
 
-const PEW_FADE_TIME = 1000;
 const BUDDY_START_X = 100;
 const BUDDY_START_Y = 400;
 const BULLET_START_X = BUDDY_START_X + 270;
@@ -143,53 +142,45 @@ export function Game (props: GameProps) {
   }, 2000);
 
   function onAnimationFrame() {
-    const vars = stateRef.current;
+    const state = stateRef.current;
+
+    state.fruits.forEach(function (fruit) {
+      fruit.updateState();
+    });
+    state.bullets.forEach(function (bullet) {
+      bullet.updatePosition();
+    });
+    state.pews = state.pews.filter((pew) => ((performance.now() - pew.startTime) <= CONST.PEW_FADE_TIME));
+    state.bullets = state.bullets.filter(
+      (bullet) => bullet.x < CONST.CANVAS_BASE_WIDTH && bullet.y < CONST.CANVAS_BASE_HEIGHT
+    );
 
     const ctx = canvasRef.current?.getContext('2d');
 
     if (ctx) {
-      drawFrame(vars, ctx);
-
-
-      vars.fruits.forEach(function (fruit) {
-        fruit.updateState();
-        fruit.draw(ctx);
-      })
-
-      vars.bullets.forEach(function (bullet) {
-        bullet.updatePosition();
-        bullet.draw(ctx);
-      });
-
-      ctx.drawImage(buddyImgFront, vars.buddyX, vars.buddyY);
-      vars.pews.forEach(function (pew) {
-        drawPew(ctx, pew);
-      });
+      drawFrame(state, ctx);
 
       drawDebugInfo(ctx,
         `mouseX: ${mouseStateRef.current.x}, mouseY: ${mouseStateRef.current.y}, ${drawCountRef.current++}`);
 
       //TODO bullet может быть только 1?
-      for (let b = 0; b < vars.bullets.length; b++) {
-        const bullet = vars.bullets[b];
+      for (let b = 0; b < state.bullets.length; b++) {
+        const bullet = state.bullets[b];
 
-        vars.fruits.filter((fruit) => !fruit.isDropping).every((fruit) => {
+        state.fruits.filter((fruit) => !fruit.isDropping).every((fruit) => {
           //TODO снаряд может пролететь через фрукт между кадрами!
           if (checkIntersection(bullet, fruit)) {
-            vars.score += (fruit.state > 1 ? fruit.state - 1 : 0);
+            state.score += (fruit.state > 1 ? fruit.state - 1 : 0);
             fruit.drop();
             drawCircle(ctx, bullet.x, bullet.y, bullet.radius, { fillStyle: '#fff' });
-            vars.bullets.splice(b, 1);
+            state.bullets.splice(b, 1);
             return false;
           }
           return true;
         });
       }
-
-      drawScore(ctx, vars.score);
     }
-    vars.pews = vars.pews.filter((pew) => ((performance.now() - pew.startTime) <= PEW_FADE_TIME));
-    vars.bullets = vars.bullets.filter((bullet) => bullet.x < CONST.CANVAS_BASE_WIDTH && bullet.y < CONST.CANVAS_BASE_HEIGHT);
+
     rafIdRef.current = requestAnimationFrame(onAnimationFrame);
   }
 
@@ -218,17 +209,6 @@ export function Game (props: GameProps) {
   )
 }
 
-function drawPew(ctx: CanvasRenderingContext2D, pew: Pew) {
-  const now = performance.now();
-  const alpha = Math.max((PEW_FADE_TIME - (now - pew.startTime)) / PEW_FADE_TIME, 0);
-
-  ctx.font = '50px averia-serif-libre';
-  ctx.strokeStyle = 'rgba(0, 0, 0, ' + alpha + ')';
-  ctx.fillStyle = 'rgba(255, 255, 255, ' + alpha + ')';
-  ctx.strokeText('Pew!', pew.x, pew.y);
-  ctx.fillText('Pew!', pew.x, pew.y);
-}
-
 function drawDebugInfo(ctx: CanvasRenderingContext2D, debugInfo: string) {
   const padding = 10;
 
@@ -239,20 +219,6 @@ function drawDebugInfo(ctx: CanvasRenderingContext2D, debugInfo: string) {
   ctx.textBaseline = 'bottom';
   ctx.strokeText(debugInfo, CONST.CANVAS_BASE_WIDTH - padding, CONST.CANVAS_BASE_HEIGHT - padding);
   ctx.fillText(debugInfo.toString(), CONST.CANVAS_BASE_WIDTH - padding, CONST.CANVAS_BASE_HEIGHT - padding);
-}
-
-function drawScore(ctx: CanvasRenderingContext2D, score: number) {
-  const text = `Score: ${score}`;
-  const padding = 10;
-
-  ctx.font = '40px averia-serif-libre';
-  ctx.strokeStyle = '#fff';
-  ctx.fillStyle = '#000';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'top';
-
-  ctx.strokeText(text, CONST.CANVAS_BASE_WIDTH/2, padding);
-  ctx.fillText(text.toString(), CONST.CANVAS_BASE_WIDTH/2, padding);
 }
 
 function checkIntersection(bullet: Bullet, fruit: Fruit) {

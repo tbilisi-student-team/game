@@ -3,12 +3,11 @@ import useInterval from './hooks/useInterval';
 import { GameProps, GameState, Pew } from './types';
 import { Bullet, Fruit } from './models';
 import { drawCircle } from './utils/CanvasUtils';
+import * as CONST from './consts';
+
 
 import buddyFront from '../../assets/buddy-1-front.png';
 import buddyBack from '../../assets/buddy-1-back.png';
-
-const CANVAS_BASE_WIDTH = 1920;
-const CANVAS_BASE_HEIGHT = 948;
 
 const PEW_FADE_TIME = 1000;
 const BUDDY_START_X = 100;
@@ -16,7 +15,7 @@ const BUDDY_START_Y = 400;
 const BULLET_START_X = BUDDY_START_X + 270;
 const BULLET_START_Y = BUDDY_START_Y + 110;
 
-const FRUITS_X = CANVAS_BASE_WIDTH - 500;
+const FRUITS_X = CONST.CANVAS_BASE_WIDTH - 500;
 const FRUITS_Y = 100;
 
 const buddyImgFront = new Image();
@@ -92,7 +91,6 @@ export function Game (props: GameProps) {
   }, [])
 
   function pew(dx: number, dy: number) {
-    console.log('pew');
     stateRef.current.pews.push({
       x: 200 + Math.random()*200,
       y: BUDDY_START_Y - 300 + Math.random()*200,
@@ -154,7 +152,7 @@ export function Game (props: GameProps) {
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
       ctx.strokeStyle = '#000';
       ctx.strokeRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-      ctx.scale(ctx.canvas.width / CANVAS_BASE_WIDTH, ctx.canvas.height / CANVAS_BASE_HEIGHT);//TODO resize
+      ctx.scale(ctx.canvas.width / CONST.CANVAS_BASE_WIDTH, ctx.canvas.height / CONST.CANVAS_BASE_HEIGHT);//TODO resize
 
       ctx.drawImage(buddyImgBack, vars.buddyX, vars.buddyY);
 
@@ -196,14 +194,14 @@ export function Game (props: GameProps) {
       drawScore(ctx, vars.score);
     }
     vars.pews = vars.pews.filter((pew) => ((performance.now() - pew.startTime) <= PEW_FADE_TIME));
-    vars.bullets = vars.bullets.filter((bullet) => bullet.x < CANVAS_BASE_WIDTH && bullet.y < CANVAS_BASE_HEIGHT);
+    vars.bullets = vars.bullets.filter((bullet) => bullet.x < CONST.CANVAS_BASE_WIDTH && bullet.y < CONST.CANVAS_BASE_HEIGHT);
     rafIdRef.current = requestAnimationFrame(draw);
   }
 
   let canvasWidth = props.width || visualViewport.width;
   let canvasHeight = props.height || visualViewport.height;
   const currentAspect = canvasWidth / canvasHeight;
-  const desiredAspect = CANVAS_BASE_WIDTH / CANVAS_BASE_HEIGHT;
+  const desiredAspect = CONST.CANVAS_BASE_WIDTH / CONST.CANVAS_BASE_HEIGHT;
 
   if (currentAspect > desiredAspect) {
     canvasWidth = desiredAspect * canvasHeight;
@@ -244,8 +242,8 @@ function drawDebugInfo(ctx: CanvasRenderingContext2D, debugInfo: string) {
   ctx.fillStyle = '#000';
   ctx.textAlign = 'right';
   ctx.textBaseline = 'bottom';
-  ctx.strokeText(debugInfo, CANVAS_BASE_WIDTH - padding, CANVAS_BASE_HEIGHT - padding);
-  ctx.fillText(debugInfo.toString(), CANVAS_BASE_WIDTH - padding, CANVAS_BASE_HEIGHT - padding);
+  ctx.strokeText(debugInfo, CONST.CANVAS_BASE_WIDTH - padding, CONST.CANVAS_BASE_HEIGHT - padding);
+  ctx.fillText(debugInfo.toString(), CONST.CANVAS_BASE_WIDTH - padding, CONST.CANVAS_BASE_HEIGHT - padding);
 }
 
 function drawScore(ctx: CanvasRenderingContext2D, score: number) {
@@ -258,8 +256,8 @@ function drawScore(ctx: CanvasRenderingContext2D, score: number) {
   ctx.textAlign = 'center';
   ctx.textBaseline = 'top';
 
-  ctx.strokeText(text, CANVAS_BASE_WIDTH/2, padding);
-  ctx.fillText(text.toString(), CANVAS_BASE_WIDTH/2, padding);
+  ctx.strokeText(text, CONST.CANVAS_BASE_WIDTH/2, padding);
+  ctx.fillText(text.toString(), CONST.CANVAS_BASE_WIDTH/2, padding);
 }
 
 function checkIntersection(bullet: Bullet, fruit: Fruit) {

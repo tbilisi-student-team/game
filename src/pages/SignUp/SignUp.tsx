@@ -68,7 +68,7 @@ export function SignUp () {
             value={phone} 
             setValue={setPhone}/>
 
-          <SubmitButton title={'Sign up'} />
+          <SubmitButton name={'Sign up'} />
 
           <div className='sign-link'>
             <Link className='header-link' to={RoutePaths.SignIn}>{'I already have an account'}</Link>

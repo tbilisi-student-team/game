@@ -1,7 +1,7 @@
 import React from 'react';
 
 type ButtonProps = {
-  title: string,
+  name: string,
   onSubmit: () => void
 }
 
@@ -9,7 +9,7 @@ export const Button = (props: ButtonProps) => {
 
   return (
     <button className='button' onClick={props.onSubmit}>
-      <div className='button-title'>{props.title}</div>
+      <div className='button-title'>{props.name}</div>
     </button>
   )
 }

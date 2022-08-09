@@ -1,7 +1,7 @@
 import React from 'react';
 
 type ButtonProps = {
-  title: string,
+  name: string,
 }
 
 export const SubmitButton = (props: ButtonProps) => {
@@ -10,7 +10,7 @@ export const SubmitButton = (props: ButtonProps) => {
     <input 
       type='submit' 
       className='submit-button' 
-      name={props.title} 
+      name={props.name} 
     />
   )
 }

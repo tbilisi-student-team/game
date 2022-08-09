@@ -8,6 +8,7 @@ import * as CONST from './consts';
 
 import buddyFront from '../../assets/buddy-1-front.png';
 import buddyBack from '../../assets/buddy-1-back.png';
+import { drawFrame } from 'pages/Game/utils/drawFrame';
 
 const PEW_FADE_TIME = 1000;
 const BUDDY_START_X = 100;
@@ -148,11 +149,7 @@ export function Game (props: GameProps) {
     const ctx = canvasRef.current?.getContext('2d');
 
     if (ctx) {
-      ctx.resetTransform();
-      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-      ctx.strokeStyle = '#000';
-      ctx.strokeRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-      ctx.scale(ctx.canvas.width / CONST.CANVAS_BASE_WIDTH, ctx.canvas.height / CONST.CANVAS_BASE_HEIGHT);//TODO resize
+      drawFrame(vars, ctx);
 
       ctx.drawImage(buddyImgBack, vars.buddyX, vars.buddyY);
 

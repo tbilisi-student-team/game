@@ -1,15 +1,19 @@
 import { GameState, Pew } from '../types';
 import * as CONST from '../consts';
 
-import buddyFront from 'assets/buddy-1-front.png';
-import buddyBack from 'assets/buddy-1-back.png';
-import tree from 'assets/tree.png';
-import fetus1 from 'assets/fetus-1.png';
-import fetus2 from 'assets/fetus-2.png';
-import fetus3 from 'assets/fetus-3.png';
-import fetus4 from 'assets/fetus-4.png';
-import fetus5 from 'assets/fetus-5.png';
+import buddyFrontSrc from '../../../assets/buddy-1-front.png';
+import buddyBackSrc from '../../../assets/buddy-1-back.png';
+import treeSrc from '../../../assets/tree.png';
+// import fetus1 from 'assets/fetus-1.png';
+// import fetus2 from 'assets/fetus-2.png';
+// import fetus3 from 'assets/fetus-3.png';
+// import fetus4 from 'assets/fetus-4.png';
+// import fetus5 from 'assets/fetus-5.png';
+
 //TODO проверить загрузку
+const buddyBack = getImage(buddyBackSrc);
+const buddyFront = getImage(buddyFrontSrc);
+const tree = getImage(treeSrc);
 
 /**
  * Главная функция, отвечающая за отрисовку состояния игры в кадре
@@ -18,10 +22,16 @@ import fetus5 from 'assets/fetus-5.png';
  */
 export function drawFrame(state: GameState, ctx: CanvasRenderingContext2D) {
   clearFrame(ctx);
+
   ctx.drawImage(buddyBack, state.buddyX, state.buddyY);
+
+  const treeWidth = tree.width * ctx.canvas.height / tree.height;
+
+  ctx.drawImage(tree, CONST.CANVAS_BASE_WIDTH - treeWidth, 0, treeWidth, ctx.canvas.height);
+
   state.fruits.forEach(function (fruit) {
     fruit.draw(ctx);
-  })
+  });
   state.bullets.forEach(function (bullet) {
     bullet.draw(ctx);
   });
@@ -61,4 +71,11 @@ function drawScore(ctx: CanvasRenderingContext2D, score: number) {
 
   ctx.strokeText(text, CONST.CANVAS_BASE_WIDTH/2, padding);
   ctx.fillText(text.toString(), CONST.CANVAS_BASE_WIDTH/2, padding);
+}
+
+function getImage(src: string) {
+  const img = new Image();
+
+  img.src = src;
+  return img;
 }

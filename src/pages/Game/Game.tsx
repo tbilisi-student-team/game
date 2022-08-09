@@ -3,12 +3,13 @@ import useInterval from './hooks/useInterval';
 import { GameProps, GameState } from './types';
 import { Bullet, Fruit } from './models';
 import { drawCircle } from './utils/CanvasUtils';
+import { drawFrame } from './utils/drawFrame';
+
 import * as CONST from './consts';
 
 
 import buddyFront from '../../assets/buddy-1-front.png';
 import buddyBack from '../../assets/buddy-1-back.png';
-import { drawFrame } from 'pages/Game/utils/drawFrame';
 
 const BUDDY_START_X = 100;
 const BUDDY_START_Y = 400;
@@ -170,7 +171,7 @@ export function Game (props: GameProps) {
         state.fruits.filter((fruit) => !fruit.isDropping).every((fruit) => {
           //TODO снаряд может пролететь через фрукт между кадрами!
           if (checkIntersection(bullet, fruit)) {
-            state.score += (fruit.state > 1 ? fruit.state - 1 : 0);
+            state.score += (fruit.age > 1 ? fruit.age - 1 : 0);
             fruit.drop();
             drawCircle(ctx, bullet.x, bullet.y, bullet.radius, { fillStyle: '#fff' });
             state.bullets.splice(b, 1);

@@ -1,5 +1,5 @@
-import { Bullet } from './Bullet';
-import { Fruit } from './Fruit';
+import { Bullet } from '../models/Bullet';
+import { Fruit } from '../models/Fruit';
 
 export type GameProps = {
   width?: number;

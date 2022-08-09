@@ -125,7 +125,7 @@ export function Game (props: GameProps) {
     }
 
     if (!isPaused) {
-      draw();
+      onAnimationFrame();
     }
 
     return function() {
@@ -142,8 +142,7 @@ export function Game (props: GameProps) {
     stateRef.current.fruits.push(fruit);
   }, 2000);
 
-  function draw() {
-    console.log('draw');
+  function onAnimationFrame() {
     const vars = stateRef.current;
 
     const ctx = canvasRef.current?.getContext('2d');
@@ -151,7 +150,6 @@ export function Game (props: GameProps) {
     if (ctx) {
       drawFrame(vars, ctx);
 
-      ctx.drawImage(buddyImgBack, vars.buddyX, vars.buddyY);
 
       vars.fruits.forEach(function (fruit) {
         fruit.updateState();
@@ -171,7 +169,7 @@ export function Game (props: GameProps) {
       drawDebugInfo(ctx,
         `mouseX: ${mouseStateRef.current.x}, mouseY: ${mouseStateRef.current.y}, ${drawCountRef.current++}`);
 
-      //TODO bullet может быть только 1
+      //TODO bullet может быть только 1?
       for (let b = 0; b < vars.bullets.length; b++) {
         const bullet = vars.bullets[b];
 
@@ -192,7 +190,7 @@ export function Game (props: GameProps) {
     }
     vars.pews = vars.pews.filter((pew) => ((performance.now() - pew.startTime) <= PEW_FADE_TIME));
     vars.bullets = vars.bullets.filter((bullet) => bullet.x < CONST.CANVAS_BASE_WIDTH && bullet.y < CONST.CANVAS_BASE_HEIGHT);
-    rafIdRef.current = requestAnimationFrame(draw);
+    rafIdRef.current = requestAnimationFrame(onAnimationFrame);
   }
 
   let canvasWidth = props.width || visualViewport.width;

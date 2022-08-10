@@ -18,5 +18,6 @@ export type GameState = {
   buddyY: number;
   pews: Pew[],
   bullets: Bullet[],
-  fruits: Fruit[]
+  fruits: Fruit[],
+  isLoading: boolean
 }

@@ -19,18 +19,20 @@ const FRUITS_LOCS: Loc[] = [
   { x: 1574, y: 743 },
 ];
 
+const INITIAL_STATE: GameState = {
+  buddyX: BUDDY_START_X,
+  buddyY: BUDDY_START_Y,
+  pews: [],
+  bullets: [],
+  fruits: [],
+  score: 0,
+  isLoading: true
+};
+
 export function Game (props: GameProps) {
   console.log('Game init');
 
-  const stateRef = useRef<GameState>({
-    buddyX: BUDDY_START_X,
-    buddyY: BUDDY_START_Y,
-    pews: [],
-    bullets: [],
-    fruits: [],
-    score: 0
-  });
-
+  const stateRef = useRef<GameState>(INITIAL_STATE);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafIdRef = useRef(0);
   const drawCountRef = useRef(0);
@@ -131,19 +133,21 @@ export function Game (props: GameProps) {
   function onAnimationFrame() {
     const state = stateRef.current;
 
-    state.fruits.forEach(function (fruit) {
-      fruit.updateState();
-    });
-    state.bullets.forEach(function (bullet) {
-      bullet.updatePosition();
-    });
-    state.pews = state.pews.filter((pew) => ((performance.now() - pew.startTime) <= CONST.PEW_FADE_TIME));
-    state.bullets = state.bullets.filter(
-      (bullet) => bullet.x < CONST.CANVAS_BASE_WIDTH && bullet.y < CONST.CANVAS_BASE_HEIGHT
-    );
-    state.fruits = state.fruits.filter(
-      (fruit) => fruit.y < CONST.CANVAS_BASE_HEIGHT
-    );
+    if (!state.isLoading) {
+      state.fruits.forEach(function (fruit) {
+        fruit.updateState();
+      });
+      state.bullets.forEach(function (bullet) {
+        bullet.updatePosition();
+      });
+      state.pews = state.pews.filter((pew) => ((performance.now() - pew.startTime) <= CONST.PEW_FADE_TIME));
+      state.bullets = state.bullets.filter(
+        (bullet) => bullet.x < CONST.CANVAS_BASE_WIDTH && bullet.y < CONST.CANVAS_BASE_HEIGHT
+      );
+      state.fruits = state.fruits.filter(
+        (fruit) => fruit.y < CONST.CANVAS_BASE_HEIGHT
+      );
+    }
 
     const ctx = canvasRef.current?.getContext('2d');
 

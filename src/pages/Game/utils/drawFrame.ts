@@ -31,6 +31,14 @@ const fetuses = [
 export function drawFrame(ctx: CanvasRenderingContext2D, state: GameState) {
   clearFrame(ctx);
 
+  if (state.isLoading) {
+    ctx.font = `${CONST.CANVAS_BASE_HEIGHT/6}px averia-serif-libre`;
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'center';
+    ctx.fillText('Loading...', CONST.CANVAS_BASE_WIDTH/2, CONST.CANVAS_BASE_HEIGHT/2);
+    return;
+  }
+
   ctx.drawImage(buddyBack, state.buddyX, state.buddyY);
 
   const treeWidth = tree.width * ctx.canvas.height / tree.height;

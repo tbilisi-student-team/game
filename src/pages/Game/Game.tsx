@@ -1,12 +1,10 @@
 import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import useInterval from './hooks/useInterval';
-import { GameProps, GameState } from './types';
+import { GameProps, GameState, Loc } from './types';
 import { Bullet, Fruit } from './models';
 import { drawCircle } from './utils/CanvasUtils';
 import { drawFrame } from './utils/drawFrame';
-
 import * as CONST from './consts';
-
 
 import buddyFront from '../../assets/buddy-1-front.png';
 import buddyBack from '../../assets/buddy-1-back.png';
@@ -16,13 +14,18 @@ const BUDDY_START_Y = 400;
 const BULLET_START_X = BUDDY_START_X + 270;
 const BULLET_START_Y = BUDDY_START_Y + 110;
 
-const FRUITS_X = CONST.CANVAS_BASE_WIDTH - 500;
-const FRUITS_Y = 100;
-
 const buddyImgFront = new Image();
 const buddyImgBack = new Image();
 
 const imagesToLoad = [ buddyImgFront, buddyImgBack ];
+
+const FRUITS_LOCS: Loc[] = [
+  { x: 1289, y: 146 },
+  { x: 1470, y: 241 },
+  { x: 1520, y: 364 },
+  { x: 1534, y: 566 },
+  { x: 1574, y: 743 },
+];
 
 export function Game (props: GameProps) {
   console.log('Game init');
@@ -118,7 +121,7 @@ export function Game (props: GameProps) {
 
 
   useLayoutEffect(function mainLayoutEffect() {
-    console.log('layoutEffect');
+    console.log('mainLayoutEffect');
 
     if (!areImagesReady) {
       return;
@@ -134,12 +137,21 @@ export function Game (props: GameProps) {
   }, [ isPaused, areImagesReady ]);
 
   useInterval(() => {
-    const fruit = new Fruit(FRUITS_X + 400*Math.random(), FRUITS_Y + 400*Math.random());
+    //TODO пока первый падает, второй может уже расти?
+    if (stateRef.current.fruits.length >= FRUITS_LOCS.length) {
+      return;
+    }
+    for (const loc of FRUITS_LOCS) {
+      if (!stateRef.current.fruits.find((fruit) => fruit.x === loc.x && fruit.y === loc.y)) {
+        const fruit = new Fruit(loc.x, loc.y);
 
-    fruit.onRot = function() {
-      stateRef.current.score -= 1;
-    };
-    stateRef.current.fruits.push(fruit);
+        fruit.onRot = function() {
+          stateRef.current.score -= 1;
+        };
+        stateRef.current.fruits.push(fruit);
+        break;
+      }
+    }
   }, 2000);
 
   function onAnimationFrame() {
@@ -155,11 +167,14 @@ export function Game (props: GameProps) {
     state.bullets = state.bullets.filter(
       (bullet) => bullet.x < CONST.CANVAS_BASE_WIDTH && bullet.y < CONST.CANVAS_BASE_HEIGHT
     );
+    state.fruits = state.fruits.filter(
+      (fruit) => fruit.y < CONST.CANVAS_BASE_HEIGHT
+    );
 
     const ctx = canvasRef.current?.getContext('2d');
 
     if (ctx) {
-      drawFrame(state, ctx);
+      drawFrame(ctx, state);
 
       drawDebugInfo(ctx,
         `mouseX: ${mouseStateRef.current.x}, mouseY: ${mouseStateRef.current.y}, ${drawCountRef.current++}`);
@@ -223,7 +238,8 @@ function drawDebugInfo(ctx: CanvasRenderingContext2D, debugInfo: string) {
 }
 
 function checkIntersection(bullet: Bullet, fruit: Fruit) {
-  const distance = Math.sqrt((bullet.x - fruit.x)**2 + (bullet.y - fruit.y)**2);
+  const fruitCenterY = fruit.y + fruit.radius;//фрукт висит на черенке
+  const distance = Math.sqrt((bullet.x - fruit.x)**2 + (bullet.y - fruitCenterY)**2);
 
   return distance <= (bullet.radius + fruit.radius);
 }

@@ -1,26 +1,34 @@
 import { GameState, Pew } from '../types';
 import * as CONST from '../consts';
+import { Fruit } from '../../Game/models';
 
 import buddyFrontSrc from '../../../assets/buddy-1-front.png';
 import buddyBackSrc from '../../../assets/buddy-1-back.png';
 import treeSrc from '../../../assets/tree.png';
-// import fetus1 from 'assets/fetus-1.png';
-// import fetus2 from 'assets/fetus-2.png';
-// import fetus3 from 'assets/fetus-3.png';
-// import fetus4 from 'assets/fetus-4.png';
-// import fetus5 from 'assets/fetus-5.png';
+import fetus1Src from '../../../assets/fetus-1.png';
+import fetus2Src from '../../../assets/fetus-2.png';
+import fetus3Src from '../../../assets/fetus-3.png';
+import fetus4Src from '../../../assets/fetus-4.png';
+import fetus5Src from '../../../assets/fetus-5.png';
 
 //TODO проверить загрузку
 const buddyBack = getImage(buddyBackSrc);
 const buddyFront = getImage(buddyFrontSrc);
 const tree = getImage(treeSrc);
+const fetuses = [
+  getImage(fetus1Src),
+  getImage(fetus2Src),
+  getImage(fetus3Src),
+  getImage(fetus4Src),
+  getImage(fetus5Src),
+];
 
 /**
  * Главная функция, отвечающая за отрисовку состояния игры в кадре
- * @param state
  * @param ctx
+ * @param state
  */
-export function drawFrame(state: GameState, ctx: CanvasRenderingContext2D) {
+export function drawFrame(ctx: CanvasRenderingContext2D, state: GameState) {
   clearFrame(ctx);
 
   ctx.drawImage(buddyBack, state.buddyX, state.buddyY);
@@ -30,7 +38,7 @@ export function drawFrame(state: GameState, ctx: CanvasRenderingContext2D) {
   ctx.drawImage(tree, CONST.CANVAS_BASE_WIDTH - treeWidth, 0, treeWidth, ctx.canvas.height);
 
   state.fruits.forEach(function (fruit) {
-    fruit.draw(ctx);
+    drawFruit(ctx, fruit);
   });
   state.bullets.forEach(function (bullet) {
     bullet.draw(ctx);
@@ -78,4 +86,10 @@ function getImage(src: string) {
 
   img.src = src;
   return img;
+}
+
+function drawFruit(ctx: CanvasRenderingContext2D, fruit: Fruit) {
+  const img = fetuses[fruit.age];
+
+  ctx.drawImage(img, fruit.x - img.width/2, fruit.y);
 }

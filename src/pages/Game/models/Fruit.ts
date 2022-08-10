@@ -1,7 +1,6 @@
-import { drawCircle } from '../utils/CanvasUtils';
 import * as CONST from '../consts';
 
-enum FruitAge {
+export enum FruitAge {
   New,
   Growing,
   Unripe,
@@ -36,11 +35,24 @@ export class Fruit {
       const time = performance.now() - this.startTime;
 
       this.age = Math.floor(time / 2000);
-      if (this.age === FruitAge.Rotten) {
-        this.drop();
-
-        //TODO temporary
-        this.onRot();
+      switch (this.age) {
+        case FruitAge.New:
+          break;
+        case FruitAge.Growing:
+          this.radius = 20;
+          break;
+        case FruitAge.Unripe:
+          this.radius = 30;
+          break;
+        case FruitAge.Ripe:
+          this.radius = 30;
+          break;
+        case FruitAge.Rotten:
+          this.radius = 30;
+          this.drop();
+          //TODO temporary
+          this.onRot();
+          break;
       }
     }
   }
@@ -48,31 +60,5 @@ export class Fruit {
   drop() {
     this.isDropping = true;
     this.dropTime = performance.now();
-  }
-
-  draw(ctx: CanvasRenderingContext2D) {
-    let fillStyle = '#0f0';
-
-    switch (this.age) {
-      case FruitAge.New:
-        break;
-      case FruitAge.Growing:
-        this.radius = 20;
-        break;
-      case FruitAge.Unripe:
-        this.radius = 30;
-        fillStyle = '#ff0';
-        break;
-      case FruitAge.Ripe:
-        this.radius = 30;
-        fillStyle = '#f00';
-        break;
-      case FruitAge.Rotten:
-        this.radius = 30;
-        fillStyle = '#000';
-        break;
-    }
-
-    drawCircle(ctx, this.x, this.y, this.radius, { fillStyle });
   }
 }

@@ -10,12 +10,14 @@ export enum FruitAge {
 
 export class Fruit {
   constructor(x: number, y: number) {
-    this.x = x;
-    this.y = y;
+    this.x = this.startX = x;
+    this.y = this.startY = y;
   }
 
   x: number;
   y: number;
+  startX: number;
+  startY: number;
   startTime = performance.now();
   dropTime = 0;
   age = FruitAge.New;
@@ -29,7 +31,7 @@ export class Fruit {
     if (this.isDropping) {
       const time = performance.now() - this.dropTime;
 
-      this.y += CONST.g * time**2;
+      this.y = this.startY + CONST.g * time**2;
     }
     else {
       const time = performance.now() - this.startTime;

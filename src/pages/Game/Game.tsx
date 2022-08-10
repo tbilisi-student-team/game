@@ -2,6 +2,7 @@ import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import useInterval from './hooks/useInterval';
 import { GameProps, GameState, Loc } from './types';
 import { Bullet, Fruit } from './models';
+import { updateState } from './Controller';
 import { drawCircle } from './utils/CanvasUtils';
 import { drawFrame } from './utils/drawFrame';
 import * as CONST from './consts';
@@ -133,21 +134,7 @@ export function Game (props: GameProps) {
   function onAnimationFrame() {
     const state = stateRef.current;
 
-    if (!state.isLoading) {
-      state.fruits.forEach(function (fruit) {
-        fruit.updateState();
-      });
-      state.bullets.forEach(function (bullet) {
-        bullet.updatePosition();
-      });
-      state.pews = state.pews.filter((pew) => ((performance.now() - pew.startTime) <= CONST.PEW_FADE_TIME));
-      state.bullets = state.bullets.filter(
-        (bullet) => bullet.x < CONST.CANVAS_BASE_WIDTH && bullet.y < CONST.CANVAS_BASE_HEIGHT
-      );
-      state.fruits = state.fruits.filter(
-        (fruit) => fruit.y < CONST.CANVAS_BASE_HEIGHT
-      );
-    }
+    updateState(state);
 
     const ctx = canvasRef.current?.getContext('2d');
 

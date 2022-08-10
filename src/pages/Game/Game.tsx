@@ -115,7 +115,7 @@ export function Game (props: GameProps) {
 
   useInterval(() => {
     //TODO пока первый падает, второй может уже расти?
-    if (stateRef.current.fruits.length >= FRUITS_LOCS.length) {
+    if (stateRef.current.isLoading || stateRef.current.fruits.length >= FRUITS_LOCS.length) {
       return;
     }
     for (const loc of FRUITS_LOCS) {

@@ -11,7 +11,8 @@ import fetus3Src from '../../../assets/fetus-3.png';
 import fetus4Src from '../../../assets/fetus-4.png';
 import fetus5Src from '../../../assets/fetus-5.png';
 
-//TODO проверить загрузку
+let isLoadComplete = false;
+const images: HTMLImageElement[] = [];
 const buddyBack = getImage(buddyBackSrc);
 const buddyFront = getImage(buddyFrontSrc);
 const tree = getImage(treeSrc);
@@ -22,6 +23,10 @@ const fetuses = [
   getImage(fetus4Src),
   getImage(fetus5Src),
 ];
+
+export function checkLoadCompete() {
+  return isLoadComplete;
+}
 
 /**
  * Главная функция, отвечающая за отрисовку состояния игры в кадре
@@ -89,10 +94,18 @@ function drawScore(ctx: CanvasRenderingContext2D, score: number) {
   ctx.fillText(text.toString(), CONST.CANVAS_BASE_WIDTH/2, padding);
 }
 
+function onImageLoad() {
+  if (images.every((img) => img.complete)) {
+    isLoadComplete = true;
+  }
+}
+
 function getImage(src: string) {
   const img = new Image();
 
+  img.onload = onImageLoad;
   img.src = src;
+  images.push(img);
   return img;
 }
 

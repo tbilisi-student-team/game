@@ -1,8 +1,10 @@
 import { GameState } from './types';
 import * as CONST from './consts';
+import { checkLoadCompete } from './utils/drawFrame';
 
 export function updateState(state: GameState) {
   if (state.isLoading) {
+    state.isLoading = !checkLoadCompete();
     return;
   }
   state.fruits.forEach(function (fruit) {

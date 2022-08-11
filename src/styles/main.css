@@ -212,7 +212,9 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
   margin-top: 20px;
   background-color: transparent;
   border: none;
-  color: var(--white)
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  color: var(--white);
 }
 .search-icon:hover {
   background-color: var(--whiteinput);

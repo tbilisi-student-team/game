@@ -21,7 +21,7 @@ export function SignUp () {
 
     // here will be the logic of registration request nad then redirect to start-game page
     
-    navigate('../start-game', { replace: true })
+    navigate(RoutePaths.StartGame, { replace: true })
     console.log(login, password, email, phone)
   }
 

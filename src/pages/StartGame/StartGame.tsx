@@ -5,20 +5,10 @@ import { Header } from '../../UI/Header'
 import { Input } from '../../UI/Input'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import { RoutePaths } from '../../types/RoutePaths'
 
-type User = {
-  id: number,
-  display_name: string,
-  first_name: string,
-  second_name: string,
-  login: string,
-  email: string,
-  phone: string,
-  avatar: string
-}
 
-type Users = User[]
-
+import { User, Users } from 'types/Users'
 
 // stub users object:
 const users = [ 
@@ -108,7 +98,7 @@ const UsersList = (users: Users, setChosenUser: (arg: User)=> void) => {
 export const StartGame = () => {
 
   const [ inputValue, setInputValue ] = useState('')
-  const [ chosenUser, setChosenUser ] = useState({ id: 0, display_name: '' })
+  const [ chosenUser, setChosenUser ] = useState<User | null>(null)
   const [ isListShown, setIsListShown ] = useState(false)
 
   const navigate = useNavigate();
@@ -116,7 +106,7 @@ export const StartGame = () => {
   const handleSubmit = useCallback(()=> {
     // here will be the logic of adding user to the game and then game start
 
-    navigate('../game', { replace: true } )
+    navigate(RoutePaths.Game, { replace: true } )
 
   }, [ navigate ])
 
@@ -151,7 +141,7 @@ export const StartGame = () => {
 
         {isListShown && UsersList(users, setChosenUser)}
 
-        { chosenUser.display_name && <Button name={'Play with ' + chosenUser.display_name} onSubmit={handleSubmit} />}
+        { chosenUser?.display_name && <Button name={'Play with ' + chosenUser?.display_name} onSubmit={handleSubmit} />}
       </div>
     </div>
   )

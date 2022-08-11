@@ -18,7 +18,7 @@ export function SignIn () {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    navigate('../start-game', { replace: true })
+    navigate(RoutePaths.StartGame, { replace: true })
     console.log(login, password)
   }
 

@@ -2,14 +2,10 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 
-type SearchButtonProps = {
-  handleSearch: () => void
-}
-
-export const SearchButton = (props: SearchButtonProps) => {
+export const SearchButton = () => {
 
   return (
-    <button className='search-icon' onClick={props.handleSearch}>
+    <button className='search-icon'>
       <FontAwesomeIcon icon={faMagnifyingGlass} />
     </button> 
   )

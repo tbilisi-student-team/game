@@ -88,7 +88,7 @@ const UsersList = (users: Users, setChosenUser: (arg: User)=> void) => {
 
   return (
     <ul className='userlist'>
-      {users.map(userItem)}
+      {users.length > 0 && users.map(userItem)}
     </ul>
   )
 }
@@ -109,9 +109,9 @@ export const StartGame = () => {
   }, [ navigate ])
 
 
-  const handleSearch = useCallback(() => {
+  const handleSearch = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     // here will be the logic of searching user by sending a request. Then add founded user to the state.
-
+    e.preventDefault()
     inputValue && setIsListShown(true)
   }, [ inputValue ])
   
@@ -123,17 +123,17 @@ export const StartGame = () => {
           {'Let\'s find a user to play with!'}
         </h2>
 
-        <div className='user-search-wrapper' >
+        <form className='user-search-wrapper' onSubmit={handleSearch}>
           <Input 
-            type='text' 
+            type='search' 
             id='user-search' 
             name='ID or login:' 
             placeholder='search user' 
             required={false} 
             value={inputValue} 
             setValue={setInputValue}/>
-          <SearchButton handleSearch={handleSearch}/> 
-        </div>
+          <SearchButton/> 
+        </form>
 
         {isListShown && UsersList(users, setChosenUser)}
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import Header from '../../UI/Header';
 import Input from '../../UI/Input';
@@ -14,8 +14,14 @@ export function SignUp () {
   const [ email, setEmail ] = useState('')
   const [ phone, setPhone ] = useState('')
 
+  const navigate = useNavigate();
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    // here will be the logic of registration request nad then redirect to start-game page
+    
+    navigate('../start-game', { replace: true })
     console.log(login, password, email, phone)
   }
 
@@ -23,7 +29,7 @@ export function SignUp () {
     <div className='wrapper'>
       <Header/>
       <div className='main'>
-        <h2 className='signup-title'>
+        <h2>
           Registration
         </h2>
       </div>

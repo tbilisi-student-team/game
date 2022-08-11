@@ -3,10 +3,8 @@ import { Button } from '../../UI/Button'
 import { useNavigate } from 'react-router-dom'
 import { Header } from '../../UI/Header'
 import { Input } from '../../UI/Input'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { RoutePaths } from '../../types/RoutePaths'
-
+import { SearchButton } from '../../UI/SearchButton'
 
 import { User, Users } from 'types/Users'
 
@@ -134,9 +132,7 @@ export const StartGame = () => {
             required={false} 
             value={inputValue} 
             setValue={setInputValue}/>
-          <div className='search-icon' onClick={handleSearch}>
-            <FontAwesomeIcon icon={faMagnifyingGlass} />
-          </div>  
+          <SearchButton handleSearch={handleSearch}/> 
         </div>
 
         {isListShown && UsersList(users, setChosenUser)}

@@ -1,7 +1,7 @@
 export enum RoutePaths {
   Forum = '/forum',
   Game = '/game',
-  StartGame = 'start-game',
+  StartGame = '/start-game',
   Leaderboard = '/leaderboard',
   Main = '/main',
   NotFound = '*',

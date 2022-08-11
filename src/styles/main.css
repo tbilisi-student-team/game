@@ -204,6 +204,12 @@ h2 {
   cursor:pointer;
   margin-left: -50px;
   margin-top: 20px;
+  background-color: transparent;
+  border: none;
+  color: var(--white)
+}
+.search-icon:hover {
+  background-color: var(--whiteinput);
 }
 
 .userlist {

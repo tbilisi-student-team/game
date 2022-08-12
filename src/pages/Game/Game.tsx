@@ -21,7 +21,8 @@ const INITIAL_STATE: GameState = {
   bullets: [],
   fruits: [],
   score: 0,
-  isLoading: true
+  isLoading: true,
+  debug: false
 };
 
 export function Game (props: GameProps) {
@@ -40,6 +41,9 @@ export function Game (props: GameProps) {
     }
     else if (e.key === 'p') {
       setPaused(!isPaused);
+    }
+    else if (e.key === 'd') {
+      stateRef.current.debug = !stateRef.current.debug;
     }
   }, [ isPaused ]);
 
@@ -126,8 +130,10 @@ export function Game (props: GameProps) {
     if (ctx) {
       drawFrame(ctx, state);
 
-      drawDebugInfo(ctx,
-        `mouseX: ${mouseStateRef.current.x}, mouseY: ${mouseStateRef.current.y}, ${drawCountRef.current++}`);
+      if (state.debug) {
+        drawDebugInfo(ctx,
+          `mouseX: ${mouseStateRef.current.x}, mouseY: ${mouseStateRef.current.y}, ${drawCountRef.current++}`);
+      }
     }
 
     rafIdRef.current = requestAnimationFrame(onAnimationFrame);

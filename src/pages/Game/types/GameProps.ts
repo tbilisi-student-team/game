@@ -19,5 +19,6 @@ export type GameState = {
   pews: Pew[],
   bullets: Bullet[],
   fruits: Fruit[],
-  isLoading: boolean
+  isLoading: boolean,
+  debug: boolean
 }

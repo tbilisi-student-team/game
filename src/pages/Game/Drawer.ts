@@ -1,6 +1,7 @@
 import { GameState, Pew } from './types';
 import * as CONST from './consts';
 import { Fruit } from '../Game/models';
+import { drawCircle } from './utils/CanvasUtils';
 
 import buddyFrontSrc from '../../assets/buddy-1-front.png';
 import buddyBackSrc from '../../assets/buddy-1-back.png';
@@ -61,6 +62,12 @@ export function drawFrame(ctx: CanvasRenderingContext2D, state: GameState) {
     drawPew(ctx, pew);
   });
   drawScore(ctx, state.score);
+
+  if (state.debug) {
+    state.fruits.forEach(function (fruit) {
+      drawCircle(ctx, fruit.x, fruit.y, fruit.radius, { fillStyle: 'yellow' });
+    });
+  }
 }
 
 function clearFrame(ctx: CanvasRenderingContext2D) {

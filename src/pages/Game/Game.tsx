@@ -3,7 +3,6 @@ import useInterval from './hooks/useInterval';
 import { GameProps, GameState, Loc } from './types';
 import { Bullet, Fruit } from './models';
 import { updateState } from './Controller';
-import { drawCircle } from './utils/CanvasUtils';
 import { drawFrame } from './utils/drawFrame';
 import * as CONST from './consts';
 
@@ -143,23 +142,6 @@ export function Game (props: GameProps) {
 
       drawDebugInfo(ctx,
         `mouseX: ${mouseStateRef.current.x}, mouseY: ${mouseStateRef.current.y}, ${drawCountRef.current++}`);
-
-      //TODO bullet может быть только 1?
-      for (let b = 0; b < state.bullets.length; b++) {
-        const bullet = state.bullets[b];
-
-        state.fruits.filter((fruit) => !fruit.isDropping).every((fruit) => {
-          //TODO снаряд может пролететь через фрукт между кадрами!
-          if (checkIntersection(bullet, fruit)) {
-            state.score += (fruit.age > 1 ? fruit.age - 1 : 0);
-            fruit.drop();
-            drawCircle(ctx, bullet.x, bullet.y, bullet.radius, { fillStyle: '#fff' });
-            state.bullets.splice(b, 1);
-            return false;
-          }
-          return true;
-        });
-      }
     }
 
     rafIdRef.current = requestAnimationFrame(onAnimationFrame);
@@ -202,9 +184,3 @@ function drawDebugInfo(ctx: CanvasRenderingContext2D, debugInfo: string) {
   ctx.fillText(debugInfo.toString(), CONST.CANVAS_BASE_WIDTH - padding, CONST.CANVAS_BASE_HEIGHT - padding);
 }
 
-function checkIntersection(bullet: Bullet, fruit: Fruit) {
-  const fruitCenterY = fruit.y + fruit.radius;//фрукт висит на черенке
-  const distance = Math.sqrt((bullet.x - fruit.x)**2 + (bullet.y - fruitCenterY)**2);
-
-  return distance <= (bullet.radius + fruit.radius);
-}

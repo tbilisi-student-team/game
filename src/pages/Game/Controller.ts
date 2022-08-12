@@ -1,6 +1,7 @@
 import { GameState } from './types';
 import * as CONST from './consts';
 import { checkLoadCompete } from './utils/drawFrame';
+import { Bullet, Fruit } from 'pages/Game/models';
 
 export function updateState(state: GameState) {
   if (state.isLoading) {
@@ -20,4 +21,23 @@ export function updateState(state: GameState) {
   state.fruits = state.fruits.filter(
     (fruit) => fruit.y < CONST.CANVAS_BASE_HEIGHT
   );
+  //TODO bullet может быть только 1?
+  for (const bullet of state.bullets) {
+    for (const fruit of state.fruits) {
+      if (!fruit.isDropping && checkIntersection(bullet, fruit)) {
+        state.score += (fruit.age > 1 ? fruit.age - 1 : 0);
+        fruit.drop();
+        // TODO setBulletState drawCircle(ctx, bullet.x, bullet.y, bullet.radius, { fillStyle: '#fff' });
+        // state.bullets.splice(b, 1);
+        break;
+      }
+    }
+  }
+}
+
+function checkIntersection(bullet: Bullet, fruit: Fruit) {
+  const fruitCenterY = fruit.y + fruit.radius;//фрукт висит на черенке
+  const distance = Math.sqrt((bullet.x - fruit.x)**2 + (bullet.y - fruitCenterY)**2);
+
+  return distance <= (bullet.radius + fruit.radius);
 }

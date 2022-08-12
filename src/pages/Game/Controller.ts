@@ -35,6 +35,15 @@ export function updateState(state: GameState) {
   }
 }
 
+export function pew(state: GameState, dx: number, dy: number) {
+  state.pews.push({
+    x: 200 + Math.random() * 200,
+    y: CONST.BUDDY_START_Y - 300 + Math.random() * 200,
+    startTime: performance.now(),
+  });
+  state.bullets.push(new Bullet(CONST.BULLET_START_X, CONST.BULLET_START_Y, dx / 100, -dy / 100));
+}
+
 function checkIntersection(bullet: Bullet, fruit: Fruit) {
   const fruitCenterY = fruit.y + fruit.radius;//фрукт висит на черенке
   const distance = Math.sqrt((bullet.x - fruit.x)**2 + (bullet.y - fruitCenterY)**2);

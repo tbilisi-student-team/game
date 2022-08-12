@@ -1,15 +1,10 @@
 import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import useInterval from './hooks/useInterval';
 import { GameProps, GameState, Loc } from './types';
-import { Bullet, Fruit } from './models';
-import { updateState } from './Controller';
-import { drawFrame } from './utils/drawFrame';
+import { Fruit } from './models';
+import { updateState, pew } from './Controller';
+import { drawFrame, drawDebugInfo } from './utils/drawFrame';
 import * as CONST from './consts';
-
-const BUDDY_START_X = 100;
-const BUDDY_START_Y = 400;
-const BULLET_START_X = BUDDY_START_X + 270;
-const BULLET_START_Y = BUDDY_START_Y + 110;
 
 const FRUITS_LOCS: Loc[] = [
   { x: 1289, y: 146 },
@@ -20,8 +15,8 @@ const FRUITS_LOCS: Loc[] = [
 ];
 
 const INITIAL_STATE: GameState = {
-  buddyX: BUDDY_START_X,
-  buddyY: BUDDY_START_Y,
+  buddyX: CONST.BUDDY_START_X,
+  buddyY: CONST.BUDDY_START_Y,
   pews: [],
   bullets: [],
   fruits: [],
@@ -41,7 +36,7 @@ export function Game (props: GameProps) {
 
   const onKeyDown = useCallback(function onKeyDown(e: KeyboardEvent) {
     if (e.key === ' ') {
-      pew(100, -100);
+      pew(stateRef.current, 100, -100);
     }
     else if (e.key === 'p') {
       setPaused(!isPaused);
@@ -69,19 +64,10 @@ export function Game (props: GameProps) {
         break;
       case 'mouseup':
         mouseStateRef.current.isPressed = false;
-        pew(mouseStateRef.current.pressX - e.x, mouseStateRef.current.pressY - e.y);
+        pew(stateRef.current, mouseStateRef.current.pressX - e.x, mouseStateRef.current.pressY - e.y);
         break;
     }
   }, [])
-
-  function pew(dx: number, dy: number) {
-    stateRef.current.pews.push({
-      x: 200 + Math.random()*200,
-      y: BUDDY_START_Y - 300 + Math.random()*200,
-      startTime: performance.now(),
-    });
-    stateRef.current.bullets.push(new Bullet(BULLET_START_X, BULLET_START_Y, dx/100, -dy/100));
-  }
 
   useLayoutEffect(function addListeners() {
     const canvas = canvasRef.current;
@@ -171,16 +157,3 @@ export function Game (props: GameProps) {
     </>
   )
 }
-
-function drawDebugInfo(ctx: CanvasRenderingContext2D, debugInfo: string) {
-  const padding = 10;
-
-  ctx.font = '40px averia-serif-libre';
-  ctx.strokeStyle = '#fff';
-  ctx.fillStyle = '#000';
-  ctx.textAlign = 'right';
-  ctx.textBaseline = 'bottom';
-  ctx.strokeText(debugInfo, CONST.CANVAS_BASE_WIDTH - padding, CONST.CANVAS_BASE_HEIGHT - padding);
-  ctx.fillText(debugInfo.toString(), CONST.CANVAS_BASE_WIDTH - padding, CONST.CANVAS_BASE_HEIGHT - padding);
-}
-

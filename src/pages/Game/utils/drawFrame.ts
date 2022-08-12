@@ -114,3 +114,15 @@ function drawFruit(ctx: CanvasRenderingContext2D, fruit: Fruit) {
 
   ctx.drawImage(img, fruit.x - img.width/2, fruit.y);
 }
+
+export function drawDebugInfo(ctx: CanvasRenderingContext2D, debugInfo: string) {
+  const padding = 10;
+
+  ctx.font = '40px averia-serif-libre';
+  ctx.strokeStyle = '#fff';
+  ctx.fillStyle = '#000';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'bottom';
+  ctx.strokeText(debugInfo, CONST.CANVAS_BASE_WIDTH - padding, CONST.CANVAS_BASE_HEIGHT - padding);
+  ctx.fillText(debugInfo.toString(), CONST.CANVAS_BASE_WIDTH - padding, CONST.CANVAS_BASE_HEIGHT - padding);
+}

@@ -3,7 +3,7 @@ import useInterval from './hooks/useInterval';
 import { GameProps, GameState, Loc } from './types';
 import { Fruit } from './models';
 import { updateState, pew } from './Controller';
-import { drawFrame, drawDebugInfo } from './utils/drawFrame';
+import { drawFrame, drawDebugInfo } from './Drawer';
 import * as CONST from './consts';
 
 const FRUITS_LOCS: Loc[] = [

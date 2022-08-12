@@ -1,15 +1,15 @@
-import { GameState, Pew } from '../types';
-import * as CONST from '../consts';
-import { Fruit } from '../../Game/models';
+import { GameState, Pew } from './types';
+import * as CONST from './consts';
+import { Fruit } from '../Game/models';
 
-import buddyFrontSrc from '../../../assets/buddy-1-front.png';
-import buddyBackSrc from '../../../assets/buddy-1-back.png';
-import treeSrc from '../../../assets/tree.png';
-import fetus1Src from '../../../assets/fetus-1.png';
-import fetus2Src from '../../../assets/fetus-2.png';
-import fetus3Src from '../../../assets/fetus-3.png';
-import fetus4Src from '../../../assets/fetus-4.png';
-import fetus5Src from '../../../assets/fetus-5.png';
+import buddyFrontSrc from '../../assets/buddy-1-front.png';
+import buddyBackSrc from '../../assets/buddy-1-back.png';
+import treeSrc from '../../assets/tree.png';
+import fetus1Src from '../../assets/fetus-1.png';
+import fetus2Src from '../../assets/fetus-2.png';
+import fetus3Src from '../../assets/fetus-3.png';
+import fetus4Src from '../../assets/fetus-4.png';
+import fetus5Src from '../../assets/fetus-5.png';
 
 let isLoadComplete = false;
 const images: HTMLImageElement[] = [];

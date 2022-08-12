@@ -1,7 +1,7 @@
 import { GameState } from './types';
 import * as CONST from './consts';
-import { checkLoadCompete } from './utils/drawFrame';
-import { Bullet, Fruit } from 'pages/Game/models';
+import { checkLoadCompete } from './Drawer';
+import { Bullet, Fruit } from './models';
 
 export function updateState(state: GameState) {
   if (state.isLoading) {

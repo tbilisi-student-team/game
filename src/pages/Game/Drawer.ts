@@ -117,7 +117,12 @@ function getImage(src: string) {
 }
 
 function drawBullet(ctx: CanvasRenderingContext2D, bullet: Bullet) {
-  drawCircle(ctx, bullet.x, bullet.y, bullet.radius, { fillStyle: '#00f' });
+  if (bullet.isCollided) {
+    drawCircle(ctx, bullet.x, bullet.y, bullet.radius*2, { fillStyle: '#f00' });
+  }
+  else {
+    drawCircle(ctx, bullet.x, bullet.y, bullet.radius, { fillStyle: '#00f' });
+  }
 }
 
 function drawFruit(ctx: CanvasRenderingContext2D, fruit: Fruit) {

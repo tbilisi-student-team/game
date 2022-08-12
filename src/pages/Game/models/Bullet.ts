@@ -16,10 +16,14 @@ export class Bullet {
   startX: number;
   startY: number;
   startTime: number;
+  isCollided = false;
 
   readonly radius = 20;
 
   updatePosition() {
+    if (this.isCollided) {
+      return;
+    }
     const time = performance.now() - this.startTime;
 
     this.x = this.startX + this.vx * time;

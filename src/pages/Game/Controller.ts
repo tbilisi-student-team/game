@@ -16,7 +16,7 @@ export function updateState(state: GameState) {
   });
   state.pews = state.pews.filter((pew) => ((performance.now() - pew.startTime) <= CONST.PEW_FADE_TIME));
   state.bullets = state.bullets.filter(
-    (bullet) => bullet.x < CONST.CANVAS_BASE_WIDTH && bullet.y < CONST.CANVAS_BASE_HEIGHT
+    (bullet) => !bullet.isCollided && bullet.x < CONST.CANVAS_BASE_WIDTH && bullet.y < CONST.CANVAS_BASE_HEIGHT
   );
   state.fruits = state.fruits.filter(
     (fruit) => fruit.y < CONST.CANVAS_BASE_HEIGHT
@@ -27,8 +27,7 @@ export function updateState(state: GameState) {
       if (!fruit.isDropping && checkIntersection(bullet, fruit)) {
         state.score += (fruit.age > 1 ? fruit.age - 1 : 0);
         fruit.drop();
-        // TODO setBulletState drawCircle(ctx, bullet.x, bullet.y, bullet.radius, { fillStyle: '#fff' });
-        // state.bullets.splice(b, 1);
+        bullet.isCollided = true;
         break;
       }
     }

@@ -41,16 +41,16 @@ export class Fruit {
         case FruitAge.New:
           break;
         case FruitAge.Growing:
-          this.radius = 20;
+          this.radius = 30;
           break;
         case FruitAge.Unripe:
-          this.radius = 30;
+          this.radius = 55;
           break;
         case FruitAge.Ripe:
-          this.radius = 30;
+          this.radius = 65;
           break;
         case FruitAge.Rotten:
-          this.radius = 30;
+          this.radius = 40;
           this.drop();
           //TODO temporary
           this.onRot();

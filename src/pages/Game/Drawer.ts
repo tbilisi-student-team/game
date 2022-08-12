@@ -1,6 +1,6 @@
 import { GameState, Pew } from './types';
 import * as CONST from './consts';
-import { Fruit } from '../Game/models';
+import { Bullet, Fruit } from '../Game/models';
 import { drawCircle } from './utils/CanvasUtils';
 
 import buddyFrontSrc from '../../assets/buddy-1-front.png';
@@ -55,7 +55,7 @@ export function drawFrame(ctx: CanvasRenderingContext2D, state: GameState) {
     drawFruit(ctx, fruit);
   });
   state.bullets.forEach(function (bullet) {
-    bullet.draw(ctx);
+    drawBullet(ctx, bullet);
   });
   ctx.drawImage(buddyFront, state.buddyX, state.buddyY);
   state.pews.forEach(function (pew) {
@@ -65,7 +65,7 @@ export function drawFrame(ctx: CanvasRenderingContext2D, state: GameState) {
 
   if (state.debug) {
     state.fruits.forEach(function (fruit) {
-      drawCircle(ctx, fruit.x, fruit.y, fruit.radius, { fillStyle: 'yellow' });
+      drawCircle(ctx, fruit.x, fruit.y + fruit.radius, fruit.radius, { fillStyle: 'yellow' });
     });
   }
 }
@@ -114,6 +114,10 @@ function getImage(src: string) {
   img.src = src;
   images.push(img);
   return img;
+}
+
+function drawBullet(ctx: CanvasRenderingContext2D, bullet: Bullet) {
+  drawCircle(ctx, bullet.x, bullet.y, bullet.radius, { fillStyle: '#00f' });
 }
 
 function drawFruit(ctx: CanvasRenderingContext2D, fruit: Fruit) {

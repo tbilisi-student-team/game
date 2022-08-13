@@ -1,14 +1,13 @@
 import React from 'react';
 
 type ButtonProps = {
-  title: string,
-  onSubmit: () => void
+  title: string
 }
 
 export const Button = (props: ButtonProps) => {
 
   return (
-    <button className='button' onClick={props.onSubmit}>
+    <button className='button' type = 'submit'>
       <div className='button-title'>{props.title}</div>
     </button>
   )

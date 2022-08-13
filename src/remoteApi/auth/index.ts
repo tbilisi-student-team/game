@@ -1,3 +1,2 @@
-export { logout } from './logout';
-export { signin } from './signin';
-export { signup } from './signup';
+export { authApi } from './AuthApi';
+export { UserData } from './types';

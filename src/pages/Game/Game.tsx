@@ -3,7 +3,7 @@ import useInterval from './hooks/useInterval';
 import { GameProps, GameState, Loc } from './types';
 import { Fruit } from './models';
 import { updateState, pew } from './Controller';
-import { drawFrame, drawDebugInfo } from './Drawer';
+import { drawFrame } from './Drawer';
 import * as CONST from './consts';
 
 const FRUITS_LOCS: Loc[] = [
@@ -25,6 +25,13 @@ const INITIAL_STATE: GameState = {
   isGameOver: false,
   debug: false,
   startTime: 0,
+  mouse: {
+    x: 0,
+    y: 0,
+    isPressed: false,
+    pressX: 0,
+    pressY: 0
+  }
 };
 
 export function Game (props: GameProps) {
@@ -33,7 +40,6 @@ export function Game (props: GameProps) {
   const stateRef = useRef<GameState>(INITIAL_STATE);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafIdRef = useRef(0);
-  const drawCountRef = useRef(0);
 
   const [ isPaused, setPaused ] = useState(false);
 
@@ -49,28 +55,20 @@ export function Game (props: GameProps) {
     }
   }, [ isPaused ]);
 
-  const mouseStateRef = useRef({
-    x: 0,
-    y: 0,
-    isPressed: false,
-    pressX: 0,
-    pressY: 0
-  });
-
   const onMouse = useCallback(function (e: MouseEvent) {
     switch (e.type) {
       case 'mousemove':
-        mouseStateRef.current.x = e.clientX;
-        mouseStateRef.current.y = e.clientY;
+        stateRef.current.mouse.x = e.clientX;
+        stateRef.current.mouse.y = e.clientY;
         break;
       case 'mousedown':
-        mouseStateRef.current.pressX = e.clientX;
-        mouseStateRef.current.pressY = e.clientY;
-        mouseStateRef.current.isPressed = true;
+        stateRef.current.mouse.pressX = e.clientX;
+        stateRef.current.mouse.pressY = e.clientY;
+        stateRef.current.mouse.isPressed = true;
         break;
       case 'mouseup':
-        mouseStateRef.current.isPressed = false;
-        pew(stateRef.current, mouseStateRef.current.pressX - e.x, mouseStateRef.current.pressY - e.y);
+        stateRef.current.mouse.isPressed = false;
+        pew(stateRef.current, stateRef.current.mouse.pressX - e.x, stateRef.current.mouse.pressY - e.y);
         break;
     }
   }, [])
@@ -113,11 +111,6 @@ export function Game (props: GameProps) {
 
     if (ctx) {
       drawFrame(ctx, state);
-
-      if (state.debug) {
-        drawDebugInfo(ctx,
-          `mouseX: ${mouseStateRef.current.x}, mouseY: ${mouseStateRef.current.y}, ${drawCountRef.current++}`);
-      }
     }
 
     rafIdRef.current = requestAnimationFrame(onAnimationFrame);

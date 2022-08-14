@@ -12,6 +12,14 @@ export type Pew = {
   y: number;
 }
 
+export type MouseState = {
+  x: number,
+  y: number,
+  isPressed: boolean,
+  pressX: number,
+  pressY: number,
+}
+
 export type GameState = {
   score: number;
   buddyX: number;
@@ -23,4 +31,5 @@ export type GameState = {
   isGameOver: boolean,
   debug: boolean,
   startTime: number,
+  mouse: MouseState
 }

@@ -1,4 +1,4 @@
-import { GameState, Pew } from './types';
+import { GameState, MouseState, Pew } from './types';
 import * as CONST from './consts';
 import { Bullet, Fruit } from '../Game/models';
 import { drawCircle } from './utils/CanvasUtils';
@@ -77,6 +77,13 @@ export function drawFrame(ctx: CanvasRenderingContext2D, state: GameState) {
     state.fruits.forEach(function (fruit) {
       drawCircle(ctx, fruit.x, fruit.y + fruit.radius, fruit.radius, { fillStyle: 'yellow' });
     });
+
+    drawDebugInfo(ctx,
+      `mouseX: ${state.mouse.x}, mouseY: ${state.mouse.y}`);
+
+    if (state.mouse.isPressed) {
+      drawDebugTrajectory(ctx, state.mouse);
+    }
   }
 }
 
@@ -179,7 +186,7 @@ function drawFruit(ctx: CanvasRenderingContext2D, fruit: Fruit) {
   ctx.drawImage(img, fruit.x - img.width/2, fruit.y);
 }
 
-export function drawDebugInfo(ctx: CanvasRenderingContext2D, debugInfo: string) {
+function drawDebugInfo(ctx: CanvasRenderingContext2D, debugInfo: string) {
   const padding = 10;
 
   ctx.font = '40px averia-serif-libre';
@@ -189,4 +196,27 @@ export function drawDebugInfo(ctx: CanvasRenderingContext2D, debugInfo: string) 
   ctx.textBaseline = 'bottom';
   ctx.strokeText(debugInfo, CONST.CANVAS_BASE_WIDTH - padding, CONST.CANVAS_BASE_HEIGHT - padding);
   ctx.fillText(debugInfo.toString(), CONST.CANVAS_BASE_WIDTH - padding, CONST.CANVAS_BASE_HEIGHT - padding);
+}
+
+function drawDebugTrajectory(ctx: CanvasRenderingContext2D, mouse: MouseState) {
+  //функция - прототип. Потребуется при прицеливании что-то отображать все равно.
+  const vx = Math.min((mouse.pressX - mouse.x) / 100, CONST.BULLET_SPEED_MAX);
+  const vy = -Math.min((mouse.pressY - mouse.y) / 100, CONST.BULLET_SPEED_MAX);
+
+  if (Math.abs(vx) < 0.1 || Math.abs(vy)  < 0.1) {
+    return;
+  }
+
+  ctx.save();
+  ctx.strokeStyle = '#fff';
+  ctx.setLineDash([ 5, 5 ]);
+  ctx.beginPath();
+  for (let time = 0; time < 1000; time += 10) {
+    const x = CONST.BULLET_START_X + vx * time;
+    const y = CONST.BULLET_START_Y - vy * time + CONST.g * time**2;
+
+    ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+  ctx.restore();
 }

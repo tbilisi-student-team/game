@@ -18,6 +18,7 @@ export function SignIn () {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    // here will be authorization request, then redirect to the start game page
     navigate(RoutePaths.StartGame, { replace: true })
     console.log(login, password)
   }

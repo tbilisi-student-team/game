@@ -17,15 +17,15 @@ export const Input = (props: InputProps) => {
   return (
     <div className='input'>
       <label htmlFor={props.id} className='label'>{props.name}</label>
-      <input 
-        type={props.type}
+      <input
+        type={''}
         id={props.id}
         name={props.name}
-        className='input-decoration' 
-        value={props.value} 
+        className='input-decoration'
+        value={props.value}
         onChange={handleValue}
       />
-    </div>  
+    </div>
   )
 }
 

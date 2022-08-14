@@ -11,6 +11,14 @@ export type SignUpRequest = {
   phone: string,
 }
 
+export type SignUpResponse = {
+  id: number,
+}
+
+export type SignUpErrorResponseData = {
+  reason: string,
+}
+
 export function signup(data: SignUpRequest, config?: AxiosRequestConfig) {
   return httpClient.post('/auth/signup', data, config)
 }

@@ -23,6 +23,8 @@ module.exports = {
       remoteApi: path.resolve(__dirname, 'src/remoteApi'),
       styles: path.resolve(__dirname, 'src/styles'),
       types: path.resolve(__dirname, 'src/types'),
+      hooks: path.resolve(__dirname, 'src/hooks'),
+      AppContext: path.resolve(__dirname, 'src/AppContext'),
     }
   },
   module: {

@@ -1,22 +1,55 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React  from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import Header from '../../UI/Header';
 import Input from '../../UI/Input';
-import SubmitButton from '../../UI/SubmitButton';
 
-
-import { RoutePaths } from '../../types/RoutePaths'
+import { RoutePaths } from 'types'
+import { useAppContext } from 'AppContext';
+import { signup, SignUpErrorResponseData, SignUpResponse } from 'remoteApi';
+import { AxiosError, AxiosResponse } from 'axios';
 
 export function SignUp () {
-  const [ login, setLogin ] = useState('')
-  const [ password, setPassword ] = useState('')
-  const [ email, setEmail ] = useState('')
-  const [ phone, setPhone ] = useState('')
+  const navigate = useNavigate();
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    console.log(login, password, email, phone)
+  const {
+    signUp: [ state, actions ],
+  } = useAppContext();
+
+  const handleSignUp = () => {
+    actions.loadingStart();
+
+    signup(state.requestData)
+      .then((axiosResponse: AxiosResponse<SignUpResponse>) => {
+        if (axiosResponse.status === 200) {
+          const responseData = axiosResponse.data;
+
+          actions.loadingSuccess(responseData);
+
+          navigate(`${RoutePaths.User}/${responseData.id}`);
+        } else {
+          throw new Error(`${axiosResponse.status}: Unexpected error.`);
+        }
+      })
+      .catch((error: AxiosError<SignUpErrorResponseData>) => {
+        if (error.response) {
+          if (error.response.status === 400) {
+            actions.loadingError(new Error(`400: ${error.response.data.reason}.`));
+          } else if (error.response.status === 401) {
+            actions.loadingError(new Error('401: Unauthorized.'));
+          } else if (error.response.status === 500) {
+            actions.loadingError(new Error('500: Unexpected error.'));
+          } else {
+            actions.loadingError(new Error(`${error.response.status}: ${error.response.data.reason}.`));
+          }
+        } else if (error.request) {
+          actions.loadingError(new Error('Unexpected error.'));
+        } else {
+          actions.loadingError(new Error(`${error.message}.`));
+        }
+
+        console.log(error);
+      })
   }
 
   return (
@@ -31,50 +64,86 @@ export function SignUp () {
         <div className='left-character__signin'>
           <img src='../../assets/buddy-1.png' />
         </div>
-        <form className='signin-form' onSubmit={onSubmit}>
-          <Input 
-            type='text' 
-            id='login' 
-            name='login' 
-            placeholder='login' 
-            required={true} 
-            value={login} 
-            setValue={setLogin}/>
 
-          <Input 
-            type='password' 
-            id='password'
-            name='password' 
-            placeholder='password'
-            required={true}
-            value={password} 
-            setValue={setPassword}/>
+        {state.loading ? (
+          <div>Loading...</div>
+        ) : (
+          <form className='signin-form'>
+            <Input
+              type='email'
+              id='email'
+              name='email'
+              placeholder='email'
+              required={true}
+              value={state.requestData.email}
+              setValue={actions.setEmail}/>
 
-          <Input 
-            type='text' 
-            id='email'
-            name='email' 
-            placeholder='email' 
-            required={true} 
-            value={email} 
-            setValue={setEmail}/>
+            <Input
+              type='tel'
+              id='phone'
+              name='phone'
+              placeholder='phone'
+              required={true}
+              value={state.requestData.phone}
+              setValue={actions.setPhone}/>
 
-          <Input 
-            type='text'
-            id='phone' 
-            name='phone' 
-            placeholder='phone'
-            required={true}
-            value={phone} 
-            setValue={setPhone}/>
+            <Input
+              type='text'
+              id='login'
+              name='login'
+              placeholder='login'
+              required={true}
+              value={state.requestData.login}
+              setValue={actions.setLogin}/>
 
-          <SubmitButton name={'Sign up'} />
+            <Input
+              type='text'
+              id='first_name'
+              name='first_name'
+              placeholder='first_name'
+              required={true}
+              value={state.requestData.first_name}
+              setValue={actions.setFirstName}/>
 
-          <div className='sign-link'>
-            <Link className='header-link' to={RoutePaths.SignIn}>{'I already have an account'}</Link>
-          </div>
-          
-        </form>
+            <Input
+              type='text'
+              id='second_name'
+              name='second_name'
+              placeholder='second_name'
+              required={true}
+              value={state.requestData.second_name}
+              setValue={actions.setSecondName}/>
+
+            <Input
+              type='password'
+              id='password'
+              name='password'
+              placeholder='password'
+              required={true}
+              value={state.requestData.password}
+              setValue={actions.setPassword}/>
+
+            <button
+              onClick={handleSignUp}
+              disabled={state.loading}
+              type={'button'}
+              className={'button'}
+            >
+              <span className={'button-title'}>
+                Sign up
+              </span>
+            </button>
+
+            {state.error && (
+              <div>{state.error.message}</div>
+            )}
+
+            <div className='sign-link'>
+              <Link className='header-link' to={RoutePaths.SignIn}>{'I already have an account'}</Link>
+            </div>
+          </form>
+        )}
+
         <div className='right-character__signin'>
           <img src='../../assets/buddy-2-otr.png' />
         </div>

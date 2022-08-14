@@ -10,6 +10,7 @@
     "array-bracket-spacing": ["error", "always"],
     "arrow-parens": ["error", "always"],
     "computed-property-spacing": ["error", "never"],
+    "eol-last": "error",
     "indent": ["error", 2, { "SwitchCase": 1 }],
     "jsx-quotes": ["error", "prefer-single"],
     "max-len": [2, { "code": 120, "tabWidth": 2, "ignoreUrls": true }],

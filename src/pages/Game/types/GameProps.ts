@@ -20,5 +20,7 @@ export type GameState = {
   bullets: Bullet[],
   fruits: Fruit[],
   isLoading: boolean,
-  debug: boolean
+  isGameOver: boolean,
+  debug: boolean,
+  startTime: number,
 }

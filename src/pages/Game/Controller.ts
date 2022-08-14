@@ -6,6 +6,17 @@ import { Bullet, Fruit } from './models';
 export function updateState(state: GameState) {
   if (state.isLoading) {
     state.isLoading = !checkLoadCompete();
+    if (!state.isLoading) {
+      state.startTime = performance.now();
+    }
+    return;
+  }
+  if (state.isGameOver) {
+    return;
+  }
+  if (performance.now() - state.startTime > CONST.GAME_TIME) {
+    state.isGameOver = true;
+    //TODO emit event
     return;
   }
   state.fruits.forEach(function (fruit) {

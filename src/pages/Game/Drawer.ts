@@ -54,14 +54,24 @@ export function drawFrame(ctx: CanvasRenderingContext2D, state: GameState) {
   state.fruits.forEach(function (fruit) {
     drawFruit(ctx, fruit);
   });
+
   state.bullets.forEach(function (bullet) {
     drawBullet(ctx, bullet);
   });
+
   ctx.drawImage(buddyFront, state.buddyX, state.buddyY);
+
   state.pews.forEach(function (pew) {
     drawPew(ctx, pew);
   });
-  drawScore(ctx, state.score);
+
+  if (state.isGameOver) {
+    drawGameOver(ctx, state.score);
+  }
+  else {
+    drawScore(ctx, state.score);
+    drawTimeLeft(ctx, state.startTime);
+  }
 
   if (state.debug) {
     state.fruits.forEach(function (fruit) {
@@ -99,6 +109,44 @@ function drawScore(ctx: CanvasRenderingContext2D, score: number) {
 
   ctx.strokeText(text, CONST.CANVAS_BASE_WIDTH/2, padding);
   ctx.fillText(text.toString(), CONST.CANVAS_BASE_WIDTH/2, padding);
+}
+
+function drawTimeLeft(ctx: CanvasRenderingContext2D, timeStart: number) {
+  const timeLeft = Math.floor(CONST.GAME_TIME - (performance.now() - timeStart));
+  const seconds = Math.floor(timeLeft / 1000);
+  const mseconds = timeLeft % 1000;
+  const pad = seconds < 10 ? '0' : '';
+  const text = `00${seconds % 2 === 0 ? ':' : ' '}${pad}${seconds}.${mseconds.toString(10)[0]}`;
+  const padding = 60;
+
+  ctx.font = '40px averia-serif-libre';
+  ctx.strokeStyle = '#fff';
+  ctx.fillStyle = '#000';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+
+  ctx.strokeText(text, CONST.CANVAS_BASE_WIDTH/2, padding);
+  ctx.fillText(text.toString(), CONST.CANVAS_BASE_WIDTH/2, padding);
+}
+
+function drawGameOver(ctx: CanvasRenderingContext2D, score: number) {
+  ctx.fillStyle = '#00000088';
+  ctx.fillRect(0, 0, CONST.CANVAS_BASE_WIDTH, CONST.CANVAS_BASE_HEIGHT);
+
+  ctx.font = '60px averia-serif-libre';
+  ctx.strokeStyle = '#fff';
+  ctx.fillStyle = '#fff';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  drawLine('Game Over!', -30);
+
+  ctx.font = '40px averia-serif-libre';
+  drawLine(`Your score is: ${score}!`, 20);
+
+  function drawLine(text: string, dy: number) {
+    ctx.strokeText(text, CONST.CANVAS_BASE_WIDTH/2, CONST.CANVAS_BASE_HEIGHT/2 + dy);
+    ctx.fillText(text, CONST.CANVAS_BASE_WIDTH/2, CONST.CANVAS_BASE_HEIGHT/2 + dy);
+  }
 }
 
 function onImageLoad() {

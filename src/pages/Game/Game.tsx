@@ -22,7 +22,9 @@ const INITIAL_STATE: GameState = {
   fruits: [],
   score: 0,
   isLoading: true,
-  debug: false
+  isGameOver: false,
+  debug: false,
+  startTime: 0,
 };
 
 export function Game (props: GameProps) {
@@ -81,13 +83,13 @@ export function Game (props: GameProps) {
     canvas?.addEventListener('mousemove', onMouse);
     canvas?.addEventListener('mouseup', onMouse);
 
-    return function () {
+    return function removeListeners() {
       document.removeEventListener('keydown', onKeyDown);
       canvas?.removeEventListener('mousedown', onMouse);
       canvas?.removeEventListener('mousemove', onMouse);
       canvas?.removeEventListener('mouseup', onMouse);
     }
-  }, [])
+  }, [ onKeyDown, onMouse ])
 
 
   useLayoutEffect(function mainLayoutEffect() {
@@ -101,24 +103,6 @@ export function Game (props: GameProps) {
       cancelAnimationFrame(rafIdRef.current);
     }
   }, [ isPaused ]);
-
-  useInterval(() => {
-    //TODO пока первый падает, второй может уже расти?
-    if (stateRef.current.isLoading || stateRef.current.fruits.length >= FRUITS_LOCS.length) {
-      return;
-    }
-    for (const loc of FRUITS_LOCS) {
-      if (!stateRef.current.fruits.find((fruit) => fruit.x === loc.x && fruit.y === loc.y)) {
-        const fruit = new Fruit(loc.x, loc.y);
-
-        fruit.onRot = function() {
-          stateRef.current.score -= 1;
-        };
-        stateRef.current.fruits.push(fruit);
-        break;
-      }
-    }
-  }, 2000);
 
   function onAnimationFrame() {
     const state = stateRef.current;
@@ -138,6 +122,24 @@ export function Game (props: GameProps) {
 
     rafIdRef.current = requestAnimationFrame(onAnimationFrame);
   }
+
+  useInterval(() => {//TODO move to Controller
+    //TODO пока первый падает, второй может уже расти?
+    if (stateRef.current.isLoading || stateRef.current.fruits.length >= FRUITS_LOCS.length) {
+      return;
+    }
+    for (const loc of FRUITS_LOCS) {
+      if (!stateRef.current.fruits.find((fruit) => fruit.x === loc.x && fruit.y === loc.y)) {
+        const fruit = new Fruit(loc.x, loc.y);
+
+        fruit.onRot = function() {
+          stateRef.current.score -= 1;
+        };
+        stateRef.current.fruits.push(fruit);
+        break;
+      }
+    }
+  }, 2000);
 
   let canvasWidth = props.width || visualViewport.width;
   let canvasHeight = props.height || visualViewport.height;

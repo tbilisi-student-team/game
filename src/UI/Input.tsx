@@ -21,7 +21,7 @@ export const Input = (props: InputProps) => {
         type={props.type}
         id={props.id}
         name={props.name}
-        className='input-decoration' 
+        className='input-decoration'
         value={props.value}
         onChange={handleValue}
       />

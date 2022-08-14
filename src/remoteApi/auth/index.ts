@@ -1,3 +1,3 @@
 export { logout } from './logout';
 export { signin } from './signin';
-export { signup, SignUpErrorResponseData, SignUpRequest, SignUpResponse } from './signup';
+export { signup, SignUpErrorResponse, SignUpRequest, SignUpResponse } from './signup';

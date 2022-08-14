@@ -15,7 +15,7 @@ export type SignUpResponse = {
   id: number,
 }
 
-export type SignUpErrorResponseData = {
+export type SignUpErrorResponse = {
   reason: string,
 }
 

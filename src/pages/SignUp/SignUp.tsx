@@ -6,7 +6,7 @@ import Input from '../../UI/Input';
 
 import { RoutePaths } from 'types'
 import { useAppContext } from 'AppContext';
-import { signup, SignUpErrorResponseData, SignUpResponse } from 'remoteApi';
+import { signup, SignUpErrorResponse, SignUpResponse } from 'remoteApi';
 import { AxiosError, AxiosResponse } from 'axios';
 
 export function SignUp () {
@@ -31,7 +31,7 @@ export function SignUp () {
           throw new Error(`${axiosResponse.status}: Unexpected error.`);
         }
       })
-      .catch((error: AxiosError<SignUpErrorResponseData>) => {
+      .catch((error: AxiosError<SignUpErrorResponse>) => {
         if (error.response) {
           if (error.response.status === 400) {
             actions.loadingError(new Error(`400: ${error.response.data.reason}.`));

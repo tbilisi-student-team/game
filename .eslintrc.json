@@ -7,20 +7,20 @@
   "plugins": ["@typescript-eslint", "react-hooks"],
   "extends": ["plugin:react/recommended", "plugin:@typescript-eslint/recommended"],
   "rules": {
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
-    "react/prop-types": "off",
-    "indent": ["error", 2, { "SwitchCase": 1 }],
-    "quotes": ["error", "single"],
-    "object-curly-spacing": ["error", "always"],
     "array-bracket-spacing": ["error", "always"],
-    "computed-property-spacing": ["error", "never"],
-    "jsx-quotes": ["error", "prefer-single"],
-    "react/jsx-max-props-per-line": [2, { "maximum": 1, "when": "multiline" }],
-    "react/jsx-first-prop-new-line": [2, "multiline"],
     "arrow-parens": ["error", "always"],
+    "computed-property-spacing": ["error", "never"],
+    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "jsx-quotes": ["error", "prefer-single"],
+    "max-len": [2, { "code": 120, "tabWidth": 2, "ignoreUrls": true }],
     "newline-after-var": ["error", "always"],
-    "max-len": [2, { "code": 120, "tabWidth": 2, "ignoreUrls": true }]
+    "object-curly-spacing": ["error", "always"],
+    "quotes": ["error", "single"],
+    "react-hooks/exhaustive-deps": "warn",
+    "react-hooks/rules-of-hooks": "error",
+    "react/jsx-first-prop-new-line": [2, "multiline"],
+    "react/jsx-max-props-per-line": [2, { "maximum": 1, "when": "multiline" }],
+    "react/prop-types": "off"
   },
   "settings": {
     "react": {

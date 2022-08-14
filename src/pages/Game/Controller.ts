@@ -25,7 +25,7 @@ export function updateState(state: GameState) {
   for (const bullet of state.bullets) {
     for (const fruit of state.fruits) {
       if (!fruit.isDropping && checkIntersection(bullet, fruit)) {
-        state.score += (fruit.age > 1 ? fruit.age - 1 : 0);
+        state.score += fruit.age;
         fruit.drop();
         bullet.isCollided = true;
         break;
@@ -40,7 +40,9 @@ export function pew(state: GameState, dx: number, dy: number) {
     y: CONST.BUDDY_START_Y - 300 + Math.random() * 200,
     startTime: performance.now(),
   });
-  state.bullets.push(new Bullet(CONST.BULLET_START_X, CONST.BULLET_START_Y, dx / 100, -dy / 100));
+  state.bullets.push(new Bullet(
+    CONST.BULLET_START_X, CONST.BULLET_START_Y,
+    Math.min(dx / 100, CONST.BULLET_SPEED_MAX), -Math.min(dy / 100, CONST.BULLET_SPEED_MAX)));
 }
 
 function checkIntersection(bullet: Bullet, fruit: Fruit) {

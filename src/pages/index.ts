@@ -1,6 +1,7 @@
 export { App } from './App';
 export { Forum } from './Forum';
 export { Game } from './Game';
+export { StartGame } from './StartGame';
 export { Leaderboard } from './Leaderboard';
 export { Main } from './Main';
 export { NotFound } from './NotFound';

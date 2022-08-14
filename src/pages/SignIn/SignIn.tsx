@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import Header from '../../UI/Header';
 import Input from '../../UI/Input';
@@ -14,9 +14,12 @@ export function SignIn () {
   const [ login, setLogin ] = useState('')
   const [ password, setPassword ] = useState('')
 
+  const navigate = useNavigate();
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    // here will be authorization request, then redirect to the start game page
+    navigate(RoutePaths.StartGame, { replace: true })
     console.log(login, password)
   }
 
@@ -24,10 +27,10 @@ export function SignIn () {
     <div className='wrapper'>
       <Header/>
       <div className='main'>
-        <h1 className='main-title'>
+        <h1>
           Pew!
         </h1>
-        <h3 className='main-description'>
+        <h3>
           Study project of Tbilisi Team
         </h3>
       </div>

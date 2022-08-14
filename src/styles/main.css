@@ -63,15 +63,17 @@ body {
   padding: 7% 0%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.main-title {
+h1 {
   font-size: 120px;
   text-align: center;
   margin: 0;
 }
 
-.main-description {
+h3{
   font-size: 20px;
   text-align: center;
   margin: 0;
@@ -135,8 +137,8 @@ body {
 }
 .button {
   background-color: var(--white);
-  width: 50%;
-  margin: 8% auto 3% auto;
+  width: 30%;
+  margin: 1% auto 3% auto;
   height: 50px;
   opacity: 80%;
   border-radius: 10px;
@@ -180,7 +182,59 @@ body {
   text-align: center;
 }
 
-.signup-title {
+h2 {
   font-size: 30px;
   text-align: center;
+}
+
+.user-search-wrapper {
+  width: 500px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration { display: none; }
+
+
+.search-icon {
+  width: 50px;
+  height: 49px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor:pointer;
+  margin-left: -50px;
+  margin-top: 22px;
+  background-color: transparent;
+  border: none;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  color: var(--white);
+}
+.search-icon:hover {
+  background-color: var(--whiteinput);
+}
+
+.userlist {
+  overflow-y: scroll;
+  max-height: 200px;
+  width: 500px;
+  padding: 0;
+  list-style-type: none;
+}
+
+.userlist-item {
+  height: 30px;
+  padding: 10px 10px 3px 10px;
+  border-radius: 10px;
+}
+
+.userlist-item:hover {
+  background-color: var(--whiteinput);
+  cursor:pointer;
 }

@@ -15,6 +15,7 @@
     "jsx-quotes": ["error", "prefer-single"],
     "max-len": [2, { "code": 120, "tabWidth": 2, "ignoreUrls": true }],
     "newline-after-var": ["error", "always"],
+    "no-multiple-empty-lines": "error",
     "object-curly-spacing": ["error", "always"],
     "quotes": ["error", "single"],
     "react-hooks/exhaustive-deps": "warn",

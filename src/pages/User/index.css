@@ -1,0 +1,19 @@
+.avatar {
+	margin: 0 auto;
+}
+
+.avatar img {
+	--size: 150px;
+
+	width: var(--size);
+	height: var(--size);
+	border-radius: var(--size);
+}
+
+.avatar figcaption {
+	text-align: center;
+}
+
+.avatar.clickable {
+	cursor: pointer;
+}

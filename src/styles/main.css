@@ -79,16 +79,23 @@ h3{
   margin: 0;
 }
 
-.signin__container {
+.main__container {
   display: flex;
   flex-direction: row;
 }
 
-.left-character__main {
+
+.left-character-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.left-character-wrapper__main {
   width: 20%;
 }
 
-.left-character__signin {
+.left-character-wrapper__signin {
   width: 35%;
 }
 
@@ -100,12 +107,22 @@ h3{
   width: 60%;
 }
 
-.right-character__main {
+.right-character-wrapper {
+  display: flex;
+  align-items: flex-end;  
+  justify-content: center;
+}
+
+.right-character-wrapper__main{
   width: 20%;
 }
 
-.right-character__signin {
+.right-character-wrapper__signin{
   width: 35%;
+}
+
+.left-character, .right-character {
+  width: 60%;
 }
 
 .input {

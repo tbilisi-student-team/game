@@ -3,7 +3,7 @@ import { Route, Routes, Navigate } from 'react-router-dom';
 
 import { RoutePaths } from '../../types';
 
-import { Forum, Game, Leaderboard, Main, NotFound, SignIn, SignUp, User } from '../index';
+import { Forum, Game, Leaderboard, Main, NotFound, SignIn, SignUp, StartGame, User } from '../index';
 
 import '@fontsource/averia-serif-libre';
 
@@ -16,6 +16,8 @@ export function App () {
         <Route path={RoutePaths.Forum} element={<Forum/>}/>
 
         <Route path={RoutePaths.Game} element={<Game/>}/>
+
+        <Route path={RoutePaths.StartGame} element={<StartGame/>}/>
 
         <Route path={RoutePaths.Leaderboard} element={<Leaderboard/>}/>
 

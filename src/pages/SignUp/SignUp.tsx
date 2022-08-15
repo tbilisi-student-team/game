@@ -56,7 +56,7 @@ export function SignUp () {
     <div className='wrapper'>
       <Header/>
       <div className='main'>
-        <h2 className='signup-title'>
+        <h2>
           Registration
         </h2>
       </div>

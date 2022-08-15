@@ -11,10 +11,10 @@ export function Main () {
     <div className='wrapper'>
       <Header/>
       <div className='main'>
-        <h1 className='main-title'>
+        <h1>
           Pew!
         </h1>
-        <h3 className='main-description'>
+        <h3>
           Study project of Tbilisi Team
         </h3>
       </div>

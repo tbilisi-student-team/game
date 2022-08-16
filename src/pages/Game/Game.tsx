@@ -3,7 +3,7 @@ import useInterval from './hooks/useInterval';
 import { GameProps, GameState, Loc } from './types';
 import { Fruit } from './models';
 import { updateState, pew } from './Controller';
-import { drawFrame } from './Drawer';
+import Drawer from './Drawer';
 import * as CONST from './consts';
 
 const FRUITS_LOCS: Loc[] = [
@@ -39,6 +39,7 @@ export function Game (props: GameProps) {
 
   const stateRef = useRef<GameState>(INITIAL_STATE);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const drawerRef = useRef<Drawer | null>(null);
   const rafIdRef = useRef(0);
 
   const [ isPaused, setPaused ] = useState(false);
@@ -93,6 +94,14 @@ export function Game (props: GameProps) {
   useLayoutEffect(function mainLayoutEffect() {
     console.log('mainLayoutEffect');
 
+    if (drawerRef.current === null) {
+      const ctx = canvasRef.current?.getContext('2d');
+
+      if (ctx) {
+        drawerRef.current = new Drawer(ctx);
+      }
+    }
+
     if (!isPaused) {
       onAnimationFrame();
     }
@@ -107,10 +116,8 @@ export function Game (props: GameProps) {
 
     updateState(state);
 
-    const ctx = canvasRef.current?.getContext('2d');
-
-    if (ctx) {
-      drawFrame(ctx, state);
+    if (drawerRef.current) {
+      drawerRef.current?.drawFrame(state);
     }
 
     rafIdRef.current = requestAnimationFrame(onAnimationFrame);

@@ -7,4 +7,4 @@ export const BUDDY_START_Y = 400;
 export const BULLET_START_X = BUDDY_START_X + 270;
 export const BULLET_START_Y = BUDDY_START_Y + 110;
 export const BULLET_SPEED_MAX = 2;
-export const GAME_TIME = 10_000;
+export const GAME_TIME = 20_000;

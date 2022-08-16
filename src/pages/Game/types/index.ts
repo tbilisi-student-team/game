@@ -1,1 +1,2 @@
-// export {Type} from './Type';
+export * from './GameProps';
+export { Loc } from './Loc';

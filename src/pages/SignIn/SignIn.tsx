@@ -34,9 +34,9 @@ export function SignIn () {
           Study project of Tbilisi Team
         </h3>
       </div>
-      <div className='signin__container'>
-        <div className='left-character__signin'>
-          <img src={buddy1} alt='Buddy One' />
+      <div className='main__container'>
+        <div className='left-character-wrapper left-character-wrapper__signin'>
+          <img src={buddy1} alt='Buddy One' className='left-character'/>
         </div>
         <form className='signin-form' onSubmit={onSubmit}>
           <Input 
@@ -61,8 +61,8 @@ export function SignIn () {
             <Link className='header-link' to={RoutePaths.SignUp}>{'I\'m new here'}</Link>
           </div>
         </form>
-        <div className='right-character__signin'>
-          <img src={buddy2} alt='Buddy Two' />
+        <div className='right-character-wrapper  right-character-wrapper__signin'>
+          <img src={buddy2} alt='Buddy Two' className='right-character' />
         </div>
       </div>
     </div>

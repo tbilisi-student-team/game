@@ -18,9 +18,9 @@ export function Main () {
           Study project of Tbilisi Team
         </h3>
       </div>
-      <div className='signin__container'>
-        <div className='left-character__main'>
-          <img src={buddy1} alt='Buddy One' />
+      <div className='main__container'>
+        <div className='left-character-wrapper left-character-wrapper__main'>
+          <img src={buddy1} alt='Buddy One' className='left-character'/>
         </div>
         <div className='description'>
           <p>
@@ -38,8 +38,8 @@ export function Main () {
             dui mattis mattis id lacinia sit malesuada aenean.
           </p>
         </div>
-        <div className='right-character__main'>
-          <img src={buddy2} alt='Buddy Two' />
+        <div className='right-character-wrapper right-character-wrapper__main'>
+          <img src={buddy2} alt='Buddy Two' className='right-character'/>
         </div>
       </div>
     </div>

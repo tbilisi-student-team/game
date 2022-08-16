@@ -2,7 +2,7 @@ import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import useInterval from './hooks/useInterval';
 import { GameProps, GameState, Loc } from './types';
 import { Fruit } from './models';
-import { updateState, pew } from './Controller';
+import Controller from './Controller';
 import Drawer from './Drawer';
 import * as CONST from './consts';
 
@@ -38,6 +38,7 @@ export function Game (props: GameProps) {
   console.log('Game init');
 
   const stateRef = useRef<GameState>(INITIAL_STATE);
+  const controlRef = useRef<Controller>(new Controller(stateRef.current));
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const drawerRef = useRef<Drawer | null>(null);
   const rafIdRef = useRef(0);
@@ -46,7 +47,7 @@ export function Game (props: GameProps) {
 
   const onKeyDown = useCallback(function onKeyDown(e: KeyboardEvent) {
     if (e.key === ' ') {
-      pew(stateRef.current, 100, -100);
+      controlRef.current.pew(100, -100);
     }
     else if (e.key === 'p') {
       setPaused(!isPaused);
@@ -69,7 +70,7 @@ export function Game (props: GameProps) {
         break;
       case 'mouseup':
         stateRef.current.mouse.isPressed = false;
-        pew(stateRef.current, stateRef.current.mouse.pressX - e.x, stateRef.current.mouse.pressY - e.y);
+        controlRef.current.pew(stateRef.current.mouse.pressX - e.x, stateRef.current.mouse.pressY - e.y);
         break;
     }
   }, [])
@@ -112,12 +113,10 @@ export function Game (props: GameProps) {
   }, [ isPaused ]);
 
   function onAnimationFrame() {
-    const state = stateRef.current;
-
-    updateState(state);
+    controlRef.current.updateState();
 
     if (drawerRef.current) {
-      drawerRef.current?.drawFrame(state);
+      drawerRef.current?.drawFrame(stateRef.current);
     }
 
     rafIdRef.current = requestAnimationFrame(onAnimationFrame);

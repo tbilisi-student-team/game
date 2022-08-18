@@ -27,7 +27,7 @@ export function User () {
   useEffect(function () {
     if (state.requestData.login === '') {
       actions.loadingStart();
-      userApi.getCurrentUser().then(function (response: AxiosResponse<userApi.GetCurrentUserResponse>) {
+      userApi.getCurrentUser().then(function (response: AxiosResponse<userApi.UserResponse>) {
         if (response.status === 200) {
           const responseData = response.data;
 

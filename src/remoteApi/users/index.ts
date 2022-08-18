@@ -3,3 +3,5 @@ export * from './changeUserProfile';
 export * from './changeUserProfileAvatar';
 export * from './getCurrentUser';
 export * from './getUserById';
+export * from './getCurrentUser';
+export * from './UserResponse';

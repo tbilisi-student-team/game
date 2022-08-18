@@ -49,9 +49,9 @@ export default class Drawer {
 
     this.ctx.drawImage(buddyBack, state.buddyX, state.buddyY);
 
-    const treeWidth = tree.width * this.ctx.canvas.height / tree.height;
+    const treeWidth = tree.width * CONST.CANVAS_BASE_HEIGHT / tree.height;
 
-    this.ctx.drawImage(tree, CONST.CANVAS_BASE_WIDTH - treeWidth, 0, treeWidth, this.ctx.canvas.height);
+    this.ctx.drawImage(tree, CONST.CANVAS_BASE_WIDTH - treeWidth, 0, treeWidth, CONST.CANVAS_BASE_HEIGHT);
 
     state.fruits.forEach((fruit) => {
       this.drawFruit(fruit);
@@ -76,6 +76,9 @@ export default class Drawer {
     }
 
     if (state.debug) {
+      this.ctx.strokeStyle = '#fff';
+      this.ctx.strokeRect(0, 0, CONST.CANVAS_BASE_WIDTH, CONST.CANVAS_BASE_HEIGHT);
+
       state.fruits.forEach((fruit) => {
         drawCircle(this.ctx, fruit.x, fruit.y + fruit.radius, fruit.radius, { fillStyle: 'yellow' });
       });

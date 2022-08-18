@@ -6,6 +6,8 @@ import Controller from './Controller';
 import Drawer from './Drawer';
 import * as CONST from './consts';
 
+import './index.css';
+
 const FRUITS_LOCS: Loc[] = [
   { x: 1289, y: 146 },
   { x: 1470, y: 241 },
@@ -67,9 +69,11 @@ export function Game (props: GameProps) {
         stateRef.current.mouse.pressX = e.clientX;
         stateRef.current.mouse.pressY = e.clientY;
         stateRef.current.mouse.isPressed = true;
+        canvasRef.current?.classList.add('grabbing');
         break;
       case 'mouseup':
         stateRef.current.mouse.isPressed = false;
+        canvasRef.current?.classList.remove('grabbing');
         controlRef.current.pew(stateRef.current.mouse.pressX - e.x, stateRef.current.mouse.pressY - e.y);
         break;
     }
@@ -157,6 +161,7 @@ export function Game (props: GameProps) {
   return (
     <>
       <canvas
+        className={'game'}
         ref={canvasRef}
         width={canvasWidth}
         height={canvasHeight}>

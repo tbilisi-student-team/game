@@ -102,11 +102,9 @@ h3{
 }
 
 .description {
-  width: 60%;
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  left: 50%;
+  display: block;
+    width: 60%;
+    margin: 0 20%;
 }
 
 .right-character__main {

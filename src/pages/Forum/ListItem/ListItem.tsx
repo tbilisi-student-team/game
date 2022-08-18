@@ -14,7 +14,7 @@ export const ListItem = (props: ListItemProps) => {
   const { id, title, text, datatime, userName, comments } = props.data;
 
   return (
-    <tr className={''} key={id}>
+    <tr key={id}>
       <td className={'info'}>
         <h3>
           <Link to={`${id}`}>{title}</Link>

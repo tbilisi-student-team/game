@@ -8,6 +8,7 @@
 	width: var(--size);
 	height: var(--size);
 	border-radius: var(--size);
+	border: 1px solid var(--grey);
 }
 
 .avatar figcaption {

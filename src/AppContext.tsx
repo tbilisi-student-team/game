@@ -1,6 +1,6 @@
 import React, { createContext, ReactNode } from 'react';
 
-import { useSignUp, useCurrentUser, useUserProfile } from 'hooks';
+import { useSignUp, useCurrentUser } from 'hooks';
 
 type UseExampleState = {
   checked: boolean,
@@ -39,7 +39,6 @@ function useExample(): UseExampleReturnType {
 type AppContextType = {
   example: ReturnType<typeof useExample>,
   signUp: ReturnType<typeof useSignUp>,
-  userProfile: ReturnType<typeof useUserProfile>
   currentUser: ReturnType<typeof useCurrentUser>
 }
 
@@ -50,14 +49,12 @@ type AppContextValue = {
 const AppContext = createContext<AppContextValue>({
   example: null,
   signUp: null,
-  userProfile: null,
   currentUser: null,
 });
 
 function ContextProvider ({ children }: { children: ReactNode }): JSX.Element {
   const value: AppContextType = {
     signUp: useSignUp(),
-    userProfile: useUserProfile(),
     example: useExample(),
     currentUser: useCurrentUser(),
   }

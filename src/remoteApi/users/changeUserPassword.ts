@@ -7,10 +7,6 @@ export type ChangeUserPasswordRequest = {
   newPassword: string,
 }
 
-export type ChangeUserPasswordErrorResponse = {
-  reason: string,
-}
-
 export function changeUserPassword(data: ChangeUserPasswordRequest, config?: AxiosRequestConfig) {
   return httpClient.put('/user/password', data, config);
 }

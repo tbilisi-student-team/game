@@ -1,24 +1,36 @@
 import { Dispatch, Reducer, useReducer } from 'react';
-import { ChangeUserProfileRequest, ChangeUserProfileResponse } from 'remoteApi/users';
+import {
+  ChangeUserPasswordRequest,
+  ChangeUserProfileAvatarRequest,
+  ChangeUserProfileRequest,
+  ChangeUserProfileResponse, UserResponse
+} from 'remoteApi/users';
 
 type State = {
-  loading: boolean,
+  isLoading: boolean,
   error: Error | null,
-  responseData: ChangeUserProfileResponse | null,
-  requestData: ChangeUserProfileRequest,
+  responseData: UserResponse | null,
+  changeAvatarRequest: ChangeUserProfileAvatarRequest | null,
+  changeProfileRequest: ChangeUserProfileRequest,
+  changePasswordRequest: ChangeUserPasswordRequest,
 }
 
 const INITIAL_STATE: State = {
-  loading: false,
+  isLoading: false,
   error: null,
   responseData: null,
-  requestData: {
+  changeAvatarRequest: null,
+  changeProfileRequest: {
     first_name: '',
     second_name: '',
     login: '',
     email: '',
     phone: '',
     display_name: '',
+  },
+  changePasswordRequest: {
+    oldPassword: '',
+    newPassword: ''
   },
 }
 
@@ -28,6 +40,7 @@ enum ActionType {
   LOADING_SUCCESS = 'LOADING_SUCCESS',
 
   SET_REQUEST = 'SET_REQUEST',
+  SET_FIELD = 'SET_FIELD',
   SET_FIRST_NAME = 'SET_FIRST_NAME',
   SET_SECOND_NAME = 'SET_SECOND_NAME',
   SET_LOGIN = 'SET_LOGIN',
@@ -61,72 +74,72 @@ const reducer = (
     case ActionType.LOADING_START:
       return {
         ...state,
-        loading: true,
+        isLoading: true,
         error: null,
       }
     case ActionType.LOADING_ERROR:
       return {
         ...state,
-        loading: false,
+        isLoading: false,
         error: action.payload.error,
       }
     case ActionType.LOADING_SUCCESS:
       return {
         ...state,
-        loading: false,
+        isLoading: false,
         responseData: action.payload.responseData,
       }
     case ActionType.SET_REQUEST:
       return {
         ...state,
-        loading: false,
-        requestData: action.payload.requestData,
+        isLoading: false,
+        changeProfileRequest: action.payload.requestData,
       }
     case ActionType.SET_FIRST_NAME:
       return {
         ...state,
-        requestData: {
-          ...state.requestData,
+        changeProfileRequest: {
+          ...state.changeProfileRequest,
           first_name: action.payload.first_name,
         },
       }
     case ActionType.SET_SECOND_NAME:
       return {
         ...state,
-        requestData: {
-          ...state.requestData,
+        changeProfileRequest: {
+          ...state.changeProfileRequest,
           second_name: action.payload.second_name,
         }
       }
     case ActionType.SET_LOGIN:
       return {
         ...state,
-        requestData: {
-          ...state.requestData,
+        changeProfileRequest: {
+          ...state.changeProfileRequest,
           login: action.payload.login,
         }
       }
     case ActionType.SET_EMAIL:
       return {
         ...state,
-        requestData: {
-          ...state.requestData,
+        changeProfileRequest: {
+          ...state.changeProfileRequest,
           email: action.payload.email,
         }
       }
     case ActionType.SET_DISPLAY_NAME:
       return {
         ...state,
-        requestData: {
-          ...state.requestData,
+        changeProfileRequest: {
+          ...state.changeProfileRequest,
           display_name: action.payload.display_name,
         }
       }
     case ActionType.SET_PHONE:
       return {
         ...state,
-        requestData: {
-          ...state.requestData,
+        changeProfileRequest: {
+          ...state.changeProfileRequest,
           phone: action.payload.phone,
         }
       }
@@ -201,11 +214,13 @@ function getActions(
   }
 }
 
-export function useUserProfile(): [State, ReturnType<typeof getActions>] {
+export function useUserProfile(user: UserResponse): [State, ReturnType<typeof getActions>] {
+  const initialState = { ...INITIAL_STATE, ...{ changeProfileRequest: user } };
+
   const [
     state,
     dispatch,
-  ] = useReducer<Reducer<State, Actions>>(reducer, INITIAL_STATE);
+  ] = useReducer<Reducer<State, Actions>>(reducer, initialState);
 
   return [
     state,

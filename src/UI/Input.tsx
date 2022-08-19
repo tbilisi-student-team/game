@@ -7,12 +7,29 @@ type InputProps = {
   placeholder: string,
   required: boolean,
   value: string,
-  setValue: ((arg: string) => void)
+  setValue: ((arg: string) => void),
+  disabled: boolean
 }
 
-export const Input = (props: InputProps) => {
+const defaultProps: InputProps = {
+  name: '',
+  id: '',
+  type: 'text',
+  placeholder: '',
+  required: false,
+  value: '',
+  setValue: (() => { /**/ }),
+  disabled: false
+}
 
-  const handleValue = (e: React.ChangeEvent<HTMLInputElement>) => props.setValue(e?.target.value)
+export const Input = (props: Partial<InputProps>) => {
+  props = { ...defaultProps, ...props };
+
+  const handleValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (typeof props.setValue == 'function') {
+      props.setValue(e?.target.value)
+    }
+  }
 
   return (
     <div className='input'>
@@ -24,6 +41,7 @@ export const Input = (props: InputProps) => {
         className='input-decoration'
         value={props.value}
         onChange={handleValue}
+        disabled={props.disabled}
       />
     </div>
   )

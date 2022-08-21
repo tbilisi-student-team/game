@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FormEvent } from 'react';
 
 import { BASE_URL } from 'core/httpClient';
 
@@ -21,8 +21,9 @@ export function User () {
 
   const [ profile, actions ] = useUserProfile(user);
 
-  const handleSubmit = () => {
-    actions.loadingStart();
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    actions.changeProfile();
   }
 
   const handleChangeAvatar = () => {
@@ -96,6 +97,15 @@ export function User () {
             required={true}
             value={profile.changeProfileRequest.second_name}
             setValue={actions.setSecondName}/>
+
+          <Input
+            type='text'
+            id='display_name'
+            name='display_name'
+            placeholder='display_name'
+            required={true}
+            value={profile.changeProfileRequest.display_name}
+            setValue={actions.setDisplayName}/>
 
           <button
             disabled={profile.isLoading}

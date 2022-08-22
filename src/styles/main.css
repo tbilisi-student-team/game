@@ -264,16 +264,20 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
 }
 
 th {
-  border-radius: 10px;
+  padding-left: 10px;
+  border-radius: 5px;
+
 }
 
 td {
   padding-left: 10px;
 }
 
+
 img {
   width: 100%;
 }
+
 .forum-table {
   border-radius: 10px;
   width: 100%;

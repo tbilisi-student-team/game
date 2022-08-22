@@ -11,6 +11,7 @@ import './index.css';
 import buddy1 from 'assets/buddy-1.png';
 import buddy2 from 'assets/buddy-2-otr.png';
 import { useUserProfile } from 'hooks';
+import { changeUserProfileAvatar } from 'remoteApi';
 
 export function User () {
   const user = useAppContext().currentUser[0].data;
@@ -29,7 +30,18 @@ export function User () {
   }
 
   const handleChangeAvatar = () => {
-    alert('Здесь будет смена аватара!');
+    const fileInput = document.getElementById(fileInputId) as HTMLInputElement;
+    const fileData = fileInput?.files?.item(0);
+
+    if (fileData) {
+      const formData = new FormData();
+
+      formData.append('avatar', fileData);
+      changeUserProfileAvatar(formData).then((resp) => {
+
+        alert(resp.status);
+      });
+    }
   }
 
   const handleChangePassword = () => {

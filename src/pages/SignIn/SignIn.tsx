@@ -5,7 +5,7 @@ import Header from '../../UI/Header';
 import Input from '../../UI/Input';
 
 
-import { RoutePaths } from '../../types'
+import { RoutePaths } from 'types';
 import { useAppContext } from 'AppContext';
 import { signin, SignInErrorResponse, SignInResponse } from 'remoteApi';
 import { AxiosError, AxiosResponse } from 'axios';
@@ -31,7 +31,7 @@ export function SignIn () {
 
           actions.loadingSuccess(responseData);
 
-          navigate(`/game`);
+          navigate(RoutePaths.StartGame);
         } else {
           throw new Error(`${axiosResponse.status}: Unexpected error.`);
         }
@@ -90,18 +90,18 @@ export function SignIn () {
             value={state.requestData.password}
             setValue={actions.setPassword}/>
           <button
-              onClick={handleSignIn}
-              disabled={state.loading}
-              type={'button'}
-              className={'button'}
-            >
-              <span className={'button-title'}>
+            onClick={handleSignIn}
+            disabled={state.loading}
+            type={'button'}
+            className={'button'}
+          >
+            <span className={'button-title'}>
               {'Sign in'}
-              </span>
-            </button>
+            </span>
+          </button>
           {state.error && (
-              <div>{state.error.message}</div>
-            )}
+            <div>{state.error.message}</div>
+          )}
           <div className='sign-link'>
             <Link className='header-link' to={RoutePaths.SignUp}>'I\'m new here'</Link>
           </div>

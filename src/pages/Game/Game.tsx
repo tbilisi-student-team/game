@@ -6,8 +6,6 @@ import Controller from './Controller';
 import Drawer from './Drawer';
 import * as CONST from './consts';
 
-import './index.css';
-
 const FRUITS_LOCS: Loc[] = [
   { x: 1289, y: 146 },
   { x: 1470, y: 241 },

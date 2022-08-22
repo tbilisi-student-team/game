@@ -1,13 +1,11 @@
 import React from 'react';
 import { ListItem } from './ListItem/ListItem';
 import { ThreadListData } from './types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMessage, faCalendarDays, faUser } from '@fortawesome/free-solid-svg-icons'
+
 
 import Header from '../../UI/Header';
-
-import buddy1 from '../../assets/buddy-1.png';
-import buddy2 from '../../assets/buddy-2-otr.png';
-
-
 
 const threadData: ThreadListData = [
   {
@@ -47,37 +45,33 @@ export const Forum= () => {
   return (
     <div className='wrapper'>
       <Header/>
-        <div className='main'>
+      <div className='main'>
+        <div className='title-wrapper'>
           <h1>Форум</h1>
         </div>
-        <div className='left-character__main'>
-          <img src={buddy1} alt='Buddy One' />
-        </div>
-        <div className='description'>
-        <table>
-          <thead>
-            <tr className='thead'>
-              <td>Тема</td>
-              <td>Дата</td>
-              <td>Автор</td>
-              <td>Сообщений</td>
-            </tr>
-          </thead>
-          <tbody>{threadList}</tbody>
-        </table>
-        <button
-          onClick={createPostHandle}
-          className='button'
-          type='button'
-        ><span className='button-title'>
+        <div className='forum'>
+          <table className='forum-table'>
+            <thead>
+              <tr className='table-header'>
+                <td>Тема</td>
+                <td><FontAwesomeIcon icon={faCalendarDays} /></td>
+                <td><FontAwesomeIcon icon={faUser} /></td>
+                <td><FontAwesomeIcon icon={faMessage} /></td>
+              </tr>
+            </thead>
+            <tbody>{threadList}</tbody>
+          </table>
+          <button
+            onClick={createPostHandle}
+            className='button'
+            type='button'
+          ><span className='button-title'>
         Добавить тему
-      </span></button>
+            </span></button>
         </div>
-        <div className='right-character__main'>
-          <img src={buddy2} alt='Buddy Two' />
-        </div>
-       
+
       </div>
+    </div>
    
   );
 };

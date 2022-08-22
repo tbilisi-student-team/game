@@ -93,11 +93,6 @@ h3{
 
 .left-character-wrapper__main {
   width: 20%;
-  position: absolute;
-  z-index: -1;
-  top: 50%;
-  transform: translate(0, -50%);
-  left: 3%;
 }
 
 .left-character-wrapper__signin {
@@ -109,9 +104,7 @@ h3{
 }
 
 .description {
-  display: block;
     width: 60%;
-    margin: 0 20%;
 }
 
 .right-character-wrapper {
@@ -122,11 +115,6 @@ h3{
 
 .right-character-wrapper__main{
   width: 20%;
-  position: absolute;
-  z-index: -1;
-  top: 50%;
-  transform: translate(0, -50%);
-  right: 3%;
 }
 
 .right-character-wrapper__signin{
@@ -268,18 +256,42 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
   cursor:pointer;
 }
 
-.thead {
+.table-header {
   width: 100%;
-  background: #af562590;
-
+  background: var(--whiteheader);
+  height: 40px;
+  font-weight: 700;
 }
+
+th {
+  border-radius: 10px;
+}
+
+td {
+  padding-left: 10px;
+}
+
 img {
   width: 100%;
 }
-table {
+.forum-table {
+  border-radius: 10px;
   width: 100%;
-  background: #af562590;
+  border: 1px solid var(--white);
 }
 .messages {
   text-align: center;
+}
+
+.forum {
+  display: block;
+  width: 90%;
+  margin: 20px 0;
+}
+.theme {
+  border-bottom: 1px solid var(--white);
+}
+
+.theme-title {
+  text-align: left;
 }

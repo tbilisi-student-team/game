@@ -14,5 +14,5 @@ export type SignInErrorResponse = {
   reason: string,
 }
 export function signin(data: SignInRequest, config?: AxiosRequestConfig) {
-  return httpClient.post('/auth/signin', data, config)
+  return httpClient.post('/auth/signin', data, { withCredentials: true, ...config });
 }

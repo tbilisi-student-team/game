@@ -126,10 +126,10 @@ export function SignUp () {
             <button
               onClick={handleSignUp}
               disabled={state.loading}
-              type={'button'}
-              className={'button'}
+              type='button'
+              className='button'
             >
-              <span className={'button-title'}>
+              <span className='button-title'>
                 Sign up
               </span>
             </button>

@@ -103,7 +103,7 @@ export function SignIn () {
               <div>{state.error.message}</div>
             )}
           <div className='sign-link'>
-            <Link className='header-link' to={RoutePaths.SignUp}>{'I\'m new here'}</Link>
+            <Link className='header-link' to={RoutePaths.SignUp}>'I\'m new here'</Link>
           </div>
         </form>
         <div className='right-character-wrapper  right-character-wrapper__signin'>

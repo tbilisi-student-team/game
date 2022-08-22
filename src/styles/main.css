@@ -93,6 +93,11 @@ h3{
 
 .left-character-wrapper__main {
   width: 20%;
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  transform: translate(0, -50%);
+  left: 3%;
 }
 
 .left-character-wrapper__signin {
@@ -104,7 +109,9 @@ h3{
 }
 
 .description {
-  width: 60%;
+  display: block;
+    width: 60%;
+    margin: 0 20%;
 }
 
 .right-character-wrapper {
@@ -115,6 +122,11 @@ h3{
 
 .right-character-wrapper__main{
   width: 20%;
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  transform: translate(0, -50%);
+  right: 3%;
 }
 
 .right-character-wrapper__signin{
@@ -254,4 +266,20 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
 .userlist-item:hover {
   background-color: var(--whiteinput);
   cursor:pointer;
+}
+
+.thead {
+  width: 100%;
+  background: #af562590;
+
+}
+img {
+  width: 100%;
+}
+table {
+  width: 100%;
+  background: #af562590;
+}
+.messages {
+  text-align: center;
 }

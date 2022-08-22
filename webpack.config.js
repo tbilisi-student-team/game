@@ -25,6 +25,7 @@ module.exports = {
       types: path.resolve(__dirname, 'src/types'),
       hooks: path.resolve(__dirname, 'src/hooks'),
       AppContext: path.resolve(__dirname, 'src/AppContext'),
+      hocs: path.resolve(__dirname, 'src/hocs'),
     }
   },
   module: {

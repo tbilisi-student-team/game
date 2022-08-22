@@ -1,9 +1,11 @@
 import React from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 
-import { RoutePaths } from '../../types';
+import { RequireAuth } from 'hocs';
 
-import { Forum, Game, Leaderboard, Main, NotFound, SignIn, SignUp, StartGame, User } from '../index';
+import { RoutePaths } from 'types';
+
+import { Forum, Game, Leaderboard, Main, NotFound, SignIn, SignUp, StartGame, User } from 'pages';
 
 import '@fontsource/averia-serif-libre';
 
@@ -29,7 +31,10 @@ export function App () {
 
         <Route path={RoutePaths.SignUp} element={<SignUp/>}/>
 
-        <Route path={`${RoutePaths.User}/:id`} element={<User/>}/>
+        <Route
+          path={RoutePaths.User}
+          element={<RequireAuth><User/></RequireAuth>}
+        />
       </Routes>
     </>
   )

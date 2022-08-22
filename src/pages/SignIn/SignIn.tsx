@@ -55,10 +55,10 @@ export function SignIn () {
             required={true}
             value={password}
             setValue={setPassword}/>
-          <SubmitButton name={'Sign in'}/>
+          <SubmitButton name='Sign in'/>
 
           <div className='sign-link'>
-            <Link className='header-link' to={RoutePaths.SignUp}>{'I\'m new here'}</Link>
+            <Link className='header-link' to={RoutePaths.SignUp}>'I\'m new here'</Link>
           </div>
         </form>
         <div className='right-character__signin'>

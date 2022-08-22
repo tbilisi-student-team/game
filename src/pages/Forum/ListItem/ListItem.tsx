@@ -15,15 +15,15 @@ export const ListItem = (props: ListItemProps) => {
 
   return (
     <tr key={id}>
-      <td className={'info'}>
+      <td className='info'>
         <h3>
           <Link to={`${id}`}>{title}</Link>
         </h3>
         <p>{text}</p>
       </td>
-      <td className={'datetime'}>{datatime}</td>
-      <td className={'userName'}>{userName}</td>
-      <td className={'messages'}>{comments}</td>
+      <td className='datetime'>{datatime}</td>
+      <td className='userName'>{userName}</td>
+      <td className='messages'>{comments}</td>
     </tr>
   );
 };

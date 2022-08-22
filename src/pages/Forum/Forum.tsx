@@ -45,18 +45,18 @@ export const Forum= () => {
   };
 
   return (
-    <div className={'wrapper'}>
+    <div className='wrapper'>
       <Header/>
-        <div className={'main'}>
+        <div className='main'>
           <h1>Форум</h1>
         </div>
         <div className='left-character__main'>
           <img src={buddy1} alt='Buddy One' />
         </div>
-        <div className={'description'}>
+        <div className='description'>
         <table>
           <thead>
-            <tr className={'thead'}>
+            <tr className='thead'>
               <td>Тема</td>
               <td>Дата</td>
               <td>Автор</td>
@@ -67,9 +67,9 @@ export const Forum= () => {
         </table>
         <button
           onClick={createPostHandle}
-          className={'button'}
-          type={'button'}
-        ><span className={'button-title'}>
+          className='button'
+          type='button'
+        ><span className='button-title'>
         Добавить тему
       </span></button>
         </div>

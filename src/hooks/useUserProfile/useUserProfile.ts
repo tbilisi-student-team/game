@@ -4,7 +4,7 @@ import {
   ChangeUserProfileAvatarRequest,
   ChangeUserProfileRequest,
   UserResponse,
-  changeUserProfile
+  changeUserProfile, changeUserProfileAvatar
 } from 'remoteApi/users';
 import { AxiosError, AxiosResponse } from 'axios';
 import { ErrorResponse } from 'remoteApi';
@@ -54,6 +54,7 @@ enum ActionType {
   SET_OLD_PASSWORD = 'SET_OLD_PASSWORD',
   SET_PHONE = 'SET_PHONE',
   SET_DISPLAY_NAME = 'SET_DISPLAY_NAME',
+  SET_AVATAR_REQUEST = 'SET_AVATAR_REQUEST',
 }
 
 type Messages = {
@@ -72,6 +73,7 @@ type Messages = {
   [ActionType.SET_OLD_PASSWORD]: { oldPassword: ChangeUserPasswordRequest['oldPassword'] },
   [ActionType.SET_DISPLAY_NAME]: { display_name: ChangeUserProfileRequest['display_name'] },
   [ActionType.SET_PHONE]: { phone: ChangeUserProfileRequest['phone'] },
+  [ActionType.SET_AVATAR_REQUEST]: ChangeUserProfileAvatarRequest,
 }
 
 type Actions = ActionTypeAndPayload<Messages>[keyof ActionTypeAndPayload<Messages>];
@@ -159,6 +161,11 @@ const reducer = (
           phone: action.payload.phone,
         }
       }
+    case ActionType.SET_AVATAR_REQUEST:
+      return {
+        ...state,
+        changeAvatarRequest: action.payload
+      }
     default: throw new Error('useUserProfile reducer error.');
   }
 }
@@ -230,6 +237,55 @@ function getActions(
           console.error(error);
         });
     },
+    changeAvatar() {
+      if (state.changeAvatarRequest == null) {
+        return;
+      }
+
+      dispatch({
+        type: ActionType.LOADING_START,
+      });
+
+      changeUserProfileAvatar(state.changeAvatarRequest)
+        .then((axiosResponse: AxiosResponse<UserResponse>) => {
+          if (axiosResponse.status === 200) {
+            const responseData = axiosResponse.data;
+
+            dispatch({
+              type: ActionType.LOADING_SUCCESS,
+              payload: responseData
+            });
+          }
+          else {
+            throw new Error(`${axiosResponse.status}: Unexpected error.`);
+          }
+        })
+        .catch((error: AxiosError<ErrorResponse>) => {//TODO DRY
+          const actions = getActions(state, dispatch);
+
+          if (error.response) {
+            if (error.response.status === 400) {
+              actions.loadingError(new Error(`400: ${error.response.data.reason}.`));
+            }
+            else if (error.response.status === 401) {
+              actions.loadingError(new Error('401: Unauthorized.'));
+            }
+            else if (error.response.status === 500) {
+              actions.loadingError(new Error('500: Unexpected error.'));
+            }
+            else {
+              actions.loadingError(new Error(`${error.response.status}: ${error.response.data.reason}.`));
+            }
+          }
+          else if (error.request) {
+            actions.loadingError(new Error('Unexpected error.'));
+          }
+          else {
+            actions.loadingError(new Error(`${error.message}.`));
+          }
+          console.error(error);
+        });
+    },
     setFirstName(first_name: ChangeUserProfileRequest['first_name']) {
       dispatch({
         type: ActionType.SET_FIRST_NAME,
@@ -272,6 +328,12 @@ function getActions(
         payload: { display_name },
       });
     },
+    setAvatarRequest(avatar: ChangeUserProfileAvatarRequest) {
+      dispatch({
+        type: ActionType.SET_AVATAR_REQUEST,
+        payload: avatar,
+      });
+    }
   }
 }
 

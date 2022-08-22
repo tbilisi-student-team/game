@@ -1,4 +1,4 @@
-import React, { FormEvent } from 'react';
+import React, { FormEvent, useId } from 'react';
 
 import { BASE_URL } from 'core/httpClient';
 
@@ -21,6 +21,8 @@ export function User () {
 
   const [ profile, actions ] = useUserProfile(user);
 
+  const fileInputId = useId();
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     actions.changeProfile();
@@ -37,13 +39,16 @@ export function User () {
   return (
     <div className='wrapper'>
       <Header/>
-      <figure className={'avatar clickable'} onClick={handleChangeAvatar}>
-        <img
-          src={ user.avatar ? `${BASE_URL}/resources${user.avatar}` : buddy1 }
-          alt={'Avatar'}>
-        </img>
-        <figcaption>{`${ user.display_name}#${user.id}`}</figcaption>
-      </figure>
+      <label htmlFor={fileInputId} className={'avatar'} title={'Choose an image from your device'}>
+        <figure>
+          <img
+            src={ user.avatar ? `${BASE_URL}/resources${user.avatar}` : buddy1 }
+            alt={'Avatar'}>
+          </img>
+          <figcaption>{`${ user.display_name}#${user.id}`}</figcaption>
+        </figure>
+        <input id={fileInputId} type={'file'} style={{ display: 'none' }} onChange={handleChangeAvatar} />
+      </label>
       <div className='main__container'>
         <div className='left-character-wrapper left-character-wrapper__main'>
           <img src={buddy1} alt='Buddy One' className='left-character'/>

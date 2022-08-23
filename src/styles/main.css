@@ -264,9 +264,7 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
 }
 
 th {
-  padding-left: 10px;
   border-radius: 5px;
-
 }
 
 td {
@@ -282,6 +280,7 @@ img {
   border-radius: 10px;
   width: 100%;
   border: 1px solid var(--white);
+  margin: 20px 0 40px 0;
 }
 .messages {
   text-align: center;
@@ -290,7 +289,6 @@ img {
 .forum {
   display: block;
   width: 90%;
-  margin: 20px 0;
 }
 .theme {
   border-bottom: 1px solid var(--white);

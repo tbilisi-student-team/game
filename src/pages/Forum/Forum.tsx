@@ -10,26 +10,26 @@ import Header from '../../UI/Header';
 const threadData: ThreadListData = [
   {
     id: 1,
-    title: 'Помогаем юзерам выбирать ПК конфигурации и обсуждаем их',
-    text: 'Не долго думая создаю&nbsp;тему для общих благ&nbsp;(надеюсь полезную) где будем обсуждать ПК конфигурации. Предлагаю &quot;страждущим&quot; сделать апгрейд или&nbsp;купить новый компьютер кидать сю',
+    title: 'How to play the game',
+    text: 'Here we discuss the rules of Pew game and game mechanics. If someone has questions - welcome to this there',
     datatime: '21:28, 25.07.2011',
     userName: 'zenzuk',
     comments: 200,
   },
   {
     id: 2,
-    title: 'Всё о компьютерном разгоне (PC Overclocking - OC)',
-    text: 'Начнём, надеюсь будет ПОЛЕЗНОЙ инфой!&nbsp;&nbsp; Всё о компьютерном разгоне (PC Overclocking - OC) Небольшой, скромный о разгоне &nbsp; &nbsp; Базовые понятия: &nbsp; 1. Q:Что такое разгон? От чего',
+    title: 'Looking for a companion to play',
+    text: 'Let`s find new friends and companions to play Pew. Please add your name here if you are free to play and indicate time you want to play',
     datatime: '21:28, 25.07.2011',
-    userName: 'zenzuk',
+    userName: 'grgr',
     comments: 33,
   },
   {
     id: 3,
-    title: 'Выбираем, обсуждаем, покупаем игр.мышки',
-    text: 'Так как тема была создана немногим раньше (получил бан за рекламу, ХЗ почему, ну пусть будет, это крайнее) пере-создаю её ещё разок, теперь без рекламы, картинок, и без описании мышек. ДАВАЙТЕ-КА буде',
+    title: 'New ideas for game development',
+    text: 'Leave your ideas here and we probably implement them in our game',
     datatime: '21:28, 25.07.2011',
-    userName: 'zenzuk',
+    userName: 'ivan1234',
     comments: 17,
   },
 ];
@@ -47,13 +47,13 @@ export const Forum= () => {
       <Header/>
       <div className='main'>
         <div className='title-wrapper'>
-          <h1>Форум</h1>
+          <h1>Forum</h1>
         </div>
         <div className='forum'>
           <table className='forum-table'>
             <thead>
               <tr className='table-header'>
-                <th>Тема</th>
+                <th>Theme</th>
                 <th><FontAwesomeIcon icon={faCalendarDays} /></th>
                 <th><FontAwesomeIcon icon={faUser} /></th>
                 <th><FontAwesomeIcon icon={faMessage} /></th>
@@ -66,7 +66,7 @@ export const Forum= () => {
             className='button'
             type='button'
           ><span className='button-title'>
-        Добавить тему
+        Add a new theme
             </span></button>
         </div>
 

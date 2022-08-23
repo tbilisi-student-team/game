@@ -53,10 +53,10 @@ export const Forum= () => {
           <table className='forum-table'>
             <thead>
               <tr className='table-header'>
-                <th>Theme</th>
-                <th><FontAwesomeIcon icon={faCalendarDays} /></th>
-                <th><FontAwesomeIcon icon={faUser} /></th>
-                <th><FontAwesomeIcon icon={faMessage} /></th>
+                <th className='forum-table-header-cell'>Theme</th>
+                <th className='forum-table-header-cell'><FontAwesomeIcon icon={faCalendarDays} /></th>
+                <th className='forum-table-header-cell'><FontAwesomeIcon icon={faUser} /></th>
+                <th className='forum-table-header-cell'><FontAwesomeIcon icon={faMessage} /></th>
               </tr>
             </thead>
             <tbody>{threadList}</tbody>

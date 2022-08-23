@@ -263,17 +263,12 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
   font-weight: 700;
 }
 
-th {
+.forum-table-header-cell {
   border-radius: 5px;
 }
 
-td {
+.forum-table-cell {
   padding-left: 10px;
-}
-
-
-img {
-  width: 100%;
 }
 
 .forum-table {

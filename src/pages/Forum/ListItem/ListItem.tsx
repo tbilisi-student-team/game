@@ -13,15 +13,15 @@ export const ListItem = (props: ListItemProps) => {
 
   return (
     <tr key={id} className='theme' >
-      <td>
+      <td className='forum-table-cell'>
         <h3 className='theme-title'>
           <Link to={`${id}`} className='header-link'>{title}</Link>
         </h3>
         <p>{text}</p>
       </td>
-      <td className='datetime'>{datatime}</td>
-      <td className='userName'>{userName}</td>
-      <td className='messages'>{comments}</td>
+      <td className='forum-table-cell'>{datatime}</td>
+      <td className='forum-table-cell'>{userName}</td>
+      <td className='forum-table-cell'>{comments}</td>
     </tr>
   );
 };

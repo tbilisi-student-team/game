@@ -7,7 +7,7 @@ type InputProps = {
   placeholder: string,
   required: boolean,
   value: string,
-  setValue: ((arg: string) => void),
+  setValue: ((value: string, name: string) => void),
   disabled: boolean
 }
 
@@ -27,7 +27,7 @@ export const Input = (props: Partial<InputProps>) => {
 
   const handleValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (typeof props.setValue == 'function') {
-      props.setValue(e?.target.value)
+      props.setValue(e?.target.value, e?.target.name);
     }
   }
 

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useRef } from 'react';
+import React, { ChangeEvent, FormEvent, useRef, useState } from 'react';
 
 import { BASE_URL } from 'core/httpClient';
 
@@ -10,11 +10,11 @@ import './index.css';
 
 import buddy1 from 'assets/buddy-1.png';
 import buddy2 from 'assets/buddy-2-otr.png';
-import { useUserProfile } from 'hooks';
+// import { ChangeUserPasswordRequest } from 'remoteApi';
 
 export function User () {
   const {
-    currentUser: [ state ]
+    currentUser: [ state, actions ]
   } = useAppContext();
 
   const { data: user } = state;
@@ -23,13 +23,27 @@ export function User () {
     throw new Error('401');
   }
 
-  const [ profile, actions ] = useUserProfile(user);
+  const [ profileFormData, setProfileFormData ] = useState(user);
+  // const [ passwordData, setPasswordData ] = useState<ChangeUserPasswordRequest & { newPasswordRepeat: string }>({
+  //   oldPassword: '',
+  //   newPassword: '',
+  //   newPasswordRepeat: ''
+  // });
+
+  const handleChangeInput = (value: string, name: string) => {
+    setProfileFormData((prevState) => {
+      return {
+        ...prevState,
+        [name]: value
+      }
+    });
+  }
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    actions.changeProfile();
+    actions.changeUserProfile(profileFormData);
   }
 
   const handleChangeAvatar = (e: ChangeEvent<HTMLInputElement>) => {
@@ -39,7 +53,7 @@ export function User () {
       const formData = new FormData();
 
       formData.append('avatar', fileData);
-      actions.changeAvatar(formData);
+      actions.changeUserAvatar(formData);
     }
   }
 
@@ -53,7 +67,7 @@ export function User () {
 
       <div className={'avatar'}>
         <img
-          src={ profile.responseData?.avatar ? `${BASE_URL}/resources${profile.responseData.avatar}` : buddy1 }
+          src={ user.avatar ? `${BASE_URL}/resources${user.avatar}` : buddy1 }
           alt={'Avatar'}>
         </img>
         <br></br>
@@ -75,9 +89,9 @@ export function User () {
             name='email'
             placeholder='email'
             required={true}
-            value={profile.changeProfileRequest.email}
-            setValue={actions.setEmail}
-            disabled={profile.isLoading}
+            value={profileFormData.email}
+            setValue={handleChangeInput}
+            disabled={state.isLoading}
           />
 
           <Input
@@ -86,8 +100,8 @@ export function User () {
             name='phone'
             placeholder='phone'
             required={true}
-            value={profile.changeProfileRequest.phone}
-            setValue={actions.setPhone}/>
+            value={profileFormData.phone}
+            setValue={handleChangeInput}/>
 
           <Input
             type='text'
@@ -95,8 +109,8 @@ export function User () {
             name='login'
             placeholder='login'
             required={true}
-            value={profile.changeProfileRequest.login}
-            setValue={actions.setLogin}/>
+            value={profileFormData.login}
+            setValue={handleChangeInput}/>
 
           <Input
             type='text'
@@ -104,8 +118,8 @@ export function User () {
             name='first_name'
             placeholder='first_name'
             required={true}
-            value={profile.changeProfileRequest.first_name}
-            setValue={actions.setFirstName}/>
+            value={profileFormData.first_name}
+            setValue={handleChangeInput}/>
 
           <Input
             type='text'
@@ -113,8 +127,8 @@ export function User () {
             name='second_name'
             placeholder='second_name'
             required={true}
-            value={profile.changeProfileRequest.second_name}
-            setValue={actions.setSecondName}/>
+            value={profileFormData.second_name}
+            setValue={handleChangeInput}/>
 
           <Input
             type='text'
@@ -122,11 +136,11 @@ export function User () {
             name='display_name'
             placeholder='display_name'
             required={true}
-            value={profile.changeProfileRequest.display_name}
-            setValue={actions.setDisplayName}/>
+            value={profileFormData.display_name}
+            setValue={handleChangeInput}/>
 
           <button
-            disabled={profile.isLoading}
+            disabled={state.isLoading}
             type={'button'}
             className={'button'}
             onClick={handleChangePassword}
@@ -137,7 +151,7 @@ export function User () {
           </button>
 
           <button
-            disabled={profile.isLoading}
+            disabled={state.isLoading}
             type={'submit'}
             className={'button'}
           >
@@ -146,8 +160,8 @@ export function User () {
             </span>
           </button>
 
-          {profile.error && (
-            <div>{profile.error.message}</div>
+          {state.error && (
+            <div>{state.error.message}</div>
           )}
         </form>
 

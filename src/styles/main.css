@@ -281,6 +281,7 @@ img {
   width: 100%;
   border: 1px solid var(--white);
   margin: 20px 0 40px 0;
+  background-color: #00000044;
 }
 .messages {
   text-align: center;

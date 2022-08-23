@@ -1,7 +1,6 @@
 import { Dispatch, Reducer, useReducer } from 'react';
 import {
   ChangeUserPasswordRequest,
-  ChangeUserProfileAvatarRequest,
   ChangeUserProfileRequest,
   UserResponse,
   changeUserProfile, changeUserProfileAvatar
@@ -13,7 +12,6 @@ type State = {
   isLoading: boolean,
   error: Error | null,
   responseData: UserResponse | null,
-  changeAvatarRequest: ChangeUserProfileAvatarRequest | null,
   changeProfileRequest: ChangeUserProfileRequest,
   changePasswordRequest: ChangeUserPasswordRequest,
 }
@@ -22,7 +20,6 @@ const INITIAL_STATE: State = {
   isLoading: false,
   error: null,
   responseData: null,
-  changeAvatarRequest: null,
   changeProfileRequest: {
     first_name: '',
     second_name: '',
@@ -45,7 +42,6 @@ enum ActionType {
   SUBMIT_PROFILE = 'SUBMIT_PROFILE',
 
   SET_REQUEST = 'SET_REQUEST',
-  SET_FIELD = 'SET_FIELD',
   SET_FIRST_NAME = 'SET_FIRST_NAME',
   SET_SECOND_NAME = 'SET_SECOND_NAME',
   SET_LOGIN = 'SET_LOGIN',
@@ -54,7 +50,6 @@ enum ActionType {
   SET_OLD_PASSWORD = 'SET_OLD_PASSWORD',
   SET_PHONE = 'SET_PHONE',
   SET_DISPLAY_NAME = 'SET_DISPLAY_NAME',
-  SET_AVATAR_REQUEST = 'SET_AVATAR_REQUEST',
 }
 
 type Messages = {
@@ -73,7 +68,6 @@ type Messages = {
   [ActionType.SET_OLD_PASSWORD]: { oldPassword: ChangeUserPasswordRequest['oldPassword'] },
   [ActionType.SET_DISPLAY_NAME]: { display_name: ChangeUserProfileRequest['display_name'] },
   [ActionType.SET_PHONE]: { phone: ChangeUserProfileRequest['phone'] },
-  [ActionType.SET_AVATAR_REQUEST]: ChangeUserProfileAvatarRequest,
 }
 
 type Actions = ActionTypeAndPayload<Messages>[keyof ActionTypeAndPayload<Messages>];
@@ -161,11 +155,6 @@ const reducer = (
           phone: action.payload.phone,
         }
       }
-    case ActionType.SET_AVATAR_REQUEST:
-      return {
-        ...state,
-        changeAvatarRequest: action.payload
-      }
     default: throw new Error('useUserProfile reducer error.');
   }
 }
@@ -237,16 +226,12 @@ function getActions(
           console.error(error);
         });
     },
-    changeAvatar() {
-      if (state.changeAvatarRequest == null) {
-        return;
-      }
-
+    changeAvatar(formData: FormData) {
       dispatch({
         type: ActionType.LOADING_START,
       });
 
-      changeUserProfileAvatar(state.changeAvatarRequest)
+      changeUserProfileAvatar(formData)
         .then((axiosResponse: AxiosResponse<UserResponse>) => {
           if (axiosResponse.status === 200) {
             const responseData = axiosResponse.data;
@@ -255,6 +240,8 @@ function getActions(
               type: ActionType.LOADING_SUCCESS,
               payload: responseData
             });
+
+            console.log(state);
           }
           else {
             throw new Error(`${axiosResponse.status}: Unexpected error.`);
@@ -310,12 +297,6 @@ function getActions(
         payload: { email },
       });
     },
-    // setPassword(display_name: ChangeUserProfileRequest['display_name']) {
-    //   dispatch({
-    //     type: ActionType.SET_PASSWORD,
-    //     payload: { display_name },
-    //   });
-    // },
     setPhone(phone: ChangeUserProfileRequest['phone']) {
       dispatch({
         type: ActionType.SET_PHONE,
@@ -328,17 +309,11 @@ function getActions(
         payload: { display_name },
       });
     },
-    setAvatarRequest(avatar: ChangeUserProfileAvatarRequest) {
-      dispatch({
-        type: ActionType.SET_AVATAR_REQUEST,
-        payload: avatar,
-      });
-    }
   }
 }
 
 export function useUserProfile(user: UserResponse): [State, ReturnType<typeof getActions>] {
-  const initialState = { ...INITIAL_STATE, ...{ changeProfileRequest: user } };
+  const initialState = { ...INITIAL_STATE, ...{ changeProfileRequest: user }, ...{ responseData: user } };
 
   Object.entries(initialState.changeProfileRequest).forEach(([ key, val ]) => {
     if (!val) {//TODO change UserResponse type as it can have nulls

@@ -1,6 +1,6 @@
 .avatar {
 	margin: 0 auto;
-	cursor: pointer;
+	text-align: center;
 }
 
 .avatar img {
@@ -12,6 +12,7 @@
 	border: 1px solid var(--grey);
 }
 
-.avatar figcaption {
+.avatar button {
 	text-align: center;
+	translate: 0 -50%;
 }

@@ -1,4 +1,4 @@
-import React, { FormEvent, useId } from 'react';
+import React, { ChangeEvent, FormEvent, useRef } from 'react';
 
 import { BASE_URL } from 'core/httpClient';
 
@@ -13,7 +13,11 @@ import buddy2 from 'assets/buddy-2-otr.png';
 import { useUserProfile } from 'hooks';
 
 export function User () {
-  const user = useAppContext().currentUser[0].data;
+  const {
+    currentUser: [ state ]
+  } = useAppContext();
+
+  const { data: user } = state;
 
   if (user == null) {
     throw new Error('401');
@@ -21,23 +25,21 @@ export function User () {
 
   const [ profile, actions ] = useUserProfile(user);
 
-  const fileInputId = useId();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     actions.changeProfile();
   }
 
-  const handleChangeAvatar = () => {
-    const fileInput = document.getElementById(fileInputId) as HTMLInputElement;
-    const fileData = fileInput?.files?.item(0);
+  const handleChangeAvatar = (e: ChangeEvent<HTMLInputElement>) => {
+    const fileData = e.target.files?.item(0);
 
     if (fileData) {
       const formData = new FormData();
 
       formData.append('avatar', fileData);
-      actions.setAvatarRequest(formData);
-      actions.changeAvatar();
+      actions.changeAvatar(formData);
     }
   }
 
@@ -48,16 +50,19 @@ export function User () {
   return (
     <div className='wrapper'>
       <Header/>
-      <label htmlFor={fileInputId} className={'avatar'} title={'Choose an image from your device'}>
-        <figure>
-          <img
-            src={ user.avatar ? `${BASE_URL}/resources${user.avatar}` : buddy1 }
-            alt={'Avatar'}>
-          </img>
-          <figcaption>{`${ user.display_name}#${user.id}`}</figcaption>
-        </figure>
-        <input id={fileInputId} type={'file'} style={{ display: 'none' }} onChange={handleChangeAvatar} />
-      </label>
+
+      <div className={'avatar'}>
+        <img
+          src={ profile.responseData?.avatar ? `${BASE_URL}/resources${profile.responseData.avatar}` : buddy1 }
+          alt={'Avatar'}>
+        </img>
+        <br></br>
+        <button type={'button'} onClick={() => { fileInputRef.current?.click() }}>Change</button>
+        <input ref={fileInputRef} type={'file'} style={{ display: 'none' }} onChange={handleChangeAvatar} />
+      </div>
+
+      <h3>{`${user.display_name}#${user.id}`}</h3>{/* TODO update correctly (use profile?) */}
+
       <div className='main__container'>
         <div className='left-character-wrapper left-character-wrapper__main'>
           <img src={buddy1} alt='Buddy One' className='left-character'/>
@@ -74,7 +79,6 @@ export function User () {
             setValue={actions.setEmail}
             disabled={profile.isLoading}
           />
-
 
           <Input
             type='tel'

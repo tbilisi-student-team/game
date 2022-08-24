@@ -1,11 +1,17 @@
 import React from 'react';
+import { Button } from '../../UI/Button';
 
 import Header from '../../UI/Header';
 
 import buddy1 from '../../assets/buddy-1.png';
 import buddy2 from '../../assets/buddy-2-otr.png';
 
+import { useNavigate } from 'react-router-dom';
+import { RoutePaths } from 'types'
+
 export function Main () {
+
+  const navigate = useNavigate();
 
   return (
     <div className='wrapper'>
@@ -37,7 +43,9 @@ export function Main () {
             faucibus. Dictum lorem ornare vulputate in molestie sodales dictum. Mauris nulla ultricies. Odio. Mauris non
             dui mattis mattis id lacinia sit malesuada aenean.
           </p>
+          <Button name='Start' onSubmit={() => navigate(`${RoutePaths.StartGame}`)} />
         </div>
+
         <div className='right-character-wrapper right-character-wrapper__main'>
           <img src={buddy2} alt='Buddy Two' className='right-character'/>
         </div>

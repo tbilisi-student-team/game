@@ -1,7 +1,9 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAppContext } from 'AppContext';
-import { RoutePaths } from 'types';
+import { useSelector } from 'react-redux';
+import { RootState } from 'reduxStore';
+import { RoutePaths, Status } from 'types';
+import { selectCurrentUserData, selectCurrentUserError, selectCurrentUserStatus } from 'pages/App/currentUserSlice';
 
 type RequireAuthProps = {
   children: React.ReactNode,
@@ -12,29 +14,31 @@ export function RequireAuth(
     children
   }: RequireAuthProps
 ): JSX.Element {
-  const {
-    currentUser: [
-      state,
-    ]
-  } = useAppContext();
+  const currentUserData = useSelector((rootState: RootState) => selectCurrentUserData(rootState.currentUser));
+  const status = useSelector((rootState: RootState) => selectCurrentUserStatus(rootState.currentUser));
+  const error = useSelector((rootState: RootState) => selectCurrentUserError(rootState.currentUser));
 
-  if (state.isLoading) {
+  console.log(status);
+
+  if (status === Status.Pending) {
     return (
-      <h1>Loading...</h1>
+      <h1>Pending...</h1>
     )
   }
 
-  if (state.error) {
-
-
+  if (!!error?.message || status === Status.Rejected) {
     return (
-      <h1>{`Error: ${state.error.message}`}</h1>
+      <h1>{`Error${error ? `: ${error.message}` : '.'}`}</h1>
     )
+  }
+
+  if (currentUserData) {
+    console.log(currentUserData);
   }
 
   return (
     <>
-      {state.data ? children : <Navigate to={RoutePaths.SignIn}/>}
+      {(status === Status.Fulfilled && !!currentUserData) ? children : <Navigate to={RoutePaths.SignIn}/>}
     </>
   )
 }

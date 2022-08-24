@@ -26,6 +26,7 @@ module.exports = {
       hooks: path.resolve(__dirname, 'src/hooks'),
       AppContext: path.resolve(__dirname, 'src/AppContext'),
       hocs: path.resolve(__dirname, 'src/hocs'),
+      reduxStore: path.resolve(__dirname, 'src/reduxStore'),
     }
   },
   module: {

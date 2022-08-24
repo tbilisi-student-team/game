@@ -82,6 +82,7 @@ h3{
 .main__container {
   display: flex;
   flex-direction: row;
+  justify-content: space-around;
 }
 
 
@@ -152,6 +153,7 @@ h3{
   color: var(--grey);
   height: 18px;
 }
+
 .button {
   background-color: var(--white);
   width: 30%;
@@ -163,6 +165,11 @@ h3{
   align-items: center;
   border-style: solid;
   border: 1px solid var(--white);
+}
+
+.button:disabled,
+.button:disabled:hover {
+  opacity: 30%;
 }
 
 .button:hover {

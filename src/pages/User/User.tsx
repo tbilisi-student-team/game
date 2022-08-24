@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent, useRef, useState } from 'react';
 
 import { BASE_URL } from 'core/httpClient';
-import { ChangeUserPasswordRequest } from 'remoteApi';
+import { ChangeUserPasswordRequest, ChangeUserProfileRequest, UserResponse } from 'remoteApi';
 
 import { useAppContext } from 'AppContext';
 import Header from '../../UI/Header';
@@ -30,21 +30,40 @@ export function User () {
     newPasswordRepeat: ''
   });
 
+  const isProfileFormReady = function (profileFormData: UserResponse) {
+    return !Object.keys(profileFormData).every((key) =>
+      profileFormData[key as keyof UserResponse] === user[key as keyof ChangeUserProfileRequest]
+    );
+  }
+
+  const isPasswordFormReady = function (passwordData: ChangeUserPasswordRequest & { newPasswordRepeat: string }) {
+    return passwordData.oldPassword && passwordData.newPassword && passwordData.newPasswordRepeat;
+  }
+
+  const [ isProfileFormReadyState, setProfileFormReady ] = useState(isProfileFormReady(profileFormData));
+  const [ isPasswordFormReadyState, setPasswordFormReady ] = useState(isPasswordFormReady(passwordData));
+
   const handleChangeInput = (value: string, name: string) => {
     setProfileFormData((prevState) => {
-      return {
+      const newState = {
         ...prevState,
         [name]: value
       }
+
+      setProfileFormReady(isProfileFormReady(newState));
+      return newState;
     });
   }
 
   const handleChangePasswordInput = (value: string, name: string) => {
     setPasswordData((prevState) => {
-      return {
+      const newState = {
         ...prevState,
         [name]: value
       }
+
+      setPasswordFormReady(isPasswordFormReady(newState));
+      return newState;
     });
   }
 
@@ -67,7 +86,7 @@ export function User () {
   }
 
   const handleChangePassword = () => {
-    if (passwordData.oldPassword && passwordData.newPassword && passwordData.newPasswordRepeat) {
+    if (isPasswordFormReady(passwordData)) {
       if (passwordData.newPassword === passwordData.newPasswordRepeat) {
         actions.changeUserPassword({
           oldPassword: passwordData.oldPassword,
@@ -157,7 +176,7 @@ export function User () {
               setValue={handleChangeInput}/>
 
             <button
-              disabled={state.isLoading}
+              disabled={state.isLoading || !isProfileFormReadyState}
               type={'submit'}
               className={'button'}
             >
@@ -196,7 +215,7 @@ export function User () {
               setValue={handleChangePasswordInput}/>
 
             <button
-              disabled={state.isLoading}
+              disabled={state.isLoading || !isPasswordFormReadyState}
               type={'submit'}
               className={'button'}
               onClick={handleChangePassword}

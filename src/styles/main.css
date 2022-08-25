@@ -149,6 +149,17 @@ h3{
   opacity: 70%;
 }
 
+.input input:invalid,
+.input.input-invalid input {
+  background-color: pink;
+  border-color: red;
+  color: darkred;
+}
+
+.input.input-invalid label {
+  color: pink;
+}
+
 .label {
   color: var(--grey);
   height: 18px;
@@ -163,7 +174,6 @@ h3{
   border-radius: 10px;
   display: flex;
   align-items: center;
-  border-style: solid;
   border: 1px solid var(--white);
 }
 
@@ -191,7 +201,6 @@ h3{
   border-radius: 10px;
   display: flex;
   align-items: center;
-  border-style: solid;
   border: 1px solid var(--white);
   justify-content: center;
   color: black;

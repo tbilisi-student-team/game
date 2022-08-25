@@ -29,6 +29,7 @@ export function User () {
     newPassword: '',
     newPasswordRepeat: ''
   });
+  const [ newPasswordError, setNewPasswordError ] = useState('');
 
   const isProfileFormReady = function (profileFormData: UserResponse) {
     return !Object.keys(profileFormData).every((key) =>
@@ -85,7 +86,8 @@ export function User () {
     }
   }
 
-  const handleChangePassword = () => {
+  const handleChangePassword = (e: FormEvent) => {
+    e.preventDefault();
     if (isPasswordFormReady(passwordData)) {
       if (passwordData.newPassword === passwordData.newPasswordRepeat) {
         actions.changeUserPassword({
@@ -93,7 +95,7 @@ export function User () {
           newPassword: passwordData.newPassword
         });
       }
-      actions.loadingError(new Error('New passwords are not equal'));
+      setNewPasswordError('New passwords are not equal');
     }
   }
 
@@ -111,7 +113,7 @@ export function User () {
         <input ref={fileInputRef} type={'file'} style={{ display: 'none' }} onChange={handleChangeAvatar} />
       </div>
 
-      <h3>{`${user.display_name}#${user.id}`}</h3>{/* TODO update correctly (use profile?) */}
+      <h3>{`${user.display_name}#${user.id}`}</h3>
 
       <div className='main__container'>
         <div className='left-character-wrapper left-character-wrapper__main'>
@@ -186,7 +188,7 @@ export function User () {
             </button>
           </form>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleChangePassword}>
             <Input
               type='password'
               id='oldPassword'
@@ -200,8 +202,10 @@ export function User () {
               type='password'
               id='newPassword'
               name='newPassword'
+              label={newPasswordError ? newPasswordError : 'New password'}
               placeholder='New password'
               required
+              className={newPasswordError ? 'input-invalid' : ''}
               value={passwordData.newPassword}
               setValue={handleChangePasswordInput}/>
 
@@ -209,8 +213,10 @@ export function User () {
               type='password'
               id='newPasswordRepeat'
               name='newPasswordRepeat'
+              label={newPasswordError ? newPasswordError : 'New password (repeat)'}
               placeholder='Repeat new password'
               required
+              className={newPasswordError ? 'input-invalid' : ''}
               value={passwordData.newPasswordRepeat}
               setValue={handleChangePasswordInput}/>
 
@@ -218,7 +224,6 @@ export function User () {
               disabled={state.isLoading || !isPasswordFormReadyState}
               type={'submit'}
               className={'button'}
-              onClick={handleChangePassword}
             >
               <span className={'button-title'}>
                 Change Password

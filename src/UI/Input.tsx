@@ -8,7 +8,9 @@ type InputProps = {
   required: boolean,
   value: string,
   setValue: ((value: string, name: string) => void),
-  disabled: boolean
+  disabled: boolean,
+  label?: string,
+  className: string,
 }
 
 const defaultProps: InputProps = {
@@ -19,7 +21,8 @@ const defaultProps: InputProps = {
   required: false,
   value: '',
   setValue: (() => { /**/ }),
-  disabled: false
+  disabled: false,
+  className: ''
 }
 
 export const Input = (props: Partial<InputProps>) => {
@@ -32,8 +35,8 @@ export const Input = (props: Partial<InputProps>) => {
   }
 
   return (
-    <div className='input'>
-      <label htmlFor={props.id} className='label'>{props.name}</label>
+    <div className={`input ${props.className}`}>
+      <label htmlFor={props.id} className='label'>{props.label || props.name}</label>
       <input
         type={props.type}
         id={props.id}

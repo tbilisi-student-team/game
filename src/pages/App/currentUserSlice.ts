@@ -18,7 +18,7 @@ const INITIAL_STATE: State = {
 export const fetchCurrentUserData = createAsyncThunk('currentUser/fetchData', async () => {
   const axiosResponse = await getCurrentUser();
 
-  const currentUserData = axiosResponse.data as CurrentUserData;
+  const currentUserData = axiosResponse.data;
 
   return currentUserData;
 })

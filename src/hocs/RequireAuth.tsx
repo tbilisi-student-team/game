@@ -1,9 +1,12 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState } from 'reduxStore';
 import { RoutePaths, Status } from 'types';
-import { selectCurrentUserData, selectCurrentUserError, selectCurrentUserStatus } from 'pages/App/currentUserSlice';
+import { useAppSelector } from 'hooks';
+import {
+  selectCurrentUserData,
+  selectCurrentUserError,
+  selectCurrentUserStatus,
+} from 'pages/App/currentUserSlice';
 
 type RequireAuthProps = {
   children: React.ReactNode,
@@ -14,11 +17,9 @@ export function RequireAuth(
     children
   }: RequireAuthProps
 ): JSX.Element {
-  const currentUserData = useSelector((rootState: RootState) => selectCurrentUserData(rootState.currentUser));
-  const status = useSelector((rootState: RootState) => selectCurrentUserStatus(rootState.currentUser));
-  const error = useSelector((rootState: RootState) => selectCurrentUserError(rootState.currentUser));
-
-  console.log(status);
+  const currentUserData = useAppSelector((rootState) => selectCurrentUserData(rootState.currentUser));
+  const status = useAppSelector((rootState) => selectCurrentUserStatus(rootState.currentUser));
+  const error = useAppSelector((rootState) => selectCurrentUserError(rootState.currentUser));
 
   if (status === Status.Pending) {
     return (
@@ -30,10 +31,6 @@ export function RequireAuth(
     return (
       <h1>{`Error${error ? `: ${error.message}` : '.'}`}</h1>
     )
-  }
-
-  if (currentUserData) {
-    console.log(currentUserData);
   }
 
   return (

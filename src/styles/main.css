@@ -105,7 +105,7 @@ h3{
 }
 
 .description {
-  width: 60%;
+    width: 60%;
 }
 
 .right-character-wrapper {
@@ -270,4 +270,44 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
 .userlist-item:hover {
   background-color: var(--whiteinput);
   cursor:pointer;
+}
+
+.table-header {
+  width: 100%;
+  background: var(--whiteheader);
+  height: 40px;
+  font-weight: 700;
+}
+
+.forum-table-header-cell {
+  border-radius: 5px;
+}
+
+.forum-table-cell {
+  padding-left: 10px;
+}
+
+.forum-table {
+  border-radius: 10px;
+  width: 100%;
+  border: 1px solid var(--white);
+  margin: 20px 0 40px 0;
+  background-color: #00000044;
+}
+
+.messages {
+  text-align: center;
+}
+
+.forum {
+  display: block;
+  width: 90%;
+}
+
+.theme {
+  border-bottom: 1px solid var(--white);
+}
+
+.theme-title {
+  text-align: left;
 }

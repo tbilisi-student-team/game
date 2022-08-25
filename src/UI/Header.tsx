@@ -11,12 +11,16 @@ export const Header = () => {
   return (
     <header className='header'>
       <div className='left__container'>
-        <div className='qa'>
-          <Link className='header-link' to='/forum'>Q&A</Link>
+        <div>
+          <Link className='header-link' to='/'>Home</Link>
         </div> 
         <div className='deriver'> | </div>
-        <div className='leaderboard'>
-          <Link className='header-link' to='/leaderboard'> Our champions</Link>
+        <div>
+          <Link className='header-link' to='/forum'>Forum</Link>
+        </div> 
+        <div className='deriver'> | </div>
+        <div>
+          <Link className='header-link' to='/leaderboard'>Our champions</Link>
         </div>
       </div>
       <div className='right__container'>

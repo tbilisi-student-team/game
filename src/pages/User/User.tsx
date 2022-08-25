@@ -124,7 +124,7 @@ export function User () {
               id='email'
               name='email'
               placeholder='email'
-              required={true}
+              required
               value={profileFormData.email}
               setValue={handleChangeInput}
               disabled={state.isLoading}
@@ -135,7 +135,7 @@ export function User () {
               id='phone'
               name='phone'
               placeholder='phone'
-              required={true}
+              required
               value={profileFormData.phone}
               setValue={handleChangeInput}/>
 
@@ -144,7 +144,7 @@ export function User () {
               id='login'
               name='login'
               placeholder='login'
-              required={true}
+              required
               value={profileFormData.login}
               setValue={handleChangeInput}/>
 
@@ -153,7 +153,7 @@ export function User () {
               id='first_name'
               name='first_name'
               placeholder='first_name'
-              required={true}
+              required
               value={profileFormData.first_name}
               setValue={handleChangeInput}/>
 
@@ -162,7 +162,7 @@ export function User () {
               id='second_name'
               name='second_name'
               placeholder='second_name'
-              required={true}
+              required
               value={profileFormData.second_name}
               setValue={handleChangeInput}/>
 
@@ -171,7 +171,7 @@ export function User () {
               id='display_name'
               name='display_name'
               placeholder='display_name'
-              required={true}
+              required
               value={profileFormData.display_name}
               setValue={handleChangeInput}/>
 
@@ -192,7 +192,7 @@ export function User () {
               id='oldPassword'
               name='oldPassword'
               placeholder='Current password'
-              required={true}
+              required
               value={passwordData.oldPassword}
               setValue={handleChangePasswordInput}/>
 
@@ -201,7 +201,7 @@ export function User () {
               id='newPassword'
               name='newPassword'
               placeholder='New password'
-              required={true}
+              required
               value={passwordData.newPassword}
               setValue={handleChangePasswordInput}/>
 
@@ -210,7 +210,7 @@ export function User () {
               id='newPasswordRepeat'
               name='newPasswordRepeat'
               placeholder='Repeat new password'
-              required={true}
+              required
               value={passwordData.newPasswordRepeat}
               setValue={handleChangePasswordInput}/>
 

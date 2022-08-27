@@ -11,6 +11,8 @@ import fetus2Src from '../../assets/fetus-2.png';
 import fetus3Src from '../../assets/fetus-3.png';
 import fetus4Src from '../../assets/fetus-4.png';
 import fetus5Src from '../../assets/fetus-5.png';
+import seedSrc from '../../assets/seed.png';
+import seedRaysSrc from '../../assets/seed-rays.png';
 
 let isLoadComplete = false;
 const images: HTMLImageElement[] = [];
@@ -24,6 +26,8 @@ const fetuses = [
   getImage(fetus4Src),
   getImage(fetus5Src),
 ];
+const seed = getImage(seedSrc);
+const seedRays = getImage(seedRaysSrc);
 
 export default class Drawer {
   constructor(context: CanvasRenderingContext2D) {
@@ -166,7 +170,9 @@ export default class Drawer {
       drawCircle(this.ctx, bullet.x, bullet.y, bullet.radius*2, { fillStyle: '#f00' });
     }
     else {
-      drawCircle(this.ctx, bullet.x, bullet.y, bullet.radius, { fillStyle: '#00f' });
+      this.ctx.drawImage(seed, bullet.x - seed.width/2, bullet.y - seed.height/2);
+      this.ctx.drawImage(seedRays, bullet.x - seed.width - seedRays.width/2 + 5, bullet.y - seed.height/2);
+      // drawCircle(this.ctx, bullet.x, bullet.y, bullet.radius, { fillStyle: '#0000ff44' });//TODO debug only
     }
   }
 

@@ -4,10 +4,13 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './src/index.tsx',
+  entry: {
+    'app': './src/index.tsx',
+    'sw': './src/sw/sw.ts',
+  },
   output: {
     path: path.join(__dirname, '/dist'),
-    filename: 'bundle.js',
+    filename: '[name].js',
     publicPath: '/'
   },
   devServer: {
@@ -27,12 +30,13 @@ module.exports = {
       AppContext: path.resolve(__dirname, 'src/AppContext'),
       hocs: path.resolve(__dirname, 'src/hocs'),
       reduxStore: path.resolve(__dirname, 'src/reduxStore'),
+      utils: path.resolve(__dirname, 'src/utils'),
     }
   },
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.(js|ts|tsx)$/,
         use: 'ts-loader',
         exclude: /node_modules/
       },

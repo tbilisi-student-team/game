@@ -10,6 +10,7 @@ import { ErrorBoundary } from 'components';
 import { App } from 'pages';
 import { AppContextProvider } from 'AppContext';
 import { fetchCurrentUserData } from 'pages/App/currentUserSlice';
+import { startServiceWorker } from 'utils';
 
 reduxStore.dispatch(fetchCurrentUserData());
 
@@ -25,3 +26,5 @@ ReactDOM.render(
       </BrowserRouter>
     </ErrorBoundary>
   </React.StrictMode>, document.getElementById('root'));
+
+startServiceWorker();

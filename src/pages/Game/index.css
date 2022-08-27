@@ -1,0 +1,7 @@
+canvas.game {
+	cursor: grab;
+}
+
+canvas.game.grabbing {
+	cursor: grabbing;
+}

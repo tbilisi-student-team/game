@@ -4,8 +4,8 @@ export class Bullet {
   constructor(x: number, y: number, vx: number, vy: number) {
     this.x = this.startX = x;
     this.y = this.startY = y;
-    this.vx = vx;
-    this.vy = vy;
+    this.vx0 = this.vx = vx;
+    this.vy0 = this.vy = vy;
     this.startTime = performance.now();
   }
 
@@ -13,6 +13,8 @@ export class Bullet {
   y: number;
   vx: number;
   vy: number;
+  vx0: number;
+  vy0: number;
   startX: number;
   startY: number;
   startTime: number;
@@ -26,7 +28,8 @@ export class Bullet {
     }
     const time = performance.now() - this.startTime;
 
-    this.x = this.startX + this.vx * time;
-    this.y = this.startY - this.vy * time + CONST.g * time**2;
+    this.x = this.startX + this.vx0 * time;
+    this.y = this.startY - this.vy0 * time + CONST.g * time**2;
+    this.vy = this.vy0 - CONST.g * time;
   }
 }

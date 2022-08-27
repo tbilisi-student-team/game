@@ -171,7 +171,12 @@ export default class Drawer {
     }
     else {
       this.ctx.drawImage(seed, bullet.x - seed.width/2, bullet.y - seed.height/2);
-      this.ctx.drawImage(seedRays, bullet.x - seed.width - seedRays.width/2 + 5, bullet.y - seed.height/2);
+      //Поворачиваем шлейф от снаряда по направлению полета
+      this.ctx.save();
+      this.ctx.translate(bullet.x, bullet.y);
+      this.ctx.rotate(-Math.atan2(bullet.vy, bullet.vx));
+      this.ctx.drawImage(seedRays, 5 - seed.width - seedRays.width/2, -seed.height/2);
+      this.ctx.restore();
       // drawCircle(this.ctx, bullet.x, bullet.y, bullet.radius, { fillStyle: '#0000ff44' });//TODO debug only
     }
   }

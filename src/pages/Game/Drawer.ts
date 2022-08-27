@@ -35,6 +35,7 @@ export default class Drawer {
   }
 
   ctx: CanvasRenderingContext2D;
+  nowPrev: number = performance.now();
 
   /**
    * Главная функция, отвечающая за отрисовку состояния игры в кадре
@@ -87,12 +88,14 @@ export default class Drawer {
         drawCircle(this.ctx, fruit.x, fruit.y + fruit.radius, fruit.radius, { fillStyle: 'yellow' });
       });
 
-      this.drawDebugInfo(`mouseX: ${state.mouse.x}, mouseY: ${state.mouse.y}`);
+      this.drawDebugInfo(`mouseX: ${state.mouse.x}, mouseY: ${state.mouse.y}` +
+        `, fps: ${Math.round(1000/(performance.now() - this.nowPrev))}`);
 
       if (state.mouse.isPressed) {
         this.drawDebugTrajectory(state.mouse);
       }
     }
+    this.nowPrev = performance.now();
   }
 
   clearFrame() {

@@ -1,10 +1,12 @@
-import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
+//@ts-nocheck
+import React, { useCallback, useLayoutEffect, useRef, useState, useEffect } from 'react';
 import useInterval from './hooks/useInterval';
 import { GameProps, GameState, Loc } from './types';
 import { Fruit } from './models';
 import Controller from './Controller';
-import Drawer from './Drawer';
+import Drawer, {drawFrame} from './Drawer';
 import * as CONST from './consts';
+import { toggleFullScreen } from '../../components/fullscreen';
 
 const FRUITS_LOCS: Loc[] = [
   { x: 1289, y: 146 },
@@ -14,7 +16,7 @@ const FRUITS_LOCS: Loc[] = [
   { x: 1574, y: 743 },
 ];
 
-const INITIAL_STATE: GameState = {
+export const INITIAL_STATE: GameState = {
   buddyX: CONST.BUDDY_START_X,
   buddyY: CONST.BUDDY_START_Y,
   pews: [],
@@ -36,6 +38,8 @@ const INITIAL_STATE: GameState = {
 
 export function Game (props: GameProps) {
   console.log('Game init');
+ 
+
 
   const stateRef = useRef<GameState>(INITIAL_STATE);
   const controlRef = useRef<Controller>(new Controller(stateRef.current));
@@ -44,6 +48,7 @@ export function Game (props: GameProps) {
   const rafIdRef = useRef(0);
 
   const [ isPaused, setPaused ] = useState(false);
+  const [ isFullscreen, setFullscreen ] = useState(false);
 
   const onKeyDown = useCallback(function onKeyDown(e: KeyboardEvent) {
     if (e.key === ' ') {
@@ -54,6 +59,13 @@ export function Game (props: GameProps) {
     }
     else if (e.key === 'd') {
       stateRef.current.debug = !stateRef.current.debug;
+    }
+    else if (e.key === 'f'||e.key === 'а') {
+      toggleFullScreen();
+     setTimeout(() => {
+      setFullscreen(!setFullscreen());
+      
+     }, 50);
     }
   }, [ isPaused ]);
 
@@ -155,7 +167,7 @@ export function Game (props: GameProps) {
   }
 
   //TODO canvas align middle
-
+ 
   return (
     <>
       <canvas
@@ -164,6 +176,7 @@ export function Game (props: GameProps) {
         width={canvasWidth}
         height={canvasHeight}>
       </canvas>
+      
     </>
   )
 }

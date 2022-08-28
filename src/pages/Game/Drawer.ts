@@ -13,6 +13,7 @@ import fetus4Src from '../../assets/fetus-4.png';
 import fetus5Src from '../../assets/fetus-5.png';
 import seedSrc from '../../assets/seed.png';
 import seedRaysSrc from '../../assets/seed-rays.png';
+import { FruitAge } from 'pages/Game/models/Fruit';
 
 let isLoadComplete = false;
 const images: HTMLImageElement[] = [];
@@ -66,6 +67,10 @@ export default class Drawer {
       this.drawBullet(bullet);
     });
 
+    if (state.mouse.isPressed) {
+      this.drawTrajectory(state.mouse);
+    }
+
     this.ctx.drawImage(buddyFront, state.buddyX, state.buddyY);
 
     state.pews.forEach((pew) => {
@@ -86,14 +91,17 @@ export default class Drawer {
 
       state.fruits.forEach((fruit) => {
         drawCircle(this.ctx, fruit.x, fruit.y + fruit.radius, fruit.radius, { fillStyle: 'yellow' });
+        this.ctx.fillStyle = '#000';
+        this.ctx.textAlign = 'center';
+        this.ctx.textBaseline = 'middle';
+
+        const score = fruit.age == FruitAge.Rotten ? -1 : fruit.age;
+
+        this.ctx.fillText(score.toString(), fruit.x, fruit.y + fruit.radius);
       });
 
       this.drawDebugInfo(`mouseX: ${state.mouse.x}, mouseY: ${state.mouse.y}` +
         `, fps: ${Math.round(1000/(performance.now() - this.nowPrev))}`);
-
-      if (state.mouse.isPressed) {
-        this.drawDebugTrajectory(state.mouse);
-      }
     }
     this.nowPrev = performance.now();
   }
@@ -202,8 +210,7 @@ export default class Drawer {
     this.ctx.fillText(debugInfo.toString(), CONST.CANVAS_BASE_WIDTH - padding, CONST.CANVAS_BASE_HEIGHT - padding);
   }
 
-  drawDebugTrajectory(mouse: MouseState) {
-    //функция - прототип. Потребуется при прицеливании что-то отображать все равно.
+  drawTrajectory(mouse: MouseState) {
     const vx = Math.min((mouse.pressX - mouse.x) / 100, CONST.BULLET_SPEED_MAX);
     const vy = -Math.min((mouse.pressY - mouse.y) / 100, CONST.BULLET_SPEED_MAX);
 
@@ -211,15 +218,31 @@ export default class Drawer {
       return;
     }
 
+    const now = performance.now();
+    const dtime = -15*(now%1000)/1000;
+
     this.ctx.save();
     this.ctx.strokeStyle = '#fff';
-    this.ctx.setLineDash([ 5, 5 ]);
+    this.ctx.lineCap = 'round';
+    this.ctx.lineWidth = 3;
+    this.ctx.lineDashOffset = dtime;
+    this.ctx.setLineDash([ 2, 13 ]);
     this.ctx.beginPath();
-    for (let time = 0; time < 1000; time += 10) {
+    for (let time = 0; time < 500; time += 10) {
       const x = CONST.BULLET_START_X + vx * time;
+
+      if (x > CONST.CANVAS_BASE_WIDTH / 2) {
+        break;
+      }
+
       const y = CONST.BULLET_START_Y - vy * time + CONST.g * time**2;
 
-      this.ctx.lineTo(x, y);
+      if (time < 50) {
+        this.ctx.moveTo(x, y);
+      }
+      else {
+        this.ctx.lineTo(x, y);
+      }
     }
     this.ctx.stroke();
     this.ctx.restore();

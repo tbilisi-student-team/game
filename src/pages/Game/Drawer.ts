@@ -122,7 +122,7 @@ export default class Drawer {
 
     this.ctx.font = '40px averia-serif-libre';
     this.ctx.strokeStyle = '#fff';
-    this.ctx.fillStyle = '#000';
+    this.ctx.fillStyle = '#fff';
     this.ctx.textAlign = 'center';
     this.ctx.textBaseline = 'top';
 
@@ -140,7 +140,7 @@ export default class Drawer {
 
     this.ctx.font = '40px averia-serif-libre';
     this.ctx.strokeStyle = '#fff';
-    this.ctx.fillStyle = '#000';
+    this.ctx.fillStyle = '#fff';
     this.ctx.textAlign = 'center';
     this.ctx.textBaseline = 'top';
 

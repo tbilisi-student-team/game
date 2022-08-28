@@ -48,7 +48,7 @@ export function Game (props: GameProps) {
   const rafIdRef = useRef(0);
 
   const [ isPaused, setPaused ] = useState(false);
-  const [ isFullscreen, setFullscreen ] = useState(false);
+  const [ isFullscreen, setFullscreen ] = useState("");
 
   const onKeyDown = useCallback(function onKeyDown(e: KeyboardEvent) {
     if (e.key === ' ') {

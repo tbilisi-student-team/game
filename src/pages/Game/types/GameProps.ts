@@ -27,9 +27,12 @@ export type GameState = {
   pews: Pew[],
   bullets: Bullet[],
   fruits: Fruit[],
-  isLoading: boolean,
   isGameOver: boolean,
+  isPause: boolean,
+  isGameStarted: boolean,
   debug: boolean,
   startTime: number,
-  mouse: MouseState
+  pauseTime: number,
+  elapsedTimeSinceStart: number,
+  mouseState: MouseState
 }

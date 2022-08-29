@@ -3,14 +3,18 @@ import * as CONST from './consts';
 import { Bullet, Fruit } from '../Game/models';
 import { drawCircle } from './utils/CanvasUtils';
 
-import buddyFrontSrc from '../../assets/buddy-1-front.png';
-import buddyBackSrc from '../../assets/buddy-1-back.png';
-import treeSrc from '../../assets/tree.png';
-import fetus1Src from '../../assets/fetus-1.png';
-import fetus2Src from '../../assets/fetus-2.png';
-import fetus3Src from '../../assets/fetus-3.png';
-import fetus4Src from '../../assets/fetus-4.png';
-import fetus5Src from '../../assets/fetus-5.png';
+import buddyFrontSrc from 'assets/buddy-1-front.png';
+import buddyBackSrc from 'assets/buddy-1-back.png';
+import treeSrc from 'assets/tree.png';
+import fetus1Src from 'assets/fetus-1.png';
+import fetus2Src from 'assets/fetus-2.png';
+import fetus3Src from 'assets/fetus-3.png';
+import fetus4Src from 'assets/fetus-4.png';
+import fetus5Src from 'assets/fetus-5.png';
+import seedSrc from 'assets/seed.png';
+import seedRaysSrc from 'assets/seed-rays.png';
+import flowerSrc from 'assets/flower.png';
+import { FruitAge } from 'pages/Game/models/Fruit';//TODO move score calc to Controller
 
 let isLoadComplete = false;
 const images: HTMLImageElement[] = [];
@@ -24,6 +28,9 @@ const fetuses = [
   getImage(fetus4Src),
   getImage(fetus5Src),
 ];
+const seed = getImage(seedSrc);
+const seedRays = getImage(seedRaysSrc);
+const flower = getImage(flowerSrc);
 
 export default class Drawer {
   constructor(context: CanvasRenderingContext2D) {
@@ -31,6 +38,8 @@ export default class Drawer {
   }
 
   ctx: CanvasRenderingContext2D;
+  nowPrev: number = performance.now();
+  debug = false;
 
   /**
    * Главная функция, отвечающая за отрисовку состояния игры в кадре
@@ -47,6 +56,7 @@ export default class Drawer {
       return;
     }
 
+    this.ctx.drawImage(flower, state.buddyX - 100, state.buddyY + buddyFront.height - 20);
     this.ctx.drawImage(buddyBack, state.buddyX, state.buddyY);
 
     const treeWidth = tree.width * CONST.CANVAS_BASE_HEIGHT / tree.height;
@@ -73,22 +83,18 @@ export default class Drawer {
     else {
       this.drawScore(state.score);
       this.drawTimeLeft(state.startTime);
-    }
-
-    if (state.debug) {
-      this.ctx.strokeStyle = '#fff';
-      this.ctx.strokeRect(0, 0, CONST.CANVAS_BASE_WIDTH, CONST.CANVAS_BASE_HEIGHT);
-
-      state.fruits.forEach((fruit) => {
-        drawCircle(this.ctx, fruit.x, fruit.y + fruit.radius, fruit.radius, { fillStyle: 'yellow' });
-      });
-
-      this.drawDebugInfo(`mouseX: ${state.mouse.x}, mouseY: ${state.mouse.y}`);
-
       if (state.mouse.isPressed) {
-        this.drawDebugTrajectory(state.mouse);
+        this.drawTrajectory(state.mouse);
       }
     }
+
+    if (this.debug) {
+      this.ctx.strokeStyle = '#fff';
+      this.ctx.strokeRect(0, 0, CONST.CANVAS_BASE_WIDTH, CONST.CANVAS_BASE_HEIGHT);
+      this.drawDebugInfo(`mouseX: ${state.mouse.x}, mouseY: ${state.mouse.y}` +
+        `, fps: ${Math.round(1000/(performance.now() - this.nowPrev))}`);
+    }
+    this.nowPrev = performance.now();
   }
 
   clearFrame() {
@@ -115,7 +121,7 @@ export default class Drawer {
 
     this.ctx.font = '40px averia-serif-libre';
     this.ctx.strokeStyle = '#fff';
-    this.ctx.fillStyle = '#000';
+    this.ctx.fillStyle = '#fff';
     this.ctx.textAlign = 'center';
     this.ctx.textBaseline = 'top';
 
@@ -133,7 +139,7 @@ export default class Drawer {
 
     this.ctx.font = '40px averia-serif-libre';
     this.ctx.strokeStyle = '#fff';
-    this.ctx.fillStyle = '#000';
+    this.ctx.fillStyle = '#fff';
     this.ctx.textAlign = 'center';
     this.ctx.textBaseline = 'top';
 
@@ -166,7 +172,14 @@ export default class Drawer {
       drawCircle(this.ctx, bullet.x, bullet.y, bullet.radius*2, { fillStyle: '#f00' });
     }
     else {
-      drawCircle(this.ctx, bullet.x, bullet.y, bullet.radius, { fillStyle: '#00f' });
+      this.ctx.drawImage(seed, bullet.x - seed.width/2, bullet.y - seed.height/2);
+      //Поворачиваем шлейф от снаряда по направлению полета
+      this.ctx.save();
+      this.ctx.translate(bullet.x, bullet.y);
+      this.ctx.rotate(-Math.atan2(bullet.vy, bullet.vx));
+      this.ctx.drawImage(seedRays, 5 - seed.width - seedRays.width/2, -seed.height/2);
+      this.ctx.restore();
+      // drawCircle(this.ctx, bullet.x, bullet.y, bullet.radius, { fillStyle: '#0000ff44' });//TODO debug only
     }
   }
 
@@ -174,6 +187,16 @@ export default class Drawer {
     const img = fetuses[fruit.age];
 
     this.ctx.drawImage(img, fruit.x - img.width/2, fruit.y);
+    if (this.debug) {
+      drawCircle(this.ctx, fruit.x, fruit.y + fruit.radius, fruit.radius, { fillStyle: 'yellow' });
+      this.ctx.fillStyle = '#000';
+      this.ctx.textAlign = 'center';
+      this.ctx.textBaseline = 'middle';
+
+      const score = fruit.age == FruitAge.Rotten ? -1 : fruit.age;
+
+      this.ctx.fillText(score.toString(), fruit.x, fruit.y + fruit.radius);
+    }
   }
 
   drawDebugInfo(debugInfo: string) {
@@ -188,8 +211,7 @@ export default class Drawer {
     this.ctx.fillText(debugInfo.toString(), CONST.CANVAS_BASE_WIDTH - padding, CONST.CANVAS_BASE_HEIGHT - padding);
   }
 
-  drawDebugTrajectory(mouse: MouseState) {
-    //функция - прототип. Потребуется при прицеливании что-то отображать все равно.
+  drawTrajectory(mouse: MouseState) {
     const vx = Math.min((mouse.pressX - mouse.x) / 100, CONST.BULLET_SPEED_MAX);
     const vy = -Math.min((mouse.pressY - mouse.y) / 100, CONST.BULLET_SPEED_MAX);
 
@@ -197,15 +219,33 @@ export default class Drawer {
       return;
     }
 
+    const now = performance.now();
+    const dashWidth = 2;
+    const dashEmptyWidth = 13;
+    const dashOffset = -(dashWidth + dashEmptyWidth)*(now%1000)/1000;
+
     this.ctx.save();
     this.ctx.strokeStyle = '#fff';
-    this.ctx.setLineDash([ 5, 5 ]);
+    this.ctx.lineCap = 'round';
+    this.ctx.lineWidth = 3;
+    this.ctx.lineDashOffset = dashOffset;
+    this.ctx.setLineDash([ dashWidth, dashEmptyWidth ]);
     this.ctx.beginPath();
-    for (let time = 0; time < 1000; time += 10) {
+    for (let time = 0; time < 500; time += 10) {
       const x = CONST.BULLET_START_X + vx * time;
+
+      if (x > CONST.CANVAS_BASE_WIDTH / 2) {
+        break;
+      }
+
       const y = CONST.BULLET_START_Y - vy * time + CONST.g * time**2;
 
-      this.ctx.lineTo(x, y);
+      if (time < 50) {
+        this.ctx.moveTo(x, y);
+      }
+      else {
+        this.ctx.lineTo(x, y);
+      }
     }
     this.ctx.stroke();
     this.ctx.restore();

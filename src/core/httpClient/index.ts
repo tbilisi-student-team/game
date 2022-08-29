@@ -1,1 +1,1 @@
-export { httpClient } from './httpClient';
+export { httpClient, BASE_URL } from './httpClient';

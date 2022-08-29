@@ -218,14 +218,16 @@ export default class Drawer {
     }
 
     const now = performance.now();
-    const dtime = -15*(now%1000)/1000;
+    const dashWidth = 2;
+    const dashEmptyWidth = 13;
+    const dashOffset = -(dashWidth + dashEmptyWidth)*(now%1000)/1000;
 
     this.ctx.save();
     this.ctx.strokeStyle = '#fff';
     this.ctx.lineCap = 'round';
     this.ctx.lineWidth = 3;
-    this.ctx.lineDashOffset = dtime;
-    this.ctx.setLineDash([ 2, 13 ]);
+    this.ctx.lineDashOffset = dashOffset;
+    this.ctx.setLineDash([ dashWidth, dashEmptyWidth ]);
     this.ctx.beginPath();
     for (let time = 0; time < 500; time += 10) {
       const x = CONST.BULLET_START_X + vx * time;

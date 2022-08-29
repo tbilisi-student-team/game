@@ -5,6 +5,7 @@ import { Fruit } from './models';
 import Controller from './Controller';
 import Drawer from './Drawer';
 import * as CONST from './consts';
+import './index.css';
 
 const FRUITS_LOCS: Loc[] = [
   { x: 1289, y: 146 },
@@ -52,8 +53,8 @@ export function Game (props: GameProps) {
     else if (e.key === 'p') {
       setPaused(!isPaused);
     }
-    else if (e.key === 'd') {
-      stateRef.current.debug = !stateRef.current.debug;
+    else if (e.key === 'd' && drawerRef.current) {
+      drawerRef.current.debug = !drawerRef.current.debug;
     }
   }, [ isPaused ]);
 

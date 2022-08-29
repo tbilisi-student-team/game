@@ -41,15 +41,15 @@ export function Main () {
             urna eget molestie venenatis mauris dui venenatis non tortor, amet tempus dui sit ornare eget malesuada
             faucibus. Dictum lorem ornare vulputate in molestie sodales dictum. Mauris nulla ultricies. Odio. Mauris non
             dui mattis mattis id lacinia sit malesuada aenean.
-          </p>
-          <Button name='Start' onSubmit={() => navigate(`${RoutePaths.StartGame}`)} />
-        </div>
+            </p>
+            <Button name='Start' onSubmit={() => navigate(`${RoutePaths.Game}`)} />
+          </div>
 
-        <div className='right-character-wrapper right-character-wrapper__main'>
-          <img src={buddy2} alt='Buddy Two' className='right-character'/>
+          <div className='right-character-wrapper right-character-wrapper__main'>
+            <img src={buddy2} alt='Buddy Two' className='right-character'/>
+          </div>
         </div>
       </div>
-
     </div>
   )
 }

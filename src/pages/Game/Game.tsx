@@ -53,8 +53,8 @@ export function Game (props: GameProps) {
     else if (e.key === 'p') {
       setPaused(!isPaused);
     }
-    else if (e.key === 'd') {
-      stateRef.current.debug = !stateRef.current.debug;
+    else if (e.key === 'd' && drawerRef.current) {
+      drawerRef.current.debug = !drawerRef.current.debug;
     }
   }, [ isPaused ]);
 

@@ -37,6 +37,7 @@ export default class Drawer {
 
   ctx: CanvasRenderingContext2D;
   nowPrev: number = performance.now();
+  debug = false;
 
   /**
    * Главная функция, отвечающая за отрисовку состояния игры в кадре
@@ -85,21 +86,9 @@ export default class Drawer {
       this.drawTimeLeft(state.startTime);
     }
 
-    if (state.debug) {
+    if (this.debug) {
       this.ctx.strokeStyle = '#fff';
       this.ctx.strokeRect(0, 0, CONST.CANVAS_BASE_WIDTH, CONST.CANVAS_BASE_HEIGHT);
-
-      state.fruits.forEach((fruit) => {
-        drawCircle(this.ctx, fruit.x, fruit.y + fruit.radius, fruit.radius, { fillStyle: 'yellow' });
-        this.ctx.fillStyle = '#000';
-        this.ctx.textAlign = 'center';
-        this.ctx.textBaseline = 'middle';
-
-        const score = fruit.age == FruitAge.Rotten ? -1 : fruit.age;
-
-        this.ctx.fillText(score.toString(), fruit.x, fruit.y + fruit.radius);
-      });
-
       this.drawDebugInfo(`mouseX: ${state.mouse.x}, mouseY: ${state.mouse.y}` +
         `, fps: ${Math.round(1000/(performance.now() - this.nowPrev))}`);
     }
@@ -196,6 +185,16 @@ export default class Drawer {
     const img = fetuses[fruit.age];
 
     this.ctx.drawImage(img, fruit.x - img.width/2, fruit.y);
+    if (this.debug) {
+      drawCircle(this.ctx, fruit.x, fruit.y + fruit.radius, fruit.radius, { fillStyle: 'yellow' });
+      this.ctx.fillStyle = '#000';
+      this.ctx.textAlign = 'center';
+      this.ctx.textBaseline = 'middle';
+
+      const score = fruit.age == FruitAge.Rotten ? -1 : fruit.age;
+
+      this.ctx.fillText(score.toString(), fruit.x, fruit.y + fruit.radius);
+    }
   }
 
   drawDebugInfo(debugInfo: string) {

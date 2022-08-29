@@ -13,7 +13,8 @@ import fetus4Src from '../../assets/fetus-4.png';
 import fetus5Src from '../../assets/fetus-5.png';
 import seedSrc from '../../assets/seed.png';
 import seedRaysSrc from '../../assets/seed-rays.png';
-import { FruitAge } from 'pages/Game/models/Fruit';
+import flowerSrc from 'assets/flower.png';
+import { FruitAge } from 'pages/Game/models/Fruit';//TODO move score calc to Controller
 
 let isLoadComplete = false;
 const images: HTMLImageElement[] = [];
@@ -29,6 +30,7 @@ const fetuses = [
 ];
 const seed = getImage(seedSrc);
 const seedRays = getImage(seedRaysSrc);
+const flower = getImage(flowerSrc);
 
 export default class Drawer {
   constructor(context: CanvasRenderingContext2D) {
@@ -54,6 +56,7 @@ export default class Drawer {
       return;
     }
 
+    this.ctx.drawImage(flower, state.buddyX - 100, state.buddyY + buddyFront.height - 20);
     this.ctx.drawImage(buddyBack, state.buddyX, state.buddyY);
 
     const treeWidth = tree.width * CONST.CANVAS_BASE_HEIGHT / tree.height;

@@ -3,35 +3,21 @@ import * as CONST from './consts';
 import { Bullet, Fruit } from '../Game/models';
 import { drawCircle } from './utils/CanvasUtils';
 
-import { FruitAge } from 'pages/Game/models/Fruit';//TODO move score calc to Controller
+import { FruitAge } from 'pages/Game/models/Fruit';
+import { getGameImages } from 'pages/Game/utils';
+//TODO move score calc to Controller
 
 export default class Drawer {
   constructor(
     {
       images,
     }: {
-      images: {
-        buddyBack: HTMLImageElement,
-        buddyFront: HTMLImageElement,
-        tree: HTMLImageElement,
-        fetuses: HTMLImageElement[],
-        seed: HTMLImageElement,
-        seedRays: HTMLImageElement,
-        flower: HTMLImageElement,
-      }
+      images: ReturnType<typeof getGameImages>
     }
   ) {
     this.images = images;
   }
-  images: {
-    buddyBack: HTMLImageElement,
-    buddyFront: HTMLImageElement,
-    tree: HTMLImageElement,
-    fetuses: HTMLImageElement[],
-    seed: HTMLImageElement,
-    seedRays: HTMLImageElement,
-    flower: HTMLImageElement,
-  }
+  images: ReturnType<typeof getGameImages>
   nowPrev: number = performance.now();
   debug = false;
 
@@ -305,8 +291,16 @@ export default class Drawer {
         font: '60px averia-serif-libre',
         fillStyle: '#00000088',
       },
-      strokeTextArgs: [ 'Game Over!', CONST.CANVAS_BASE_WIDTH/2, CONST.CANVAS_BASE_HEIGHT/2 -30 ],
-      fillTextArgs: [ 'Game Over!', CONST.CANVAS_BASE_WIDTH/2, CONST.CANVAS_BASE_HEIGHT/2 -30 ],
+      strokeTextArgs: [
+        'Game Over! To restart the game, press the "R" button',
+        CONST.CANVAS_BASE_WIDTH/2,
+        CONST.CANVAS_BASE_HEIGHT/2 -30
+      ],
+      fillTextArgs: [
+        'Game Over! To restart the game, press the "R" button',
+        CONST.CANVAS_BASE_WIDTH/2,
+        CONST.CANVAS_BASE_HEIGHT/2 -30
+      ],
     });
 
     this.drawText({

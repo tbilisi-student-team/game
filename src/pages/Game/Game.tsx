@@ -1,101 +1,23 @@
 import React, { useCallback, useLayoutEffect, useRef } from 'react';
 import useInterval from './hooks/useInterval';
-import { GameProps, GameState, Loc } from './types';
+import { GameProps, GameState } from './types';
 import { Bullet, Fruit } from './models';
 import Drawer from './Drawer';
-import * as CONST from './consts';
+import * as CONSTS from './consts';
 import './index.css';
-import buddyBackSrc from 'assets/buddy-1-back.png';
-import buddyFrontSrc from 'assets/buddy-1-front.png';
-import treeSrc from 'assets/tree.png';
-import fetus1Src from 'assets/fetus-1.png';
-import fetus2Src from 'assets/fetus-2.png';
-import fetus3Src from 'assets/fetus-3.png';
-import fetus4Src from 'assets/fetus-4.png';
-import fetus5Src from 'assets/fetus-5.png';
-import seedSrc from 'assets/seed.png';
-import seedRaysSrc from 'assets/seed-rays.png';
-import flowerSrc from 'assets/flower.png';
+import { getGameImages, getElapsedTime, getPauseTime } from './utils';
 
-const FRUITS_LOCS: Loc[] = [
-  { x: 1289, y: 146 },
-  { x: 1470, y: 241 },
-  { x: 1520, y: 364 },
-  { x: 1534, y: 566 },
-  { x: 1574, y: 743 },
-];
-
-const INITIAL_STATE: GameState = {
-  buddyX: CONST.BUDDY_START_X,
-  buddyY: CONST.BUDDY_START_Y,
-  pews: [],
-  bullets: [],
-  fruits: [],
-  score: 0,
-  isGameOver: false,
-  isPause: true,
-  isGameStarted: false,
-  debug: false,
-  startTime: 0,
-  pauseTime: 0,
-  elapsedTimeSinceStart: 0,
-  mouseState: {
-    x: 0,
-    y: 0,
-    isPressed: false,
-    pressX: 0,
-    pressY: 0
-  }
-};
-
-function getImage(src: string) {
-  const img = new Image();
-
-  img.src = src;
-  return img;
-}
-
-const buddyBack = getImage(buddyBackSrc);
-const buddyFront = getImage(buddyFrontSrc);
-const tree = getImage(treeSrc);
-const fetuses = [
-  getImage(fetus1Src),
-  getImage(fetus2Src),
-  getImage(fetus3Src),
-  getImage(fetus4Src),
-  getImage(fetus5Src),
-];
-const seed = getImage(seedSrc);
-const seedRays = getImage(seedRaysSrc);
-const flower = getImage(flowerSrc);
-
-function getPauseTime (currentTime: number, startTime: number, elapsedTime: number) {
-  return (currentTime - startTime) - elapsedTime;
-}
-
-function getElapsedTime (currentTime: number, startTime: number, pauseTime: number) {
-  return (currentTime - startTime) - pauseTime;
-}
+const gameImages = getGameImages();
 
 export function Game (props: GameProps) {
-  console.log('Game init');
-
-  const stateRef = useRef<GameState>({ ...INITIAL_STATE });
+  const stateRef = useRef<GameState>({ ...CONSTS.INITIAL_GAME_STATE });
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const drawerRef = useRef<Drawer>(new Drawer(
     {
-      images: {
-        seed,
-        seedRays,
-        flower,
-        fetuses,
-        buddyBack,
-        buddyFront,
-        tree,
-      }
+      images: gameImages,
     }
   ));
-  const rafIdRef = useRef(0);
+  const rafIdRef = useRef<number | null>(null);
 
   const onKeyDown = useCallback(function onKeyDown(e: KeyboardEvent) {
     if (e.key === ' ') {
@@ -108,7 +30,7 @@ export function Game (props: GameProps) {
 
     } else if (e.key === 'r') {
       if (stateRef.current.isGameOver) {
-        stateRef.current = { ...INITIAL_STATE, isPause: false, };
+        stateRef.current = { ...CONSTS.INITIAL_GAME_STATE, isPause: false, };
       }
     }
     else if (e.key === 'd' && drawerRef.current) {
@@ -165,7 +87,7 @@ export function Game (props: GameProps) {
       stateRef.current.pauseTime,
     );
 
-    if (stateRef.current.elapsedTimeSinceStart > CONST.GAME_TIME) {
+    if (stateRef.current.elapsedTimeSinceStart > CONSTS.GAME_TIME) {
       stateRef.current.isGameOver = true;
       //TODO emit event
       return;
@@ -177,12 +99,12 @@ export function Game (props: GameProps) {
       bullet.updatePosition();
     });
     stateRef.current.pews =
-      stateRef.current.pews.filter((pew) => ((performance.now() - pew.startTime) <= CONST.PEW_FADE_TIME));
+      stateRef.current.pews.filter((pew) => ((performance.now() - pew.startTime) <= CONSTS.PEW_FADE_TIME));
     stateRef.current.bullets = stateRef.current.bullets.filter(
-      (bullet) => !bullet.isCollided && bullet.x < CONST.CANVAS_BASE_WIDTH && bullet.y < CONST.CANVAS_BASE_HEIGHT
+      (bullet) => !bullet.isCollided && bullet.x < CONSTS.CANVAS_BASE_WIDTH && bullet.y < CONSTS.CANVAS_BASE_HEIGHT
     );
     stateRef.current.fruits = stateRef.current.fruits.filter(
-      (fruit) => fruit.y < CONST.CANVAS_BASE_HEIGHT
+      (fruit) => fruit.y < CONSTS.CANVAS_BASE_HEIGHT
     );
     //TODO bullet может быть только 1?
     for (const bullet of stateRef.current.bullets) {
@@ -200,12 +122,12 @@ export function Game (props: GameProps) {
   const pew = (dx: number, dy: number) => {
     stateRef.current.pews.push({
       x: 200 + Math.random() * 200,
-      y: CONST.BUDDY_START_Y - 300 + Math.random() * 200,
+      y: CONSTS.BUDDY_START_Y - 300 + Math.random() * 200,
       startTime: performance.now(),
     });
     stateRef.current.bullets.push(new Bullet(
-      CONST.BULLET_START_X, CONST.BULLET_START_Y,
-      Math.min(dx / 100, CONST.BULLET_SPEED_MAX), -Math.min(dy / 100, CONST.BULLET_SPEED_MAX)));
+      CONSTS.BULLET_START_X, CONSTS.BULLET_START_Y,
+      Math.min(dx / 100, CONSTS.BULLET_SPEED_MAX), -Math.min(dy / 100, CONSTS.BULLET_SPEED_MAX)));
   }
 
   const checkIntersectionWithFruit = (bullet: Bullet, fruit: Fruit) => {
@@ -264,16 +186,18 @@ export function Game (props: GameProps) {
     rafIdRef.current = requestAnimationFrame(onAnimationFrame)
 
     return function() {
-      cancelAnimationFrame(rafIdRef.current);
+      if (rafIdRef.current) {
+        cancelAnimationFrame(rafIdRef.current);
+      }
     }
   }, [ onAnimationFrame ]);
 
   useInterval(() => {//TODO move to Controller
     //TODO пока первый падает, второй может уже расти?
-    if (stateRef.current.fruits.length >= FRUITS_LOCS.length) {
+    if (stateRef.current.fruits.length >= CONSTS.FRUITS_LOCS.length) {
       return;
     }
-    for (const loc of FRUITS_LOCS) {
+    for (const loc of CONSTS.FRUITS_LOCS) {
       if (!stateRef.current.fruits.find((fruit) => fruit.x === loc.x && fruit.y === loc.y)) {
         const fruit = new Fruit(loc.x, loc.y);
 
@@ -289,7 +213,7 @@ export function Game (props: GameProps) {
   let canvasWidth = props.width || visualViewport.width;
   let canvasHeight = props.height || visualViewport.height;
   const currentAspect = canvasWidth / canvasHeight;
-  const desiredAspect = CONST.CANVAS_BASE_WIDTH / CONST.CANVAS_BASE_HEIGHT;
+  const desiredAspect = CONSTS.CANVAS_BASE_WIDTH / CONSTS.CANVAS_BASE_HEIGHT;
 
   if (currentAspect > desiredAspect) {
     canvasWidth = desiredAspect * canvasHeight;

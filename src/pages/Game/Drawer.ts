@@ -71,10 +71,6 @@ export default class Drawer {
       this.drawBullet(bullet);
     });
 
-    if (state.mouse.isPressed) {
-      this.drawTrajectory(state.mouse);
-    }
-
     this.ctx.drawImage(buddyFront, state.buddyX, state.buddyY);
 
     state.pews.forEach((pew) => {
@@ -87,6 +83,9 @@ export default class Drawer {
     else {
       this.drawScore(state.score);
       this.drawTimeLeft(state.startTime);
+      if (state.mouse.isPressed) {
+        this.drawTrajectory(state.mouse);
+      }
     }
 
     if (this.debug) {

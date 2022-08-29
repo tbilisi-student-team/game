@@ -60,7 +60,7 @@ body {
 }
 
 .main {
-  padding: 7% 0%;
+  padding: 50px 0%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -264,7 +264,7 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
   min-width: 60%;
   border: 1px solid var(--white);
   margin: 20px 0 40px 0;
-  background-color: #00000044;
+  background-color: var(----tablebackground);
 }
 
 .table-header {
@@ -291,7 +291,7 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
   width: 100%;
   border: 1px solid var(--white);
   margin: 20px 0 40px 0;
-  background-color: #00000044;
+  background-color: var(----tablebackground);
 }
 .messages {
   text-align: center;

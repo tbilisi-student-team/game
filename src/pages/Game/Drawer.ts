@@ -3,16 +3,16 @@ import * as CONST from './consts';
 import { Bullet, Fruit } from '../Game/models';
 import { drawCircle } from './utils/CanvasUtils';
 
-import buddyFrontSrc from '../../assets/buddy-1-front.png';
-import buddyBackSrc from '../../assets/buddy-1-back.png';
-import treeSrc from '../../assets/tree.png';
-import fetus1Src from '../../assets/fetus-1.png';
-import fetus2Src from '../../assets/fetus-2.png';
-import fetus3Src from '../../assets/fetus-3.png';
-import fetus4Src from '../../assets/fetus-4.png';
-import fetus5Src from '../../assets/fetus-5.png';
-import seedSrc from '../../assets/seed.png';
-import seedRaysSrc from '../../assets/seed-rays.png';
+import buddyFrontSrc from 'assets/buddy-1-front.png';
+import buddyBackSrc from 'assets/buddy-1-back.png';
+import treeSrc from 'assets/tree.png';
+import fetus1Src from 'assets/fetus-1.png';
+import fetus2Src from 'assets/fetus-2.png';
+import fetus3Src from 'assets/fetus-3.png';
+import fetus4Src from 'assets/fetus-4.png';
+import fetus5Src from 'assets/fetus-5.png';
+import seedSrc from 'assets/seed.png';
+import seedRaysSrc from 'assets/seed-rays.png';
 import flowerSrc from 'assets/flower.png';
 import { FruitAge } from 'pages/Game/models/Fruit';//TODO move score calc to Controller
 

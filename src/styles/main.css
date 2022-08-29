@@ -98,11 +98,11 @@ h3{
   width: 20%;
 }
 
-.left-character-wrapper__signin {
+.left-character-wrapper__signinup {
   width: 35%;
 }
 
-.signin-form {
+.signinup-form {
   width: 30%;
 }
 
@@ -120,7 +120,7 @@ h3{
   width: 20%;
 }
 
-.right-character-wrapper__signin{
+.right-character-wrapper__signinup {
   width: 35%;
 }
 

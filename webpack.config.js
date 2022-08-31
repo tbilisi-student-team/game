@@ -2,7 +2,7 @@
 const path = require('path');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const server_port = process.env.PORT; 
+const server_port = process.env.PORT;
 const server_host = process.env.HOST;
 module.exports = {
   entry: {
@@ -16,10 +16,8 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
-    port: server_port, 
-    host: server_host, 
-    allowedHosts: 
-    [ '.herokuapp.com']
+    port: server_port,
+    host: server_host,
   },
   resolve: {
     extensions: [ '.tsx', '.ts', '.js' ],

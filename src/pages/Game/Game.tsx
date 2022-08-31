@@ -68,13 +68,7 @@ export function Game (props: GameProps) {
       stateRef.current.startTime,
       stateRef.current.elapsedTimeSinceStart,
     );
-
-    stateRef.current.elapsedTimeSinceStart = getElapsedTime(
-      currentTime,
-      stateRef.current.startTime,
-      stateRef.current.pauseTime,
-    );
-  }, [])
+  }, []);
 
   const updateGame = useCallback((currentTime: DOMHighResTimeStamp) => {
     if (!stateRef.current.isGameStarted) {

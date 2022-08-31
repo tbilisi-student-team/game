@@ -95,7 +95,7 @@ export function Game (props: GameProps) {
       growNewFruit();
     }
     stateRef.current.fruits.forEach(function (fruit) {
-      fruit.updateState();
+      fruit.updateState(stateRef.current.elapsedTimeSinceStart);
     });
     stateRef.current.bullets.forEach(function (bullet) {
       bullet.updatePosition();
@@ -113,7 +113,7 @@ export function Game (props: GameProps) {
       for (const fruit of stateRef.current.fruits) {
         if (!fruit.isDropping && checkIntersectionWithFruit(bullet, fruit)) {
           stateRef.current.score += fruit.age;
-          fruit.drop();
+          fruit.drop(stateRef.current.elapsedTimeSinceStart);
           bullet.isCollided = true;
           break;
         }
@@ -145,7 +145,7 @@ export function Game (props: GameProps) {
     }
     for (const loc of CONSTS.FRUITS_LOCS) {
       if (!stateRef.current.fruits.find((fruit) => fruit.x === loc.x && fruit.y === loc.y)) {
-        const fruit = new Fruit(loc.x, loc.y);
+        const fruit = new Fruit(loc.x, loc.y, stateRef.current.elapsedTimeSinceStart);
 
         fruit.onRot = function() {
           stateRef.current.score -= 1;

@@ -19,7 +19,7 @@ export default class Controller {
       return;
     }
     this.state.fruits.forEach(function (fruit) {
-      fruit.updateState();
+      fruit.updateState(performance.now());
     });
     this.state.bullets.forEach(function (bullet) {
       bullet.updatePosition();
@@ -36,7 +36,7 @@ export default class Controller {
       for (const fruit of this.state.fruits) {
         if (!fruit.isDropping && Controller.checkIntersection(bullet, fruit)) {
           this.state.score += fruit.age;
-          fruit.drop();
+          fruit.drop(performance.now());
           bullet.isCollided = true;
           break;
         }

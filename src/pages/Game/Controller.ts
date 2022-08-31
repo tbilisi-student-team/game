@@ -1,6 +1,5 @@
 import { GameState } from './types';
 import * as CONST from './consts';
-import { checkLoadCompete } from './Drawer';
 import { Bullet, Fruit } from './models';
 
 export default class Controller {
@@ -11,13 +10,6 @@ export default class Controller {
   readonly state: GameState;
 
   updateState() {
-    if (this.state.isLoading) {
-      this.state.isLoading = !checkLoadCompete();
-      if (!this.state.isLoading) {
-        this.state.startTime = performance.now();
-      }
-      return;
-    }
     if (this.state.isGameOver) {
       return;
     }

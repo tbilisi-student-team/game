@@ -1,5 +1,4 @@
 import React, { useCallback, useLayoutEffect, useRef } from 'react';
-import useInterval from './hooks/useInterval';
 import { GameProps, GameState } from './types';
 import { Bullet, Fruit } from './models';
 import Drawer from './Drawer';
@@ -90,13 +89,18 @@ export function Game (props: GameProps) {
       //TODO emit event
       return;
     }
+
+    if ((stateRef.current.elapsedTimeSinceStart - stateRef.current.fruitGrowthTime) >= 2000) {
+      stateRef.current.fruitGrowthTime = stateRef.current.elapsedTimeSinceStart;
+      growNewFruit();
+    }
     stateRef.current.fruits.forEach(function (fruit) {
       fruit.updateState();
     });
     stateRef.current.bullets.forEach(function (bullet) {
       bullet.updatePosition();
     });
-    stateRef.current.pews =
+    stateRef.current.pews =//TODO move to Drawer
       stateRef.current.pews.filter((pew) => ((performance.now() - pew.startTime) <= CONSTS.PEW_FADE_TIME));
     stateRef.current.bullets = stateRef.current.bullets.filter(
       (bullet) => !bullet.isCollided && bullet.x < CONSTS.CANVAS_BASE_WIDTH && bullet.y < CONSTS.CANVAS_BASE_HEIGHT
@@ -133,6 +137,23 @@ export function Game (props: GameProps) {
     const distance = Math.sqrt((bullet.x - fruit.x)**2 + (bullet.y - fruitCenterY)**2);
 
     return distance <= (bullet.radius + fruit.radius);
+  }
+
+  const growNewFruit = () => {
+    if (stateRef.current.fruits.length >= CONSTS.FRUITS_LOCS.length) {
+      return;
+    }
+    for (const loc of CONSTS.FRUITS_LOCS) {
+      if (!stateRef.current.fruits.find((fruit) => fruit.x === loc.x && fruit.y === loc.y)) {
+        const fruit = new Fruit(loc.x, loc.y);
+
+        fruit.onRot = function() {
+          stateRef.current.score -= 1;
+        };
+        stateRef.current.fruits.push(fruit);
+        break;
+      }
+    }
   }
 
   useLayoutEffect(function addListeners() {
@@ -189,24 +210,6 @@ export function Game (props: GameProps) {
       }
     }
   }, [ onAnimationFrame ]);
-
-  useInterval(() => {//TODO move to Controller
-    //TODO пока первый падает, второй может уже расти?
-    if (stateRef.current.fruits.length >= CONSTS.FRUITS_LOCS.length) {
-      return;
-    }
-    for (const loc of CONSTS.FRUITS_LOCS) {
-      if (!stateRef.current.fruits.find((fruit) => fruit.x === loc.x && fruit.y === loc.y)) {
-        const fruit = new Fruit(loc.x, loc.y);
-
-        fruit.onRot = function() {
-          stateRef.current.score -= 1;
-        };
-        stateRef.current.fruits.push(fruit);
-        break;
-      }
-    }
-  }, 2000);
 
   let canvasWidth = props.width || visualViewport.width;
   let canvasHeight = props.height || visualViewport.height;

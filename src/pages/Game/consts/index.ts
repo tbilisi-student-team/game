@@ -32,6 +32,7 @@ export const INITIAL_GAME_STATE: GameState = {
   startTime: 0,
   pauseTime: 0,
   elapsedTimeSinceStart: 0,
+  fruitGrowthTime: -2000,//Отрицательное значение чтобы первый фрукт вырос сразу
   mouseState: {
     x: 0,
     y: 0,

@@ -6,6 +6,7 @@ import Drawer from './Drawer';
 import * as CONSTS from './consts';
 import './index.css';
 import { getGameImages, getElapsedTime, getPauseTime } from './utils';
+import { toggleFullscreen } from 'utils';
 
 const gameImages = getGameImages();
 
@@ -20,21 +21,21 @@ export function Game (props: GameProps) {
   const rafIdRef = useRef<number | null>(null);
 
   const onKeyDown = useCallback(function onKeyDown(e: KeyboardEvent) {
-    if (e.key === ' ') {
-      pew(100, -100);
-    }
-    else if (e.key === 'p') {
+    if (e.key === 'p' || e.key === ' ') {
       if (!stateRef.current.isGameOver) {
         stateRef.current.isPause = !stateRef.current.isPause;
       }
-
-    } else if (e.key === 'r') {
+    }
+    else if (e.key === 'r') {
       if (stateRef.current.isGameOver) {
         stateRef.current = { ...CONSTS.INITIAL_GAME_STATE, isPause: false, };
       }
     }
     else if (e.key === 'd' && drawerRef.current) {
       drawerRef.current.debug = !drawerRef.current.debug;
+    }
+    else if (e.key === 'f') {
+      toggleFullscreen();
     }
   }, []);
 

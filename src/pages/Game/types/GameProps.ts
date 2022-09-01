@@ -34,5 +34,6 @@ export type GameState = {
   startTime: number,
   pauseTime: number,
   elapsedTimeSinceStart: number,
+  fruitGrowthTime: number,
   mouseState: MouseState
 }

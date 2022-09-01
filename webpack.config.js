@@ -18,6 +18,8 @@ module.exports = {
     historyApiFallback: true,
     port: server_port,
     host: server_host,
+    allowedHosts: 
+    [ '.herokuapp.com']
   },
   resolve: {
     extensions: [ '.tsx', '.ts', '.js' ],

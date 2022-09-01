@@ -9,16 +9,17 @@ export enum FruitAge {
 }
 
 export class Fruit {
-  constructor(x: number, y: number) {
+  constructor(x: number, y: number, time: number) {
     this.x = this.startX = x;
     this.y = this.startY = y;
+    this.startTime = time;
   }
 
   x: number;
   y: number;
   startX: number;
   startY: number;
-  startTime = performance.now();
+  startTime: number;
   dropTime = 0;
   age = FruitAge.New;
   isDropping = false;
@@ -27,14 +28,14 @@ export class Fruit {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   onRot() {}
 
-  updateState() {
+  updateState(elapsedTime: number) {
     if (this.isDropping) {
-      const time = performance.now() - this.dropTime;
+      const time = elapsedTime - this.dropTime;
 
       this.y = this.startY + CONST.g * time**2;
     }
     else {
-      const time = performance.now() - this.startTime;
+      const time = elapsedTime - this.startTime;
 
       this.age = Math.floor(time / 2000);
       switch (this.age) {
@@ -51,7 +52,7 @@ export class Fruit {
           break;
         case FruitAge.Rotten:
           this.radius = 40;
-          this.drop();
+          this.drop(elapsedTime);
           //TODO temporary
           this.onRot();
           break;
@@ -59,8 +60,8 @@ export class Fruit {
     }
   }
 
-  drop() {
+  drop(time: number) {
     this.isDropping = true;
-    this.dropTime = performance.now();
+    this.dropTime = time;
   }
 }

@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMessage, faCalendarDays, faUser } from '@fortawesome/free-solid-svg-icons'
 
 
-import Header from '../../UI/Header';
+
 
 const threadData: ThreadListData = [
   {
@@ -44,10 +44,9 @@ export const Forum= () => {
 
   return (
     <div className='wrapper'>
-      <Header/>
-      <div className='main'>
+      <div className='description'>
         <div className='title-wrapper'>
-          <h1>Forum</h1>
+          <h3>Forum</h3>
         </div>
         <div className='forum'>
           <table className='forum-table'>
@@ -69,9 +68,7 @@ export const Forum= () => {
         Add a new theme
             </span></button>
         </div>
-
-      </div>
-    </div>
-   
+   </div>
+   </div>
   );
 };

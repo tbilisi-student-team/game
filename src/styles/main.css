@@ -317,5 +317,14 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
   transform: translate(0, 10px);
 }
 .leaderboard-table {
+  border-radius: 10px;
+  min-width: 60%;
   width: 100%;
+  border: 1px solid var(--white);
+  margin: 20px 0 40px 0;
+  background-color: var(--tablebackground);
+}
+.centered {
+  margin: auto;
+  text-align: center;
 }

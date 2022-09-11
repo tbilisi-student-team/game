@@ -1,5 +1,4 @@
 import React from 'react';
-import Header from '../../UI/Header';
 import { ListItem } from './ListItem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {  faDumbbell, faTrophy } from '@fortawesome/free-solid-svg-icons';
@@ -22,16 +21,6 @@ export function Leaderboard () {
   );
 
   return (
-    <div className='wrapper'>
-      <Header/>
-      <div className='main'>
-        <h1>
-          Pew!
-        </h1>
-        <h3>
-          Study project of Tbilisi Team
-        </h3>
-        <div className='main__container'>
           <table className='leaderboard-table'>
             <thead>
               <tr className='table-header'>
@@ -42,9 +31,5 @@ export function Leaderboard () {
             </thead>
             <tbody>{threadList}</tbody>
           </table>
-        </div>
-      </div>
-
-    </div>
   )
 }

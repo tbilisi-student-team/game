@@ -1,6 +1,5 @@
 import { Dispatch, Reducer, useReducer } from 'react';
-import { SignUpRequest } from 'remoteApi';
-import { SignUpResponse } from 'remoteApi/auth/signup';
+import { SignUpRequest, SignUpResponse } from '@/remoteAPI/index';
 
 type State = {
   loading: boolean,

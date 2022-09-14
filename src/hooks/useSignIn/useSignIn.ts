@@ -1,6 +1,5 @@
 import { Dispatch, Reducer, useReducer } from 'react';
-import { SignInRequest } from 'remoteApi';
-import { SignInResponse } from 'remoteApi/auth/signin';
+import { SignInRequest, SignInResponse } from '@/remoteAPI/index';
 
 type State = {
   loading: boolean,
@@ -62,7 +61,7 @@ const reducer = (
         loading: false,
         responseData: action.payload.responseData,
       }
-    
+
     case ActionType.SET_LOGIN:
       return {
         ...state,
@@ -71,7 +70,7 @@ const reducer = (
           login: action.payload.login,
         }
       }
-    
+
     case ActionType.SET_PASSWORD:
       return {
         ...state,
@@ -80,7 +79,7 @@ const reducer = (
           password: action.payload.password,
         }
       }
-    
+
     default: throw new Error('useSignUp reducer error.');
   }
 }

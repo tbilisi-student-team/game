@@ -1,14 +1,16 @@
 import { Dispatch, Reducer, useEffect, useReducer } from 'react';
+import { AxiosError, AxiosResponse } from 'axios';
+
 import {
   ChangeUserPasswordRequest,
   ChangeUserAvatarRequest,
   ChangeUserProfileRequest,
   getCurrentUser,
   UserResponse,
-} from 'remoteApi/users';
-import * as API from 'remoteApi/users';
-import { AxiosError, AxiosResponse } from 'axios';
-import { ErrorResponse } from 'remoteApi';
+  ErrorResponse,
+  changeUserProfileAvatar,
+  changeUserProfile as changeUserProfileRequest,
+} from '@/remoteAPI/index';
 
 type State = {
   isLoading: boolean,
@@ -91,7 +93,7 @@ function getActions(
   function changeUserAvatar(requestData: ChangeUserAvatarRequest) {
     loadingStart();
 
-    API.changeUserProfileAvatar(requestData)
+    changeUserProfileAvatar(requestData)
       .then((axiosResponse: AxiosResponse<UserResponse>) => {
         if (axiosResponse.status === 200) {
           const responseData = axiosResponse.data;
@@ -141,7 +143,7 @@ function getActions(
   function changeUserProfile(requestData: ChangeUserProfileRequest) {
     loadingStart();
 
-    API.changeUserProfile(requestData)
+    changeUserProfileRequest(requestData)
       .then((axiosResponse: AxiosResponse<UserResponse>) => {
         if (axiosResponse.status === 200) {
           const responseData = axiosResponse.data;

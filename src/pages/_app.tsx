@@ -23,9 +23,7 @@ function App({ Component, pageProps }: AppProps) {
     <ErrorBoundary>
       <AppContextProvider>
         <Provider store={reduxStore}>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <Component {...pageProps} />
         </Provider>
       </AppContextProvider>
     </ErrorBoundary>

@@ -1,5 +1,4 @@
 import React, {useCallback, useEffect, useLayoutEffect, useRef} from 'react';
-import { NextPage } from 'next';
 
 import { GameState } from './types';
 import { Bullet, Fruit } from './models';
@@ -21,7 +20,7 @@ import { toggleFullscreen } from '@/utils/index';
 import styles from './game.module.css';
 import { useWindowVisualViewportSize } from '@/hooks/index';
 
-const Game: NextPage = () => {
+export default function Game() {
   const windowVisualViewportSize = useWindowVisualViewportSize(
     {
       width: CANVAS_BASE_WIDTH,
@@ -239,5 +238,3 @@ const Game: NextPage = () => {
     </canvas>
   )
 }
-
-export default Game;

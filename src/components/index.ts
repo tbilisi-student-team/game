@@ -1,1 +1,3 @@
-export { ErrorBoundary } from './ErrorBoundary';
+export * from './ErrorBoundary';
+export * from './Header';
+export * from './Layout';

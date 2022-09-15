@@ -1,6 +1,5 @@
-
 import React, { PropsWithChildren } from 'react';
-import type { UserScore } from '../types/index'
+import type { UserScore } from '../../types'
 
 
 type ListItemProps = PropsWithChildren<{
@@ -8,7 +7,6 @@ type ListItemProps = PropsWithChildren<{
 }>;
 
 export const ListItem = (props: ListItemProps) => {
-
   return (
     <tr key={props.data.username} className='theme' >
       <td className='table-cell centered'>

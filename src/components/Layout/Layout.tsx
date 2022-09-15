@@ -5,7 +5,7 @@ import { Header } from '@/components/Header';
 import buddy1 from '@/public/buddy-1.png';
 import buddy2 from '@/public/buddy-2-otr.png';
 
-type LayoutProps = {
+export type LayoutProps = {
     children: ReactNode
 }
 

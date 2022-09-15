@@ -1,7 +1,9 @@
 import React from 'react';
-import { ListItem } from './ListItem';
+
+import { Layout } from '@/components/index';
+import { ListItem } from './ui';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {  faDumbbell, faTrophy } from '@fortawesome/free-solid-svg-icons';
+import { faDumbbell, faTrophy } from '@fortawesome/free-solid-svg-icons';
 import type { UserScore } from './types/index'
 
 const mockResults: UserScore[] = [
@@ -11,9 +13,8 @@ const mockResults: UserScore[] = [
   { username: 'Pamelo', score: 836 },
   { username: 'Jackfruit', score: 272 },
 ]
- 
-export default function Leaderboard () {
 
+export default function Leaderboard () {
   const sortedLeaders = mockResults.sort((a, b) => a.score < b.score ? 1 : -1);
 
   const threadList = sortedLeaders.map(
@@ -21,15 +22,17 @@ export default function Leaderboard () {
   );
 
   return (
-    <table className='leaderboard-table'>
-    <thead>
-      <tr className='table-header'>
-        <th className='forum-table-header-cell'><FontAwesomeIcon icon={faTrophy} /></th>
-        <th className='forum-table-header-cell'>User Name</th>
-        <th className='forum-table-header-cell'><FontAwesomeIcon icon={faDumbbell} /></th>
-      </tr>
-    </thead>
-    <tbody>{threadList}</tbody>
-    </table>
+    <Layout>
+      <table className='leaderboard-table'>
+        <thead>
+        <tr className='table-header'>
+          <th className='forum-table-header-cell'><FontAwesomeIcon icon={faTrophy} /></th>
+          <th className='forum-table-header-cell'>User Name</th>
+          <th className='forum-table-header-cell'><FontAwesomeIcon icon={faDumbbell} /></th>
+        </tr>
+        </thead>
+        <tbody>{threadList}</tbody>
+      </table>
+    </Layout>
   )
 }

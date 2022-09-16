@@ -1,4 +1,4 @@
-import { ypTechHTTPClient } from '@/YPTechHTTPClient/index';;
+import { ypTechHTTPClient } from '@/YPTechHTTPClient/index';
 import { CurrentUserData } from '@/types/index';
 
 export function getCurrentUser() {

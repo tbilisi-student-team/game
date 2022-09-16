@@ -21,7 +21,7 @@ export const fetchCurrentUserData = createAsyncThunk('currentUser/fetchData', as
   const currentUserData = axiosResponse.data;
 
   return currentUserData;
-})
+});
 
 const currentUserSlice = createSlice({
   name: 'currentUser',

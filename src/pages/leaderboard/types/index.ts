@@ -1,5 +1,1 @@
-export type UserScore = {
-    username: string, 
-    score: number, 
-    place?: number
-  };
+export type { UserScore } from './UserScore';

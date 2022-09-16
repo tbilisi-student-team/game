@@ -30,6 +30,7 @@
       "@/remoteAPI/*": ["src/remoteAPI/*"],
       "@/styles/*": ["src/styles/*"],
       "@/types/*": ["src/types/*"],
+      "@/ui/*": ["src/ui/*"],
       "@/utils/*": ["src/utils/*"],
       "@/YPTechHTTPClient/*": ["src/YPTechHTTPClient/*"],
       "@/public/*": ["public/*"],

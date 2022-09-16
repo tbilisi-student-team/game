@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import Input from '../../UI/Input';
 
-
 import { RoutePaths } from 'types';
 import { useAppContext } from 'AppContext';
 import { signin, SignInErrorResponse, SignInResponse } from 'remoteApi';
@@ -57,7 +56,7 @@ export function SignIn () {
 
   return (
         <form className='signin-form'>
-          <Input 
+          <Input
             type='text'
             name='login'
             id='login'
@@ -90,6 +89,6 @@ export function SignIn () {
             <Link className='header-link' to={RoutePaths.SignUp}>I'm new here</Link>
           </div>
         </form>
-       
+
   )
 }

@@ -7,7 +7,6 @@ import { fetchCurrentUserData, reduxStore } from '@/reduxStore/index';
 import { ErrorBoundary } from '@/components/index';
 import { startServiceWorker } from '@/utils/index';
 import { AppContextProvider } from '@/appContext/index';
-import { Layout } from '@/components/Layout';
 
 import '../styles/index.css';
 

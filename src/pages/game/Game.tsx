@@ -17,7 +17,6 @@ import {
 } from './consts';
 import { getGameImages, getElapsedTime, getPauseTime } from './utils';
 import { toggleFullscreen } from '@/utils/index';
-import styles from './game.module.css';
 import { useWindowVisualViewportSize } from '@/hooks/index';
 
 export default function Game() {
@@ -231,7 +230,6 @@ export default function Game() {
 
   return (
     <canvas
-      className={styles.canvas}
       ref={canvasRef}
       width={windowVisualViewportSize.width}
       height={windowVisualViewportSize.height}>

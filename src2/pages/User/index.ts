@@ -1,1 +1,1 @@
-export { User } from './User';
+export { User } from '@/pages/user/User';

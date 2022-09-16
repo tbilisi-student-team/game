@@ -4,7 +4,7 @@ import { Layout } from '@/components/index';
 import { ListItem } from './ui';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDumbbell, faTrophy } from '@fortawesome/free-solid-svg-icons';
-import type { UserScore } from './types/index'
+import type { UserScore } from './types'
 
 const mockResults: UserScore[] = [
   { username: 'Avokado', score: 374 },

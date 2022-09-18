@@ -12,7 +12,7 @@ import { Input } from '@/ui/Input';
 
 import buddy1 from '@/public/buddy-1.png';
 
-export function User () {
+export default function User () {
   const {
     currentUser: [ state, actions ]
   } = useAppContext();

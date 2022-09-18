@@ -1,15 +1,16 @@
 import React, { ChangeEvent, FormEvent, useRef, useState } from 'react';
+import Image from 'next/image';
 
-import { BASE_URL } from 'core/httpClient';
-import { ChangeUserPasswordRequest, ChangeUserProfileRequest, UserResponse } from 'remoteApi';
+import { YP_TECH_BASE_URL as BASE_URL } from '@/config/index';
+import { ChangeUserPasswordRequest, ChangeUserProfileRequest, UserResponse } from '@/remoteAPI/index';
 
-import { useAppContext } from 'AppContext';
+import { useAppContext } from '@/appContext/index';
 
-import Input from '../../UI/Input';
+import { Input } from '@/ui/Input';
 
-import './index.css';
+// import styles from './index.module.css';
 
-import buddy1 from '../../../public/buddy-1.png';
+import buddy1 from '@/public/buddy-1.png';
 
 export function User () {
   const {
@@ -101,10 +102,10 @@ export function User () {
   return (
     <div className='description'>
       <div className={'avatar'}>
-        <img
+        <Image
           src={ user.avatar ? `${BASE_URL}/resources${user.avatar}` : buddy1 }
           alt={'Avatar'}>
-        </img>
+        </Image>
         <br></br>
         <button type={'button'} onClick={() => { fileInputRef.current?.click() }}>Change</button>
         <input ref={fileInputRef} type={'file'} style={{ display: 'none' }} onChange={handleChangeAvatar} />

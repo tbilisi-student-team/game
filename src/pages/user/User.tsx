@@ -8,7 +8,7 @@ import { useAppContext } from '@/appContext/index';
 
 import { Input } from '@/ui/Input';
 
-// import styles from './index.module.css';
+import styles from './index.module.css';
 
 import buddy1 from '@/public/buddy-1.png';
 
@@ -101,7 +101,7 @@ export default function User () {
 
   return (
     <div className='description'>
-      <div className={'avatar'}>
+      <div className={`avatar ${styles.avatar}`}>
         <Image
           src={ user.avatar ? `${BASE_URL}/resources${user.avatar}` : buddy1 }
           alt={'Avatar'}>

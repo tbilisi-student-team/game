@@ -193,7 +193,9 @@ export default function User () {
                 placeholder='Current password'
                 required
                 value={passwordData.oldPassword}
-                setValue={handleChangePasswordInput}/>
+                setValue={handleChangePasswordInput}
+                autocomplete={'current-password'}
+              />
 
               <Input
                 type='password'
@@ -204,7 +206,9 @@ export default function User () {
                 required
                 className={newPasswordError ? 'input-invalid' : ''}
                 value={passwordData.newPassword}
-                setValue={handleChangePasswordInput}/>
+                setValue={handleChangePasswordInput}
+                autocomplete={'new-password'}
+              />
 
               <Input
                 type='password'
@@ -215,7 +219,9 @@ export default function User () {
                 required
                 className={newPasswordError ? 'input-invalid' : ''}
                 value={passwordData.newPasswordRepeat}
-                setValue={handleChangePasswordInput}/>
+                setValue={handleChangePasswordInput}
+                autocomplete={'new-password'}
+              />
 
               <button
                 disabled={state.isLoading || !isPasswordFormReadyState}

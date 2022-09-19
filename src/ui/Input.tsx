@@ -11,6 +11,7 @@ type InputProps = {
   disabled: boolean,
   label?: string,
   className: string,
+  autocomplete: string,
 }
 
 const defaultProps: InputProps = {
@@ -22,7 +23,8 @@ const defaultProps: InputProps = {
   value: '',
   setValue: (() => { /**/ }),
   disabled: false,
-  className: ''
+  className: '',
+  autocomplete: '',
 }
 
 export function Input (props: Partial<InputProps>) {
@@ -45,6 +47,7 @@ export function Input (props: Partial<InputProps>) {
         value={props.value}
         onChange={handleValue}
         disabled={props.disabled}
+        autoComplete={props.autocomplete}
       />
     </div>
   )

@@ -101,7 +101,7 @@ export default function User () {
   }
 
   return (
-    <Layout>
+    <Layout heading={''} subheading={''}>
       <div className='description'>
         <div className={`avatar ${styles.avatar}`}>
           <Image

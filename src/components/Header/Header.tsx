@@ -12,34 +12,34 @@ export const Header = () => {
     <header className='header'>
       <div className='left__container'>
         <div>
-          <Link className='header-link' href='/'>Home</Link>
+          <Link href='/'><a className='header-link'>Home</a></Link>
         </div> 
         <div className='deriver'> | </div>
         <div>
-          <Link className='header-link' href={RoutePaths.Forum}>Forum</Link>
+          <Link href={RoutePaths.Forum}><a className='header-link'>Forum</a></Link>
         </div> 
         <div className='deriver'> | </div>
         <div>
-          <Link className='header-link' href={RoutePaths.Leaderboard}>Our champions</Link>
+          <Link href={RoutePaths.Leaderboard}><a className='header-link'>Our champions</a></Link>
         </div>
       </div>
       <div className='right__container'>
         {user.data == null && <>
           <div className='signin-link'>
-            <Link className='header-link' href={RoutePaths.SignIn}>Sign in</Link>
+            <Link href={RoutePaths.SignIn}><a className='header-link'>Sign in</a></Link>
           </div>
           <div className='deriver'> | </div>
           <div className='signup-link'>
-            <Link className='header-link' href={RoutePaths.SignUp}>Sign up</Link>
+            <Link href={RoutePaths.SignUp}><a className='header-link'>Sign up</a></Link>
           </div></>
         }
         {user.data && <>
           <div className='profile-button'>
-            <Link className='header-link' href={RoutePaths.User}>Profile</Link>
+            <Link href={RoutePaths.User}><a className='header-link'>Profile</a></Link>
           </div>
           <div className='deriver'> | </div>
           <div className='signup-link'>
-            <Link className='header-link' href=''>Sign out</Link>
+            <Link href=''><a className='header-link'>Sign out</a></Link>
           </div></>
         }
       </div>

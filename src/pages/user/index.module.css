@@ -1,9 +1,8 @@
 .avatar {
 	margin: 0 auto;
 	text-align: center;
-}
+	overflow: hidden;
 
-.avatar img {
 	--size: 150px;
 
 	width: var(--size);

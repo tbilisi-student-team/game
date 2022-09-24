@@ -6,7 +6,7 @@ type ListItemProps = PropsWithChildren<{
   data: UserScore;
 }>;
 
-export const ListItem = (props: ListItemProps) => {
+export default function ListItem (props: ListItemProps) {
   return (
     <tr key={props.data.username} className='theme' >
       <td className='table-cell centered'>

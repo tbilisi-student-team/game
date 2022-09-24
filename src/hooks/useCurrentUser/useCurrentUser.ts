@@ -28,12 +28,14 @@ enum ActionType {
   LOADING_START = 'LOADING_START',
   LOADING_ERROR = 'LOADING_ERROR',
   LOADING_SUCCESS = 'LOADING_SUCCESS',
+  RESET = 'RESET',
 }
 
 type Messages = {
   [ActionType.LOADING_START]: undefined,
   [ActionType.LOADING_ERROR]: { error: Error },
   [ActionType.LOADING_SUCCESS]: { responseData: UserResponse },
+  [ActionType.RESET]: undefined,
 }
 
 type Actions = ActionTypeAndPayload<Messages>[keyof ActionTypeAndPayload<Messages>];
@@ -43,6 +45,8 @@ const reducer = (
   action: Actions,
 ): State => {
   switch (action.type) {
+    case ActionType.RESET:
+      return INITIAL_STATE;
     case ActionType.LOADING_START:
       return {
         ...state,
@@ -69,6 +73,11 @@ function getActions(
   state: State,
   dispatch: Dispatch<Actions>,
 ) {
+  function reset() {
+    dispatch({
+      type: ActionType.RESET,
+    });
+  }
 
   function loadingStart() {
     dispatch({
@@ -191,6 +200,7 @@ function getActions(
     changeUserAvatar,
     changeUserPassword,
     changeUserProfile,
+    reset,
   }
 }
 

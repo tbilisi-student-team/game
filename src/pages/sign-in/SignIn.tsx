@@ -29,7 +29,7 @@ export default function SignIn () {
 
           actions.loadingSuccess(responseData);
 
-          nextRouter.push(RoutePaths.StartGame);
+          nextRouter.push(RoutePaths.Game);
         } else {
           throw new Error(`${axiosResponse.status}: Unexpected error.`);
         }

@@ -10,9 +10,10 @@ import { AppContextProvider } from '@/appContext/index';
 
 import '../styles/index.css';
 
-reduxStore.dispatch(fetchCurrentUserData());
-
 function App({ Component, pageProps }: AppProps) {
+  useEffect(() => {
+    reduxStore.dispatch(fetchCurrentUserData());
+  }, [])
 
   useEffect(() => {
     startServiceWorker();

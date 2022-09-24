@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useRef, useState } from 'react';
+import React, {ChangeEvent, FormEvent, useEffect, useRef, useState} from 'react';
 import Image from 'next/image';
 
 import { YP_TECH_BASE_URL as BASE_URL } from '@/config/index';
@@ -13,59 +13,63 @@ import styles from './index.module.css';
 
 import buddy1 from '@/public/buddy-1.png';
 
+type ProfileFormDataState = Omit<UserResponse, 'id'>;
+
+const INITIAL_PROFILE_FORM_DATA_STATE: ProfileFormDataState = {
+  first_name: '',
+  second_name: '',
+  display_name: '',
+  login: '',
+  email: '',
+  phone: '',
+  avatar: '',
+}
+
 export default function User () {
   const {
     currentUser: [ state, actions ]
   } = useAppContext();
 
-  const { data: user } = state;
+  const { data, isLoading } = state;
 
-  if (user == null) {
-    throw new Error('401');
-  }
+  const [ profileFormData, setProfileFormData ] = useState<ProfileFormDataState>(INITIAL_PROFILE_FORM_DATA_STATE);
 
-  const [ profileFormData, setProfileFormData ] = useState(user);
+  useEffect(() => {
+    if (!isLoading && !!data) {
+      const { id, ...profileFormData } = data;
+
+      setProfileFormData((prev) => {
+        return {
+          ...prev,
+          ...profileFormData,
+        }
+      })
+    }
+  }, [isLoading, data])
+
   const [ passwordData, setPasswordData ] = useState<ChangeUserPasswordRequest & { newPasswordRepeat: string }>({
     oldPassword: '',
     newPassword: '',
     newPasswordRepeat: ''
   });
+
   const [ newPasswordError, setNewPasswordError ] = useState('');
-
-  const isProfileFormReady = function (profileFormData: UserResponse) {
-    return !Object.keys(profileFormData).every((key) =>
-      profileFormData[key as keyof UserResponse] === user[key as keyof ChangeUserProfileRequest]
-    );
-  }
-
-  const isPasswordFormReady = function (passwordData: ChangeUserPasswordRequest & { newPasswordRepeat: string }) {
-    return passwordData.oldPassword && passwordData.newPassword && passwordData.newPasswordRepeat;
-  }
-
-  const [ isProfileFormReadyState, setProfileFormReady ] = useState(isProfileFormReady(profileFormData));
-  const [ isPasswordFormReadyState, setPasswordFormReady ] = useState(isPasswordFormReady(passwordData));
 
   const handleChangeInput = (value: string, name: string) => {
     setProfileFormData((prevState) => {
-      const newState = {
+      return {
         ...prevState,
         [name]: value
       }
-
-      setProfileFormReady(isProfileFormReady(newState));
-      return newState;
     });
   }
 
   const handleChangePasswordInput = (value: string, name: string) => {
     setPasswordData((prevState) => {
-      const newState = {
+      return {
         ...prevState,
         [name]: value
       }
-
-      setPasswordFormReady(isPasswordFormReady(newState));
-      return newState;
     });
   }
 
@@ -89,15 +93,19 @@ export default function User () {
 
   const handleChangePassword = (e: FormEvent) => {
     e.preventDefault();
-    if (isPasswordFormReady(passwordData)) {
-      if (passwordData.newPassword === passwordData.newPasswordRepeat) {
-        actions.changeUserPassword({
-          oldPassword: passwordData.oldPassword,
-          newPassword: passwordData.newPassword
-        });
-      }
-      setNewPasswordError('New passwords are not equal');
+    if (passwordData.newPassword === passwordData.newPasswordRepeat) {
+      actions.changeUserPassword({
+        oldPassword: passwordData.oldPassword,
+        newPassword: passwordData.newPassword
+      });
     }
+    setNewPasswordError('New passwords are not equal');
+  }
+
+  if (isLoading) {
+    return (
+      <Layout heading={'Loading'} subheading={''}/>
+    )
   }
 
   return (
@@ -105,15 +113,13 @@ export default function User () {
       <div className='description'>
         <div className={`avatar ${styles.avatar}`}>
           <Image
-            src={ user.avatar ? `${BASE_URL}/resources${user.avatar}` : buddy1 }
+            src={ profileFormData.avatar ? `${BASE_URL}/resources${profileFormData.avatar}` : buddy1 }
             alt={'Avatar'}>
           </Image>
           <br></br>
           <button type={'button'} onClick={() => { fileInputRef.current?.click() }}>Change</button>
           <input ref={fileInputRef} type={'file'} style={{ display: 'none' }} onChange={handleChangeAvatar} />
         </div>
-
-        <h3>{`${user.display_name}#${user.id}`}</h3>
 
         <div className='main__container'>
           <div className='wrapper'>
@@ -175,7 +181,7 @@ export default function User () {
                 setValue={handleChangeInput}/>
 
               <button
-                disabled={state.isLoading || !isProfileFormReadyState}
+                disabled={state.isLoading}
                 type={'submit'}
                 className={'button'}
               >
@@ -224,7 +230,7 @@ export default function User () {
               />
 
               <button
-                disabled={state.isLoading || !isPasswordFormReadyState}
+                disabled={state.isLoading}
                 type={'submit'}
                 className={'button'}
               >

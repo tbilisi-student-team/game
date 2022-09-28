@@ -1,14 +1,16 @@
 import { Dispatch, Reducer, useEffect, useReducer } from 'react';
+import { AxiosError, AxiosResponse } from 'axios';
+
 import {
   ChangeUserPasswordRequest,
   ChangeUserAvatarRequest,
   ChangeUserProfileRequest,
   getCurrentUser,
   UserResponse,
-} from 'remoteApi/users';
-import * as API from 'remoteApi/users';
-import { AxiosError, AxiosResponse } from 'axios';
-import { ErrorResponse } from 'remoteApi';
+  ErrorResponse,
+  changeUserProfileAvatar,
+  changeUserProfile as changeUserProfileRequest,
+} from '@/remoteAPI/index';
 
 type State = {
   isLoading: boolean,
@@ -26,12 +28,14 @@ enum ActionType {
   LOADING_START = 'LOADING_START',
   LOADING_ERROR = 'LOADING_ERROR',
   LOADING_SUCCESS = 'LOADING_SUCCESS',
+  RESET = 'RESET',
 }
 
 type Messages = {
   [ActionType.LOADING_START]: undefined,
   [ActionType.LOADING_ERROR]: { error: Error },
   [ActionType.LOADING_SUCCESS]: { responseData: UserResponse },
+  [ActionType.RESET]: undefined,
 }
 
 type Actions = ActionTypeAndPayload<Messages>[keyof ActionTypeAndPayload<Messages>];
@@ -41,6 +45,8 @@ const reducer = (
   action: Actions,
 ): State => {
   switch (action.type) {
+    case ActionType.RESET:
+      return INITIAL_STATE;
     case ActionType.LOADING_START:
       return {
         ...state,
@@ -67,6 +73,11 @@ function getActions(
   state: State,
   dispatch: Dispatch<Actions>,
 ) {
+  function reset() {
+    dispatch({
+      type: ActionType.RESET,
+    });
+  }
 
   function loadingStart() {
     dispatch({
@@ -91,7 +102,7 @@ function getActions(
   function changeUserAvatar(requestData: ChangeUserAvatarRequest) {
     loadingStart();
 
-    API.changeUserProfileAvatar(requestData)
+    changeUserProfileAvatar(requestData)
       .then((axiosResponse: AxiosResponse<UserResponse>) => {
         if (axiosResponse.status === 200) {
           const responseData = axiosResponse.data;
@@ -141,7 +152,7 @@ function getActions(
   function changeUserProfile(requestData: ChangeUserProfileRequest) {
     loadingStart();
 
-    API.changeUserProfile(requestData)
+    changeUserProfileRequest(requestData)
       .then((axiosResponse: AxiosResponse<UserResponse>) => {
         if (axiosResponse.status === 200) {
           const responseData = axiosResponse.data;
@@ -189,6 +200,7 @@ function getActions(
     changeUserAvatar,
     changeUserPassword,
     changeUserProfile,
+    reset,
   }
 }
 

@@ -1,33 +1,3 @@
 {
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "ecmaVersion": 2018,
-    "sourceType": "module"
-  },
-  "plugins": ["@typescript-eslint", "react-hooks"],
-  "extends": ["plugin:react/recommended", "plugin:@typescript-eslint/recommended"],
-  "rules": {
-    "array-bracket-spacing": ["error", "always"],
-    "arrow-parens": ["error", "always"],
-    "computed-property-spacing": ["error", "never"],
-    "eol-last": "error",
-    "indent": ["error", 2, { "SwitchCase": 1 }],
-    "jsx-quotes": ["error", "prefer-single"],
-    "max-len": [2, { "code": 120, "tabWidth": 2, "ignoreUrls": true }],
-    "newline-after-var": ["error", "always"],
-    "no-multiple-empty-lines": "error",
-    "object-curly-spacing": ["error", "always"],
-    "quotes": ["error", "single"],
-    "react-hooks/exhaustive-deps": "warn",
-    "react-hooks/rules-of-hooks": "error",
-    "react/jsx-first-prop-new-line": [2, "multiline"],
-    "react/jsx-max-props-per-line": [2, { "maximum": 1, "when": "multiline" }],
-    "react/prop-types": "off"
-  },
-  "settings": {
-    "react": {
-      "pragma": "React",
-      "version": "detect"
-    }
-  }
+  "extends": "next/core-web-vitals"
 }

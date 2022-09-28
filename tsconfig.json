@@ -1,35 +1,41 @@
 {
   "compilerOptions": {
+    "target": "es5",
     "lib": [
       "dom",
-      "es2017",
+      "dom.iterable",
+      "esnext",
       "webworker"
     ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "target": "es5",
-    "jsx": "react",
-    "importHelpers": true,
-    "noUnusedLocals": true,
-    "esModuleInterop": true,
-    "strict": true,
-    "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
-    "skipLibCheck": true,
-    "declaration": false,
-    "sourceMap": false,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
     "baseUrl": ".",
-    "outDir": "./dist",
     "paths": {
-      "*": ["./src/*"]
-    },
-    "typeRoots": ["typings/**/*.d.ts", "node_modules/@types"]
+      "@/appContext/*": ["src/appContext/*"],
+      "@/components/*": ["src/components/*"],
+      "@/config/*": ["src/config/*"],
+      "@/hooks/*": ["src/hooks/*"],
+      "@/pages/*": ["src/pages/*"],
+      "@/reduxStore/*": ["src/reduxStore/*"],
+      "@/remoteAPI/*": ["src/remoteAPI/*"],
+      "@/styles/*": ["src/styles/*"],
+      "@/types/*": ["src/types/*"],
+      "@/ui/*": ["src/ui/*"],
+      "@/utils/*": ["src/utils/*"],
+      "@/YPTechHTTPClient/*": ["src/YPTechHTTPClient/*"],
+      "@/public/*": ["public/*"],
+    }
   },
-  "include": [
-    "src",
-    "./node_modules/@types"
-  ],
-  "exclude": [
-    "**/*.js"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"],
 }

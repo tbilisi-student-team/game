@@ -1,11 +1,10 @@
 export function startServiceWorker() {
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js').then((registration) => {
-        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-      }).catch((error: string) => {
-        console.error('ServiceWorker registration failed: ', error);
-      });
+    navigator.serviceWorker.register('/sw.js').then((registration) => {
+      registration.update();
+      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+    }).catch((error: string) => {
+      console.error('ServiceWorker registration failed: ', error);
     });
   }
 }

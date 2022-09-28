@@ -1,0 +1,17 @@
+.avatar {
+	margin: 0 auto;
+	text-align: center;
+	overflow: hidden;
+
+	--size: 150px;
+
+	width: var(--size);
+	height: var(--size);
+	border-radius: var(--size);
+	border: 1px solid var(--grey);
+}
+
+.avatar button {
+	text-align: center;
+	translate: 0 -50%;
+}

@@ -1,10 +1,15 @@
 import React from 'react';
+import { Button } from '../../ui/Button';
+
 import Link from 'next/link';
 
 import { RoutePaths } from '@/types/index'
 import { Layout } from '@/components/Layout';
+import { useRouter } from 'next/router'
+
 
 export default function Main () {
+  const router = useRouter()
   return (
     <Layout>
       <div className='description'>
@@ -22,7 +27,9 @@ export default function Main () {
           faucibus. Dictum lorem ornare vulputate in molestie sodales dictum. Mauris nulla ultricies. Odio. Mauris non
           dui mattis mattis id lacinia sit malesuada aenean.
         </p>
-        <Link href={RoutePaths.Game}>Game</Link>
+        <Button name='Start' onSubmit={() => {
+          router.push(RoutePaths.Game)
+        }} />
       </div>
     </Layout>
   )

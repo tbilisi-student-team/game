@@ -129,7 +129,7 @@ export default function SignUp () {
           )}
 
           <div className='sign-link'>
-            <Link className='header-link' href={RoutePaths.SignIn}>I already have an account</Link>
+            <Link href={RoutePaths.SignIn}><a className='header-link'>I already have an account</a></Link>
           </div>
         </form>
       )}

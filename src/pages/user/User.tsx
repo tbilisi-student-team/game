@@ -2,7 +2,7 @@ import React, {ChangeEvent, FormEvent, useEffect, useRef, useState} from 'react'
 import Image from 'next/image';
 
 import { YP_TECH_BASE_URL as BASE_URL } from '@/config/index';
-import { ChangeUserPasswordRequest, ChangeUserProfileRequest, UserResponse } from '@/remoteAPI/index';
+import { ChangeUserPasswordRequest, UserResponse } from '@/remoteAPI/index';
 
 import { useAppContext } from '@/appContext/index';
 
@@ -120,7 +120,7 @@ export default function User () {
           <button type={'button'} onClick={() => { fileInputRef.current?.click() }}>Change</button>
           <input ref={fileInputRef} type={'file'} style={{ display: 'none' }} onChange={handleChangeAvatar} />
         </div>
-
+        <h3>{data ? `${data.display_name}#${data.id}` : 'Error'}</h3>
         <div className='main__container'>
           <div className='wrapper'>
             <form onSubmit={handleSubmit}>

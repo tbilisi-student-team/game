@@ -28,48 +28,34 @@ export const Header = () => {
   return (
     <header className='header'>
       <div className='left__container'>
-        <div>
-          <Link href='/'><a className='header-link'>Home</a></Link>
-        </div>
-        <div className='deriver'> | </div>
-        <div>
-          <Link href={RoutePaths.Forum}><a className='header-link'>Forum</a></Link>
-        </div>
-        <div className='deriver'> | </div>
-        <div>
-          <Link href={RoutePaths.Leaderboard}><a className='header-link'>Our champions</a></Link>
-        </div>
+        <Link href='/'><a className='header-link'>Home</a></Link>
+        <span className='deriver'> | </span>
+        <Link href={RoutePaths.Forum}><a className='header-link'>Forum</a></Link>
+        <span className='deriver'> | </span>
+        <Link href={RoutePaths.Leaderboard}><a className='header-link'>Our champions</a></Link>
       </div>
       <div className='right__container'>
         {currentUserState.data == null && <>
-          <div className='signin-link'>
-            <Link href={RoutePaths.SignIn}><a className='header-link'>Sign in</a></Link>
-          </div>
-          <div className='deriver'> | </div>
-          <div className='signup-link'>
-            <Link href={RoutePaths.SignUp}><a className='header-link'>Sign up</a></Link>
-          </div></>
-        }
+          <Link href={RoutePaths.SignIn}><a className='header-link'>Sign in</a></Link>
+          <span className='deriver'> | </span>
+          <Link href={RoutePaths.SignUp}><a className='header-link'>Sign up</a></Link>
+        </>}
         {currentUserState.data && <>
           {nextRouter.pathname != RoutePaths.User && <>
-            <div className='profile-button'>
-              <Link href={RoutePaths.User}><a className='header-link'>Profile</a></Link>
-            </div>
-            <div className='deriver'> | </div></>
-          }
-          <div className='signup-link'>
-            <Link href=''>
-              <a
-                className='header-link'
-                onClick={(event) => {
-                  event.preventDefault();
-                  handleLogout()
-                }}
-              >
-                Sign out
-              </a>
-            </Link>
-          </div></>
+            <Link href={RoutePaths.User}><a className='header-link'>Profile</a></Link>
+            <span className='deriver'> | </span>
+          </>}
+          <Link href=''>
+            <a
+              className='header-link'
+              onClick={(event) => {
+                event.preventDefault();
+                handleLogout()
+              }}
+            >Sign out
+            </a>
+          </Link>
+          </>
         }
       </div>
     </header>

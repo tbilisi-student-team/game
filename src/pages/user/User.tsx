@@ -121,130 +121,126 @@ export default function User () {
           <input ref={fileInputRef} type={'file'} style={{ display: 'none' }} onChange={handleChangeAvatar} />
         </div>
         <h3>{data ? `${data.display_name}#${data.id}` : 'Error'}</h3>
-        <div className='main__container'>
-          <div className='wrapper'>
-            <form onSubmit={handleSubmit}>
-              <Input
-                type='email'
-                id='email'
-                name='email'
-                placeholder='email'
-                required
-                value={profileFormData.email}
-                setValue={handleChangeInput}
-                disabled={state.isLoading}
-              />
+        <form onSubmit={handleSubmit}>
+          <Input
+            type='email'
+            id='email'
+            name='email'
+            placeholder='email'
+            required
+            value={profileFormData.email}
+            setValue={handleChangeInput}
+            disabled={state.isLoading}
+          />
 
-              <Input
-                type='tel'
-                id='phone'
-                name='phone'
-                placeholder='phone'
-                required
-                value={profileFormData.phone}
-                setValue={handleChangeInput}/>
+          <Input
+            type='tel'
+            id='phone'
+            name='phone'
+            placeholder='phone'
+            required
+            value={profileFormData.phone}
+            setValue={handleChangeInput}/>
 
-              <Input
-                type='text'
-                id='login'
-                name='login'
-                placeholder='login'
-                required
-                value={profileFormData.login}
-                setValue={handleChangeInput}/>
+          <Input
+            type='text'
+            id='login'
+            name='login'
+            placeholder='login'
+            required
+            value={profileFormData.login}
+            setValue={handleChangeInput}/>
 
-              <Input
-                type='text'
-                id='first_name'
-                name='first_name'
-                placeholder='first_name'
-                required
-                value={profileFormData.first_name}
-                setValue={handleChangeInput}/>
+          <Input
+            type='text'
+            id='first_name'
+            name='first_name'
+            placeholder='first_name'
+            required
+            value={profileFormData.first_name}
+            setValue={handleChangeInput}/>
 
-              <Input
-                type='text'
-                id='second_name'
-                name='second_name'
-                placeholder='second_name'
-                required
-                value={profileFormData.second_name}
-                setValue={handleChangeInput}/>
+          <Input
+            type='text'
+            id='second_name'
+            name='second_name'
+            placeholder='second_name'
+            required
+            value={profileFormData.second_name}
+            setValue={handleChangeInput}/>
 
-              <Input
-                type='text'
-                id='display_name'
-                name='display_name'
-                placeholder='display_name'
-                required
-                value={profileFormData.display_name}
-                setValue={handleChangeInput}/>
+          <Input
+            type='text'
+            id='display_name'
+            name='display_name'
+            placeholder='display_name'
+            required
+            value={profileFormData.display_name}
+            setValue={handleChangeInput}/>
 
-              <button
-                disabled={state.isLoading}
-                type={'submit'}
-                className={'button'}
-              >
-                <span className={'button-title'}>
-                  Save
-                </span>
-              </button>
-            </form>
+          <button
+            disabled={state.isLoading}
+            type={'submit'}
+            className={'button'}
+          >
+            <span className={'button-title'}>
+              Save
+            </span>
+          </button>
+        </form>
 
-            <form onSubmit={handleChangePassword}>
-              <Input
-                type='password'
-                id='oldPassword'
-                name='oldPassword'
-                placeholder='Current password'
-                required
-                value={passwordData.oldPassword}
-                setValue={handleChangePasswordInput}
-                autocomplete={'current-password'}
-              />
+        <form onSubmit={handleChangePassword}>
+          <Input
+            type='password'
+            id='oldPassword'
+            name='oldPassword'
+            placeholder='Current password'
+            required
+            value={passwordData.oldPassword}
+            setValue={handleChangePasswordInput}
+            autocomplete={'current-password'}
+          />
 
-              <Input
-                type='password'
-                id='newPassword'
-                name='newPassword'
-                label={newPasswordError ? newPasswordError : 'New password'}
-                placeholder='New password'
-                required
-                className={newPasswordError ? 'input-invalid' : ''}
-                value={passwordData.newPassword}
-                setValue={handleChangePasswordInput}
-                autocomplete={'new-password'}
-              />
+          <Input
+            type='password'
+            id='newPassword'
+            name='newPassword'
+            label={newPasswordError ? newPasswordError : 'New password'}
+            placeholder='New password'
+            required
+            className={newPasswordError ? 'input-invalid' : ''}
+            value={passwordData.newPassword}
+            setValue={handleChangePasswordInput}
+            autocomplete={'new-password'}
+          />
 
-              <Input
-                type='password'
-                id='newPasswordRepeat'
-                name='newPasswordRepeat'
-                label={newPasswordError ? newPasswordError : 'New password (repeat)'}
-                placeholder='Repeat new password'
-                required
-                className={newPasswordError ? 'input-invalid' : ''}
-                value={passwordData.newPasswordRepeat}
-                setValue={handleChangePasswordInput}
-                autocomplete={'new-password'}
-              />
+          <Input
+            type='password'
+            id='newPasswordRepeat'
+            name='newPasswordRepeat'
+            label={newPasswordError ? newPasswordError : 'New password (repeat)'}
+            placeholder='Repeat new password'
+            required
+            className={newPasswordError ? 'input-invalid' : ''}
+            value={passwordData.newPasswordRepeat}
+            setValue={handleChangePasswordInput}
+            autocomplete={'new-password'}
+          />
 
-              <button
-                disabled={state.isLoading}
-                type={'submit'}
-                className={'button'}
-              >
-                <span className={'button-title'}>
-                  Change Password
-                </span>
-              </button>
-            </form>
+          <button
+            disabled={state.isLoading}
+            type={'submit'}
+            className={'button'}
+          >
+            <span className={'button-title'}>
+              Change Password
+            </span>
+          </button>
+        </form>
 
-            {state.error && (
-              <div>{state.error.message}</div>
-            )}
-          </div>
-      </div>
+        {state.error && (
+          <div>{state.error.message}</div>
+        )}
       </div>
     </Layout>
   )

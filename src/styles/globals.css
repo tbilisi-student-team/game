@@ -94,44 +94,37 @@ h3{
 }
 
 .main__container {
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
   flex-wrap: nowrap;
-  align-content: center;
+  justify-content: space-evenly;
   align-items: center;
 }
 
 .description-layout {
-  width: 65%;
-  z-index: 1;
-  height: auto;
   display: flex;
   align-items: center;
   min-height: 50vh;
-  justify-content: space-around;
+  justify-content: space-evenly;
 }
 
-@media screen and (max-width: 700px)  {
+.description {
+  text-align: justify;
+  max-width: 800px;
+  margin: 0 1em;
+}
+
+@media (max-width: 700px)  {
   .left-character-wrapper, .right-character-wrapper {
     display: none;
   }
 }
 
-.right-character-wrapper {
-  right: 3%;
-}
-
-.left-character-wrapper {
-  left: 3%;
-}
-
 .right-character-wrapper, .left-character-wrapper {
   width: 15%;
-  position: absolute;
-  z-index: 0;
-  top: 50%;
-  transform: translate(0, -50%);
+  max-width: 360px;
+  filter: drop-shadow(2px 2px 4px #00000088);
 }
 
 .left-character, .right-character {

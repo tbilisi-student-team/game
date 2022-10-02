@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 import {RoutePaths} from '@/types/RoutePaths';
@@ -51,10 +51,12 @@ export const Header = () => {
           </div></>
         }
         {currentUserState.data && <>
-          <div className='profile-button'>
-            <Link href={RoutePaths.User}><a className='header-link'>Profile</a></Link>
-          </div>
-          <div className='deriver'> | </div>
+          {nextRouter.pathname != RoutePaths.User && <>
+            <div className='profile-button'>
+              <Link href={RoutePaths.User}><a className='header-link'>Profile</a></Link>
+            </div>
+            <div className='deriver'> | </div></>
+          }
           <div className='signup-link'>
             <Link href=''>
               <a

@@ -27,7 +27,7 @@ export default function Leaderboard () {
     }
     getAllLeaders(data).then((res:any) => console.log('res', res)).catch((error: unknown) =>
         console.error('LED error:', error)
-)},[])
+  )},[])
 
   const sortedLeaders = mockResults.sort((a, b) => a.score < b.score ? 1 : -1);
 

@@ -75,7 +75,7 @@ export default function Game() {
         canvasRef.current?.classList.remove('grabbing');
         pew(stateRef.current.mouseState.pressX - e.x, stateRef.current.mouseState.pressY - e.y);
         if (stateRef.current.isGameStarted&&!stateRef.current.isPause&&!stateRef.current.isGameOver) {
-          PlaySounds(['pew','plug','pop','screech','vwoop','voice']);
+          PlaySounds(['pew-1','pew-2','pew-3','pew-4','pew-5','pew-6','pew-7']);
         }
         break;
     }
@@ -107,6 +107,7 @@ export default function Game() {
 
     if (stateRef.current.elapsedTimeSinceStart > GAME_TIME) {
       stateRef.current.isGameOver = true;
+      PlaySounds(['final-1','final-2']);
       //TODO emit event
       return;
     }
@@ -135,7 +136,7 @@ export default function Game() {
         if (!fruit.isDropping && checkIntersectionWithFruit(bullet, fruit)) {
           stateRef.current.score += fruit.age;
           fruit.drop(stateRef.current.elapsedTimeSinceStart);
-          PlaySounds(['kokos']);
+          PlaySounds(['yes-1','yes-2','yes-3','yes-4']);
           bullet.isCollided = true;
           break;
         }

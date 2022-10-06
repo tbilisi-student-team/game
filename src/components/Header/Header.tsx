@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 import {RoutePaths} from '@/types/RoutePaths';
-import { useAppContext } from '@/appContext/index';
+import {useAppContext} from '@/appContext/index';
 import {logout} from "@/remoteAPI/auth";
+import {signOut, useSession} from 'next-auth/react';
 
 export const Header = () => {
   const {
@@ -11,6 +12,8 @@ export const Header = () => {
   } = useAppContext();
 
   const nextRouter = useRouter();
+
+  const session = useSession();
 
   const handleLogout = () => {
     logout({ withCredentials: true })
@@ -41,7 +44,7 @@ export const Header = () => {
         </div>
       </div>
       <div className='right__container'>
-        {currentUserState.data == null && <>
+        {currentUserState.data == null && session.data == null && <>
           <div className='signin-link'>
             <Link href={RoutePaths.SignIn}><a className='header-link'>Sign in</a></Link>
           </div>
@@ -50,7 +53,7 @@ export const Header = () => {
             <Link href={RoutePaths.SignUp}><a className='header-link'>Sign up</a></Link>
           </div></>
         }
-        {currentUserState.data && <>
+        {(currentUserState.data || session.data) && <>
           <div className='profile-button'>
             <Link href={RoutePaths.User}><a className='header-link'>Profile</a></Link>
           </div>
@@ -61,7 +64,12 @@ export const Header = () => {
                 className='header-link'
                 onClick={(event) => {
                   event.preventDefault();
-                  handleLogout()
+                  if (session) {
+                    signOut({callbackUrl: '/'});
+                  }
+                  else {
+                    handleLogout();
+                  }
                 }}
               >
                 Sign out

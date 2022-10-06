@@ -18,7 +18,7 @@ import {
 import { getGameImages, getElapsedTime, getPauseTime } from './utils';
 import { toggleFullscreen } from '@/utils/index';
 import { useWindowVisualViewportSize } from '@/hooks/index';
-
+import  PlaySounds from './utils/PlaySounds';
 export default function Game() {
   const windowVisualViewportSize = useWindowVisualViewportSize(
     {
@@ -31,7 +31,7 @@ export default function Game() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const drawerRef = useRef<Drawer>(new Drawer());
   const rafIdRef = useRef<number | null>(null);
-
+  
   useEffect(() => {
     drawerRef.current.setImages(getGameImages());
   }, [])
@@ -74,6 +74,9 @@ export default function Game() {
         stateRef.current.mouseState.isPressed = false;
         canvasRef.current?.classList.remove('grabbing');
         pew(stateRef.current.mouseState.pressX - e.x, stateRef.current.mouseState.pressY - e.y);
+        if (stateRef.current.isGameStarted&&!stateRef.current.isPause&&!stateRef.current.isGameOver) {
+          PlaySounds(['pew','plug','pop','screech','vwoop','voice']);
+        }
         break;
     }
   }, [])
@@ -84,6 +87,7 @@ export default function Game() {
       stateRef.current.startTime,
       stateRef.current.elapsedTimeSinceStart,
     );
+    
   }, []);
 
   const updateGame = useCallback((currentTime: DOMHighResTimeStamp) => {
@@ -131,6 +135,7 @@ export default function Game() {
         if (!fruit.isDropping && checkIntersectionWithFruit(bullet, fruit)) {
           stateRef.current.score += fruit.age;
           fruit.drop(stateRef.current.elapsedTimeSinceStart);
+          PlaySounds(['kokos']);
           bullet.isCollided = true;
           break;
         }
@@ -144,7 +149,7 @@ export default function Game() {
       y: BUDDY_START_Y - 300 + Math.random() * 200,
       startTime: performance.now(),
     });
-    stateRef.current.bullets.push(new Bullet(
+    stateRef.current.bullets.push(new Bullet( 
       BULLET_START_X, BULLET_START_Y,
       Math.min(dx / 100, BULLET_SPEED_MAX), -Math.min(dy / 100, BULLET_SPEED_MAX)));
   }
@@ -204,8 +209,10 @@ export default function Game() {
       } else if (stateRef.current.isGameOver) {
         if (stateRef.current.isGameStarted) {
           updatePauseTime(time);
+          
         }
         drawerRef.current?.drawGameOver({ ctx, score: stateRef.current.score });
+        
       } else {
         updateGame(time);
 

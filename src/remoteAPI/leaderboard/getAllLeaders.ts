@@ -11,10 +11,3 @@ export type GetAllLeaders = {
 export function getAllLeaders(data: GetAllLeaders, config?: AxiosRequestConfig) {
   return ypTechHTTPClient.post('/leaderboard/all', data, { withCredentials: true, ...config });
 }
-
-
-// {
-//   "data": {"userName": "Stepan", "id": 111, "score": 222, "game": "Pew"},
-//   "ratingFieldName": "score",
-//   "teamName": "tbilisi"
-// }

@@ -111,8 +111,6 @@ function getActions(
             type: ActionType.LOADING_SUCCESS,
             payload: { responseData }
           });
-
-          console.log(state);
         }
         else {
           throw new Error(`${axiosResponse.status}: Unexpected error.`);

@@ -3,18 +3,24 @@ import { createSlice, createAsyncThunk, SerializedError } from '@reduxjs/toolkit
 import { Status } from '@/types/index';
 import { getAllLeaders } from '@/remoteAPI/index';
 
-type AllLeadersData = [{
-  username: string,
-  id: number,
-  score: number,
-  team?: string,
-}]
+type AllLeadersData = [Leader]
+
+type Leader = {
+  data: {  
+  "userName": string,
+  "id": number,
+  "score": number,
+  "game": string}
+
+}
 
 type State = {
   data: AllLeadersData | null,
   status: Status,
   error: SerializedError | null,
 }
+
+
 
 const INITIAL_STATE: State = {
   data: null,
@@ -24,15 +30,14 @@ const INITIAL_STATE: State = {
 
 export const fetchAllLeadersData = createAsyncThunk('leaderboard/fetchData', async () => {
   const data={
-    "ratingFieldName": "score",
+    "ratingFieldName": "game",
     "cursor": 0,
     "limit": 100
   }
   const axiosResponse = await getAllLeaders(data);
+  const filteredLeaders = axiosResponse.data.filter((item: Leader) => item.data.game === 'Pew')
 
-  const allLeadersData = axiosResponse.data;
-  console.log('allLeadersData', allLeadersData)
-  return allLeadersData;
+  return filteredLeaders;
 });
 
 const leaderboardSlice = createSlice({

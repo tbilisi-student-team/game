@@ -30,7 +30,7 @@ const INITIAL_STATE: State = {
 
 export const fetchAllLeadersData = createAsyncThunk('leaderboard/fetchData', async () => {
   const data={
-    "ratingFieldName": "game",
+    "ratingFieldName": "score",
     "cursor": 0,
     "limit": 100
   }

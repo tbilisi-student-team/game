@@ -3,7 +3,7 @@ import { AxiosRequestConfig } from 'axios';
 import { ypTechHTTPClient } from '@/YPTechHTTPClient/index';;
 
 export type AddNewLeader = {
-  "data": {"name": string, "score": number},
+  "data": {"username": string, "score": number, "id": number, "game": string},
   "ratingFieldName": "score",
   "teamName": "tbilisi"
 }

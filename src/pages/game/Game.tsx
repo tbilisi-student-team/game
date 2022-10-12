@@ -19,6 +19,9 @@ import { getGameImages, getElapsedTime, getPauseTime } from './utils';
 import { toggleFullscreen } from '@/utils/index';
 import { useWindowVisualViewportSize } from '@/hooks/index';
 import  PlaySounds from './utils/PlaySounds';
+import { useRouter } from 'next/router'
+import { RoutePaths } from '@/types/index'
+
 export default function Game() {
   const windowVisualViewportSize = useWindowVisualViewportSize(
     {
@@ -31,6 +34,7 @@ export default function Game() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const drawerRef = useRef<Drawer>(new Drawer());
   const rafIdRef = useRef<number | null>(null);
+  const router = useRouter()
   
   useEffect(() => {
     drawerRef.current.setImages(getGameImages());
@@ -39,6 +43,8 @@ export default function Game() {
   const onKeyDown = useCallback(function onKeyDown(e: KeyboardEvent) {
     switch (e.code) {
       case 'KeyP':
+      // case 'KeyH':
+      //   router.push(RoutePaths.Main)
       case 'Space':
         if (!stateRef.current.isGameOver) {
           stateRef.current.isPause = !stateRef.current.isPause;

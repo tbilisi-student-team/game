@@ -43,8 +43,6 @@ export default function Game() {
   const onKeyDown = useCallback(function onKeyDown(e: KeyboardEvent) {
     switch (e.code) {
       case 'KeyP':
-      // case 'KeyH':
-      //   router.push(RoutePaths.Main)
       case 'Space':
         if (!stateRef.current.isGameOver) {
           stateRef.current.isPause = !stateRef.current.isPause;
@@ -61,6 +59,9 @@ export default function Game() {
       case 'KeyF':
         toggleFullscreen();
         break;
+      case 'KeyH':
+        router.push(RoutePaths.Main)
+        break
     }
   }, []);
 

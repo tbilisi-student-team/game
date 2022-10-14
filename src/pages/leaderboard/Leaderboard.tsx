@@ -8,7 +8,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDumbbell, faTrophy } from '@fortawesome/free-solid-svg-icons';
 import type { UserScore } from './types'
 
-
 export default function Leaderboard () {
   const leaderboard = useSelector(state => (state as any).leaderboard)
 
@@ -16,7 +15,12 @@ export default function Leaderboard () {
 
   useEffect(() => {
     if(leaderboard.data !== null) {
-      setSortedLeaders(leaderboard.data.sort((a: UserScore, b: UserScore) => a.data!.score < b.data!.score ? 1 : -1))
+      const leadersData = [...leaderboard.data]
+      const sortedLeaders: any = leadersData.sort((a: UserScore, b: UserScore) => {
+        return Number(a.data!.score) < Number(b.data!.score) ? 1 : -1
+      })
+
+      setSortedLeaders(sortedLeaders)
     }
 
   }, [leaderboard])

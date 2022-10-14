@@ -32,11 +32,10 @@ export const fetchAllLeadersData = createAsyncThunk('leaderboard/fetchData', asy
   const data={
     "ratingFieldName": "score",
     "cursor": 0,
-    "limit": 100
+    "limit": 10000
   }
   const axiosResponse = await getAllLeaders(data);
   const filteredLeaders = axiosResponse.data.filter((item: Leader) => item.data.game === 'Pew')
-
   return filteredLeaders;
 });
 

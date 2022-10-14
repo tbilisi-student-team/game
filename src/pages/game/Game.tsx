@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useLayoutEffect, useRef} from 'react';
+import React, {useCallback, useEffect, useLayoutEffect, useRef, useState} from 'react';
 
 import { GameState } from './types';
 import { Bullet, Fruit } from './models';
@@ -18,6 +18,9 @@ import {
 import { getGameImages, getElapsedTime, getPauseTime } from './utils';
 import { toggleFullscreen } from '@/utils/index';
 import { useWindowVisualViewportSize } from '@/hooks/index';
+import {useSelector} from 'react-redux';
+import { addNewLeader } from '@/remoteAPI/leaderboard/addNewLeader';
+import { CurrentUserData } from '@/types/CurrentUserData';
 
 export default function Game() {
   const windowVisualViewportSize = useWindowVisualViewportSize(
@@ -31,6 +34,19 @@ export default function Game() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const drawerRef = useRef<Drawer>(new Drawer());
   const rafIdRef = useRef<number | null>(null);
+
+  const [currentUser, setCurrentUser] = useState<CurrentUserData>()
+
+  const currentUserFromStore = useSelector(state => (state as any).currentUser)
+
+  useEffect(() => {
+    console.log('currentUserFromStore', currentUserFromStore)
+    if (currentUserFromStore && currentUserFromStore.data) {
+      setCurrentUser(currentUserFromStore.data)
+    }
+  }, [currentUserFromStore, stateRef])
+
+  
 
   useEffect(() => {
     drawerRef.current.setImages(getGameImages());
@@ -103,6 +119,18 @@ export default function Game() {
 
     if (stateRef.current.elapsedTimeSinceStart > GAME_TIME) {
       stateRef.current.isGameOver = true;
+      if (currentUser) {
+  
+        const dataToSend = {
+          username: currentUser.first_name + ' ' + currentUser.second_name,
+          id: currentUser.id,
+          score: stateRef.current.score,
+          game: 'Pew',
+        }
+  
+        addNewLeader(dataToSend).catch(err => console.log('add new leader', err))
+      }
+
       //TODO emit event
       return;
     }

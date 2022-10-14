@@ -6,6 +6,8 @@ import {useAppContext} from '@/appContext/index';
 import {logout} from "@/remoteAPI/auth";
 import {signOut, useSession} from 'next-auth/react';
 
+let theme = 'dark';
+
 export const Header = () => {
   const {
     currentUser: [ currentUserState, currentUserActions ],
@@ -14,6 +16,11 @@ export const Header = () => {
   const nextRouter = useRouter();
 
   const session = useSession();
+
+  function toggleTheme() {
+    theme = theme === 'light' ? 'dark' : 'light';
+    document.documentElement.dataset.theme = theme;
+  }
 
   const handleLogout = () => {
     logout({ withCredentials: true })
@@ -65,9 +72,21 @@ export const Header = () => {
               </a>
           </Link>
         </>}
+        <span className='deriver'> | </span>
+        <Link href=''>
+          <a
+            className='header-link'
+            onClick={(event) => {
+              event.preventDefault();
+              toggleTheme();
+            }}
+          >
+            Switch theme
+          </a>
+        </Link>
       </div>
     </header>
   )
 }
 
-export default Header
+export default Header;

@@ -106,9 +106,9 @@ export class Drawer {
       canvasRenderingContext2DArgs: {
         textBaseline: 'middle',
         font: '60px averia-serif-libre',
-        fillStyle: '#000',
+        fillStyle: '#fff',
       },
-      strokeTextArgs: [ 'To start the game, press "P"', CANVAS_BASE_WIDTH/2, CANVAS_BASE_HEIGHT/2 -30 ],
+      fillTextArgs: [ 'To start/pause the game, press "P"', CANVAS_BASE_WIDTH/2, CANVAS_BASE_HEIGHT/2 -30 ],
     });
 
     this.drawText({
@@ -116,11 +116,11 @@ export class Drawer {
       canvasRenderingContext2DArgs: {
         textBaseline: 'middle',
         font: '40px averia-serif-libre',
-        fillStyle: '#000',
+        fillStyle: '#fff',
       },
-      strokeTextArgs:
+      fillTextArgs:
         [
-          'After starting, you can pause the game by pressing the "P" button',
+          'Press "H" to go to the home page',
           CANVAS_BASE_WIDTH/2, CANVAS_BASE_HEIGHT/2 + 20
         ],
     });
@@ -249,10 +249,15 @@ export class Drawer {
     }
   ) {
     const text = `Score: ${score}`;
-    const padding = 10;
+    const padding = 30;
 
     this.drawText({
       ctx,
+      canvasRenderingContext2DArgs: {
+        textBaseline: 'middle',
+        font: '40px averia-serif-libre',
+        fillStyle: '#fff',
+      },
       strokeTextArgs: [ text, CANVAS_BASE_WIDTH/2, padding ],
       fillTextArgs: [ text, CANVAS_BASE_WIDTH/2, padding ],
     });
@@ -271,10 +276,15 @@ export class Drawer {
     const mseconds = elapsedTimeSinceStart % 1000;
     const pad = seconds < 10 ? '0' : '';
     const text = `00${seconds % 2 === 0 ? ':' : ' '}${pad}${seconds}.${mseconds.toString(10)[0]}`;
-    const padding = 60;
+    const padding = 80;
 
     this.drawText({
       ctx,
+      canvasRenderingContext2DArgs: {
+        textBaseline: 'middle',
+        font: '40px averia-serif-libre',
+        fillStyle: '#fff',
+      },
       strokeTextArgs: [ text, CANVAS_BASE_WIDTH/2, padding ],
       fillTextArgs: [ text, CANVAS_BASE_WIDTH/2, padding ]
     });
@@ -293,16 +303,11 @@ export class Drawer {
       ctx,
       canvasRenderingContext2DArgs: {
         textBaseline: 'middle',
-        font: '60px averia-serif-libre',
-        fillStyle: '#00000088',
+        font: '120px averia-serif-libre',
+        fillStyle: '#fff',
       },
-      strokeTextArgs: [
-        'Game Over! To restart the game, press the "R" button',
-        CANVAS_BASE_WIDTH/2,
-        CANVAS_BASE_HEIGHT/2 -30
-      ],
       fillTextArgs: [
-        'Game Over! To restart the game, press the "R" button',
+        'GAME OVER!',
         CANVAS_BASE_WIDTH/2,
         CANVAS_BASE_HEIGHT/2 -30
       ],
@@ -312,11 +317,30 @@ export class Drawer {
       ctx,
       canvasRenderingContext2DArgs: {
         textBaseline: 'middle',
-        font: '40px averia-serif-libre',
-        fillStyle: '#00000088',
+        font: '60px averia-serif-libre',
+        fillStyle: '#fff',
       },
-      strokeTextArgs: [ `Your score is: ${score}!`, CANVAS_BASE_WIDTH/2, CANVAS_BASE_HEIGHT/2 + 20 ],
-      fillTextArgs: [ `Your score is: ${score}!`, CANVAS_BASE_WIDTH/2, CANVAS_BASE_HEIGHT/2 + 20 ],
+      fillTextArgs: [ `Your score is: ${score}!`, CANVAS_BASE_WIDTH/2, CANVAS_BASE_HEIGHT/2 + 60 ],
+    });
+
+    this.drawText({
+      ctx,
+      canvasRenderingContext2DArgs: {
+        textBaseline: 'middle',
+        font: '30px averia-serif-libre',
+        fillStyle: '#fff',
+      },
+      fillTextArgs: [ `"R" - restart the game`, CANVAS_BASE_WIDTH/2, CANVAS_BASE_HEIGHT/2 + 150 ],
+    });
+
+    this.drawText({
+      ctx,
+      canvasRenderingContext2DArgs: {
+        textBaseline: 'middle',
+        font: '30px averia-serif-libre',
+        fillStyle: '#fff',
+      },
+      fillTextArgs: [ `"H" - return to the home page`, CANVAS_BASE_WIDTH/2, CANVAS_BASE_HEIGHT/2 + 180 ],
     });
   }
 

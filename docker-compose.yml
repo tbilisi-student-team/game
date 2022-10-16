@@ -1,0 +1,20 @@
+services:
+  db:
+    image: postgres:15.0
+    environment:
+      POSTGRES_PASSWORD: ${PGSQL_PASSWORD}
+    ports:
+      - "${PGSQL_PORT}:5432"
+    networks:
+      - int
+  web:
+    depends_on:
+      - db
+    build: .
+    ports:
+      - "3001:3000"
+    networks:
+      - int
+networks:
+  int:
+    driver: bridge

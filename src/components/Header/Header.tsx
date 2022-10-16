@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 import {RoutePaths} from '@/types/RoutePaths';
@@ -6,7 +6,12 @@ import {useAppContext} from '@/appContext/index';
 import {logout} from "@/remoteAPI/auth";
 import {signOut, useSession} from 'next-auth/react';
 
-let theme = 'dark';
+let currentTheme = 'dark';
+
+function switchTheme(theme: string) {
+  currentTheme = theme;
+  document.documentElement.dataset.theme = currentTheme;
+}
 
 export const Header = () => {
   const {
@@ -18,9 +23,22 @@ export const Header = () => {
   const session = useSession();
 
   function toggleTheme() {
-    theme = theme === 'light' ? 'dark' : 'light';
-    document.documentElement.dataset.theme = theme;
+    switchTheme(currentTheme === 'light' ? 'dark' : 'light');
+    if (currentUserState.data) {
+      //Сохраняем тему пользователя
+      fetch('/api/user', {method: 'POST', body: JSON.stringify({id: currentUserState.data.id, theme: currentTheme})});
+    }
   }
+
+  useEffect(() => {
+    if (currentUserState.data) {
+      fetch(`/api/user/${currentUserState.data.id}`)
+        .then(resp => resp.json())
+        .then(json => {
+          switchTheme(json.theme);
+        });
+    }
+  }, [currentUserState.data]);
 
   const handleLogout = () => {
     logout({ withCredentials: true })

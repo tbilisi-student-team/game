@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useLayoutEffect, useRef, useState} from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 
 import { GameState } from './types';
 import { Bullet, Fruit } from './models';
@@ -18,9 +18,10 @@ import {
 import { getGameImages, getElapsedTime, getPauseTime } from './utils';
 import { toggleFullscreen } from '@/utils/index';
 import { useWindowVisualViewportSize } from '@/hooks/index';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import { addNewLeader } from '@/remoteAPI/leaderboard/addNewLeader';
-import { CurrentUserData } from '@/types/CurrentUserData';
+import { selectCurrentUserData } from '@/reduxStore/slices';
+import { RootState } from '@/reduxStore/types';
 
 export default function Game() {
   const windowVisualViewportSize = useWindowVisualViewportSize(
@@ -35,18 +36,7 @@ export default function Game() {
   const drawerRef = useRef<Drawer>(new Drawer());
   const rafIdRef = useRef<number | null>(null);
 
-  const [currentUser, setCurrentUser] = useState<CurrentUserData>()
-
-  const currentUserFromStore = useSelector(state => (state as any).currentUser)
-
-  useEffect(() => {
-    console.log('currentUserFromStore', currentUserFromStore)
-    if (currentUserFromStore && currentUserFromStore.data) {
-      setCurrentUser(currentUserFromStore.data)
-    }
-  }, [currentUserFromStore, stateRef])
-
-  
+  const currentUserData = useSelector((state: RootState) => selectCurrentUserData(state.currentUser));
 
   useEffect(() => {
     drawerRef.current.setImages(getGameImages());
@@ -119,11 +109,10 @@ export default function Game() {
 
     if (stateRef.current.elapsedTimeSinceStart > GAME_TIME) {
       stateRef.current.isGameOver = true;
-      if (currentUser) {
-  
+      if (currentUserData) {
         const dataToSend = {
-          username: currentUser.first_name + ' ' + currentUser.second_name,
-          id: currentUser.id,
+          username: currentUserData.first_name + ' ' + currentUserData.second_name,
+          id: currentUserData.id,
           score: stateRef.current.score,
           game: 'Pew',
         }
@@ -131,7 +120,6 @@ export default function Game() {
         addNewLeader(dataToSend).catch(err => console.log('add new leader', err))
       }
 
-      //TODO emit event
       return;
     }
 
@@ -164,7 +152,7 @@ export default function Game() {
         }
       }
     }
-  }, []);
+  }, [currentUserData]);
 
   const pew = (dx: number, dy: number) => {
     stateRef.current.pews.push({

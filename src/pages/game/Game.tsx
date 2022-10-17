@@ -22,6 +22,9 @@ import { useSelector } from 'react-redux';
 import { addNewLeader } from '@/remoteAPI/leaderboard/addNewLeader';
 import { selectCurrentUserData } from '@/reduxStore/slices';
 import { RootState } from '@/reduxStore/types';
+import  PlaySounds from './utils/PlaySounds';
+import { useRouter } from 'next/router'
+import { RoutePaths } from '@/types/index'
 
 export default function Game() {
   const windowVisualViewportSize = useWindowVisualViewportSize(
@@ -35,7 +38,7 @@ export default function Game() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const drawerRef = useRef<Drawer>(new Drawer());
   const rafIdRef = useRef<number | null>(null);
-
+  const router = useRouter()
   const currentUserData = useSelector((state: RootState) => selectCurrentUserData(state.currentUser));
 
   useEffect(() => {
@@ -61,6 +64,9 @@ export default function Game() {
       case 'KeyF':
         toggleFullscreen();
         break;
+      case 'KeyH':
+        router.push(RoutePaths.Main)
+        break
     }
   }, []);
 
@@ -80,6 +86,9 @@ export default function Game() {
         stateRef.current.mouseState.isPressed = false;
         canvasRef.current?.classList.remove('grabbing');
         pew(stateRef.current.mouseState.pressX - e.x, stateRef.current.mouseState.pressY - e.y);
+        if (stateRef.current.isGameStarted&&!stateRef.current.isPause&&!stateRef.current.isGameOver) {
+          PlaySounds(['pew-1','pew-2','pew-3','pew-4','pew-5','pew-6','pew-7']);
+        }
         break;
     }
   }, [])
@@ -109,6 +118,8 @@ export default function Game() {
 
     if (stateRef.current.elapsedTimeSinceStart > GAME_TIME) {
       stateRef.current.isGameOver = true;
+      PlaySounds(['final-1','final-2']);
+      //TODO emit event
       if (currentUserData) {
         const dataToSend = {
           username: currentUserData.first_name + ' ' + currentUserData.second_name,
@@ -116,7 +127,7 @@ export default function Game() {
           score: stateRef.current.score,
           game: 'Pew',
         }
-  
+
         addNewLeader(dataToSend).catch(err => console.log('add new leader', err))
       }
 
@@ -147,6 +158,7 @@ export default function Game() {
         if (!fruit.isDropping && checkIntersectionWithFruit(bullet, fruit)) {
           stateRef.current.score += fruit.age;
           fruit.drop(stateRef.current.elapsedTimeSinceStart);
+          PlaySounds(['yes-1','yes-2','yes-3','yes-4']);
           bullet.isCollided = true;
           break;
         }

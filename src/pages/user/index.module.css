@@ -1,14 +1,15 @@
 .avatar {
 	margin: 0 auto;
 	text-align: center;
-	overflow: hidden;
+}
 
+.avatar img {
 	--size: 150px;
 
-	width: var(--size);
-	height: var(--size);
-	border-radius: var(--size);
-	border: 1px solid var(--grey);
+	width: var(--size)!important;
+	height: var(--size)!important;
+	border-radius: var(--size)!important;
+	border: 1px solid var(--grey)!important;
 }
 
 .avatar button {

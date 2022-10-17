@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 import {RoutePaths} from '@/types/RoutePaths';
-import { useAppContext } from '@/appContext/index';
+import {useAppContext} from '@/appContext/index';
 import {logout} from "@/remoteAPI/auth";
+import {signOut, useSession} from 'next-auth/react';
 
 export const Header = () => {
   const {
@@ -11,6 +12,8 @@ export const Header = () => {
   } = useAppContext();
 
   const nextRouter = useRouter();
+
+  const session = useSession();
 
   const handleLogout = () => {
     logout({ withCredentials: true })
@@ -28,47 +31,40 @@ export const Header = () => {
   return (
     <header className='header'>
       <div className='left__container'>
-        <div>
-          <Link href='/'><a className='header-link'>Home</a></Link>
-        </div>
-        <div className='deriver'> | </div>
-        <div>
-          <Link href={RoutePaths.Forum}><a className='header-link'>Forum</a></Link>
-        </div>
-        <div className='deriver'> | </div>
-        <div>
-          <Link href={RoutePaths.Leaderboard}><a className='header-link'>Our champions</a></Link>
-        </div>
+        <Link href='/'><a className='header-link'>Home</a></Link>
+        <span className='deriver'> | </span>
+        <Link href={RoutePaths.Forum}><a className='header-link'>Forum</a></Link>
+        <span className='deriver'> | </span>
+        <Link href={RoutePaths.Leaderboard}><a className='header-link'>Our champions</a></Link>
       </div>
       <div className='right__container'>
-        {currentUserState.data == null && <>
-          <div className='signin-link'>
-            <Link href={RoutePaths.SignIn}><a className='header-link'>Sign in</a></Link>
-          </div>
-          <div className='deriver'> | </div>
-          <div className='signup-link'>
-            <Link href={RoutePaths.SignUp}><a className='header-link'>Sign up</a></Link>
-          </div></>
-        }
-        {currentUserState.data && <>
-          <div className='profile-button'>
+        {currentUserState.data == null && session.data == null && <>
+          <Link href={RoutePaths.SignIn}><a className='header-link'>Sign in</a></Link>
+          <span className='deriver'> | </span>
+          <Link href={RoutePaths.SignUp}><a className='header-link'>Sign up</a></Link>
+        </>}
+        {(currentUserState.data || session.data) && <>
+          {nextRouter.pathname != RoutePaths.User && <>
             <Link href={RoutePaths.User}><a className='header-link'>Profile</a></Link>
-          </div>
-          <div className='deriver'> | </div>
-          <div className='signup-link'>
-            <Link href=''>
+            <span className='deriver'> | </span>
+          </>}
+          <Link href=''>
               <a
                 className='header-link'
                 onClick={(event) => {
                   event.preventDefault();
-                  handleLogout()
+                  if (session) {
+                    signOut({callbackUrl: '/'});
+                  }
+                  else {
+                    handleLogout();
+                  }
                 }}
               >
                 Sign out
               </a>
-            </Link>
-          </div></>
-        }
+          </Link>
+        </>}
       </div>
     </header>
   )

@@ -1,15 +1,12 @@
 import React from 'react';
-import { Button } from '../../ui/Button';
-
-import Link from 'next/link';
-
-import { RoutePaths } from '@/types/index'
+import { Button } from '@/ui/Button';
+import { RoutePaths } from '@/types/index';
 import { Layout } from '@/components/Layout';
-import { useRouter } from 'next/router'
-
+import { useRouter } from 'next/router';
 
 export default function Main () {
-  const router = useRouter()
+  const router = useRouter();
+
   return (
     <Layout>
       <div className='description'>

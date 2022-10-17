@@ -10,6 +10,7 @@ import { useAppContext } from '@/appContext/index';
 
 import { signin, SignInErrorResponse, SignInResponse } from '@/remoteAPI/index';
 import {Layout} from "@/components/Layout";
+import {useSession, signIn} from "next-auth/react";
 
 
 export default function SignIn () {
@@ -18,6 +19,8 @@ export default function SignIn () {
   const {
     signIn: [ state, actions ],
   } = useAppContext();
+
+  const { data: session } = useSession();
 
   const handleSignIn = () => {
     actions.loadingStart();
@@ -84,12 +87,23 @@ export default function SignIn () {
             {'Sign in'}
           </span>
         </button>
+        {session == null && <button
+          type={'button'}
+          className={'button'}
+          title={'GitHub and Yandex'}
+          onClick={() => {
+             signIn(undefined, {callbackUrl: RoutePaths.Main});
+          }}
+        >
+          Use other methods
+        </button>}
         {state.error && (
           <div>{state.error.message}</div>
         )}
         <div className='sign-link'>
           <Link href={RoutePaths.SignUp}><a className='header-link'>I&apos;m new here</a></Link>
         </div>
+
       </form>
     </Layout>
   )

@@ -119,6 +119,9 @@ h3{
   .left-character-wrapper, .right-character-wrapper {
     display: none;
   }
+  .leaderboard-table {
+    width: auto!important;
+  }
 }
 
 .right-character-wrapper, .left-character-wrapper {
@@ -330,8 +333,7 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
 
 .leaderboard-table {
   border-radius: 10px;
-  min-width: 60%;
-  width: 100%;
+  width: 600px;
   border: 1px solid var(--white);
   margin: 20px 0 40px 0;
   background-color: var(--tablebackground);

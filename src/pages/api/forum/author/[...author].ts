@@ -10,7 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       if (typeof requestQueryId === 'string') {
         const authorId = parseInt(requestQueryId, 10);
 
-        const author = await Author.findOne({where: {id: authorId}});
+        const author = await Author.findOne({ where: { id: authorId }, raw: true, });
 
         if (author) {
           res.status(200).send(author);

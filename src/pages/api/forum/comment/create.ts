@@ -1,36 +1,36 @@
 import {NextApiRequest, NextApiResponse} from 'next';
 
-import {Topic} from '@/db/sequelize';
+import {Comment} from '@/db/sequelize';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (req.method === 'POST') {
-      const topicData = JSON.parse(req.body);
+      const commentData = JSON.parse(req.body);
 
       const {
         id,
-        title,
         text,
         authorId,
-      } = topicData;
+        topicId,
+      } = commentData;
 
       if (
         typeof id === 'number' &&
-        typeof title === 'string' &&
         typeof text === 'string' &&
-        typeof authorId === 'number'
+        typeof authorId === 'number' &&
+        typeof topicId === 'number'
       ) {
-        const topic = await Topic.create({
+        const comment = await Comment.create({
           where: { id },
           defaults: {
             id,
-            title,
             text,
             authorId,
+            topicId,
           }
         });
 
-        res.status(200).send(topic);
+        res.status(200).send(comment);
       } else {
         res.status(400).send('400 Bad Request.')
       }

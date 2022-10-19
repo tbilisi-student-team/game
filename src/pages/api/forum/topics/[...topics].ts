@@ -4,7 +4,15 @@ import {Topic} from '@/db/sequelize';
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (req.method === 'GET') {
-      const topics = await Topic.findAll();
+      const requestQueryIds = req.query.ids;
+
+      let topics = [];
+
+      if (Array.isArray(requestQueryIds) && !!requestQueryIds.length) {
+        topics = await Topic.findAll({ where: { id: requestQueryIds }, raw: true, })
+      } else {
+        topics = await Topic.findAll({ raw: true });
+      }
 
       res.status(200).send(topics);
     } else {

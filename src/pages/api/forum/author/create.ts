@@ -8,20 +8,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const authorData = JSON.parse(req.body);
 
       const {
-        id,
         name,
       } = authorData;
 
-      if (
-        typeof id === 'number' &&
-        typeof name === 'string'
-      ) {
+      if (typeof name === 'string') {
         const author = await Author.create({
-          where: { id },
-          defaults: {
-            id,
-            name,
-          }
+          name
         });
 
         res.status(200).send(author);

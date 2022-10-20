@@ -101,7 +101,7 @@ export default function SignIn () {
           <div>{state.error.message}</div>
         )}
         <div className='sign-link'>
-          <Link className='header-link' href={RoutePaths.SignUp}>I&apos;m new here</Link>
+          <Link href={RoutePaths.SignUp}><a className='header-link'>I&apos;m new here</a></Link>
         </div>
 
       </form>

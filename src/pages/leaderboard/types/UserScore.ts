@@ -1,5 +1,8 @@
 export type UserScore = {
-  username: string,
-  score: number,
-  place?: number
+  data: {
+    username: string,
+    score: number,
+    place?: number
+  },
+  // place?: number
 };

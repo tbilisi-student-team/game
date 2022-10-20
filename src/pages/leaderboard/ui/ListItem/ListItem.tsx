@@ -1,14 +1,10 @@
-import React, { PropsWithChildren } from 'react';
-import type { UserScore } from '../../types'
+import React from 'react';
+import { LeaderData } from '@/reduxStore/slices';
 
 
-type ListItemProps = PropsWithChildren<{
-  data: UserScore;
-}>;
-
-export default function ListItem (props: ListItemProps) {
+export default function ListItem (props: {data: LeaderData & {place: number}}) {
   return (
-    <tr key={props.data.username} className='theme' >
+    <tr key={props.data.id} className='theme' >
       <td className='table-cell centered'>
         <p>{props.data.place}</p>
       </td>

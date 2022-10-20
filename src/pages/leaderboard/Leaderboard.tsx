@@ -1,25 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+
+import { useSelector } from 'react-redux'
 
 import { Layout } from '@/components/index';
 import ListItem from './ui';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDumbbell, faTrophy } from '@fortawesome/free-solid-svg-icons';
-import type { UserScore } from './types'
-
-const mockResults: UserScore[] = [
-  { username: 'Avokado', score: 374 },
-  { username: 'Lemon', score: 755 },
-  { username: 'Grapefruit', score: 22 },
-  { username: 'Pamelo', score: 836 },
-  { username: 'Jackfruit', score: 272 },
-]
+import { fetchTeamLeadersData, Leader, selectLeaderboardData} from '@/reduxStore/slices';
+import { reduxStore } from '@/reduxStore/reduxStore';
 
 export default function Leaderboard () {
-  const sortedLeaders = mockResults.sort((a, b) => a.score < b.score ? 1 : -1);
+  const leaderboard = useSelector(selectLeaderboardData);
 
-  const threadList = sortedLeaders.map(
-    (item: UserScore, index: number) => <ListItem key={item.username} data={{ ...item, place: index+1 }}/>
-  );
+  console.log(leaderboard);
+
+  useEffect(() => {
+    reduxStore.dispatch(fetchTeamLeadersData());
+  }, []);
 
   return (
     <Layout>
@@ -31,7 +28,9 @@ export default function Leaderboard () {
           <th className='forum-table-header-cell'><FontAwesomeIcon icon={faDumbbell} /></th>
         </tr>
         </thead>
-        <tbody>{threadList}</tbody>
+        <tbody>{leaderboard && leaderboard.map(
+          (leader: Leader, index: number) => <ListItem key={leader.data.id} data={{ ...leader.data, place: index + 1 }}/>
+        )}</tbody>
       </table>
     </Layout>
   )

@@ -10,10 +10,10 @@ export default function TableRow(props: TableRowProps) {
   const { id, title, text, datatime, userName, comments } = props.data;
 
   return (
-    <tr key={id} className='theme' >
+    <tr key={id} className='theme'>
       <td className='table-cell'>
         <h3 className='theme-title'>
-          <Link href={'#'} className='header-link'>{title}</Link>
+          <Link href={'#'}><a className='header-link'>{title}</a></Link>
         </h3>
         <p>{text}</p>
       </td>

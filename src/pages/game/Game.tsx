@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useLayoutEffect, useRef} from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 
 import { GameState } from './types';
 import { Bullet, Fruit } from './models';
@@ -18,6 +18,10 @@ import {
 import { getGameImages, getElapsedTime, getPauseTime } from './utils';
 import { toggleFullscreen } from '@/utils/index';
 import { useWindowVisualViewportSize } from '@/hooks/index';
+import { useSelector } from 'react-redux';
+import { addNewLeader } from '@/remoteAPI/leaderboard/addNewLeader';
+import { selectCurrentUserData } from '@/reduxStore/slices';
+import { RootState } from '@/reduxStore/types';
 import  PlaySounds from './utils/PlaySounds';
 import { useRouter } from 'next/router'
 import { RoutePaths } from '@/types/index'
@@ -35,7 +39,8 @@ export default function Game() {
   const drawerRef = useRef<Drawer>(new Drawer());
   const rafIdRef = useRef<number | null>(null);
   const router = useRouter()
-  
+  const currentUserData = useSelector((state: RootState) => selectCurrentUserData(state.currentUser));
+
   useEffect(() => {
     drawerRef.current.setImages(getGameImages());
   }, [])
@@ -94,7 +99,6 @@ export default function Game() {
       stateRef.current.startTime,
       stateRef.current.elapsedTimeSinceStart,
     );
-    
   }, []);
 
   const updateGame = useCallback((currentTime: DOMHighResTimeStamp) => {
@@ -116,6 +120,17 @@ export default function Game() {
       stateRef.current.isGameOver = true;
       PlaySounds(['final-1','final-2']);
       //TODO emit event
+      if (currentUserData) {
+        const dataToSend = {
+          username: currentUserData.first_name + ' ' + currentUserData.second_name,
+          id: currentUserData.id,
+          score: stateRef.current.score,
+          game: 'Pew',
+        }
+
+        addNewLeader(dataToSend).catch(err => console.log('add new leader', err))
+      }
+
       return;
     }
 
@@ -149,7 +164,7 @@ export default function Game() {
         }
       }
     }
-  }, []);
+  }, [currentUserData]);
 
   const pew = (dx: number, dy: number) => {
     stateRef.current.pews.push({
@@ -157,7 +172,7 @@ export default function Game() {
       y: BUDDY_START_Y - 300 + Math.random() * 200,
       startTime: performance.now(),
     });
-    stateRef.current.bullets.push(new Bullet( 
+    stateRef.current.bullets.push(new Bullet(
       BULLET_START_X, BULLET_START_Y,
       Math.min(dx / 100, BULLET_SPEED_MAX), -Math.min(dy / 100, BULLET_SPEED_MAX)));
   }
@@ -217,10 +232,8 @@ export default function Game() {
       } else if (stateRef.current.isGameOver) {
         if (stateRef.current.isGameStarted) {
           updatePauseTime(time);
-          
         }
         drawerRef.current?.drawGameOver({ ctx, score: stateRef.current.score });
-        
       } else {
         updateGame(time);
 

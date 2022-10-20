@@ -1,6 +1,6 @@
 import React from 'react';
-
-import { RoutePaths } from '@/types/index'
+import { Button } from '@/ui/Button';
+import { RoutePaths } from '@/types/index';
 import { Layout } from '@/components/Layout';
 import { useRouter } from 'next/router';
 
@@ -24,12 +24,9 @@ export default function Main () {
           faucibus. Dictum lorem ornare vulputate in molestie sodales dictum. Mauris nulla ultricies. Odio. Mauris non
           dui mattis mattis id lacinia sit malesuada aenean.
         </p>
-        <button
-            className={'button'}
-            type={'button'}
-            onClick={()=>{router.push(RoutePaths.Game)}}
-            style={{textAlign: 'center', display: 'block'}}
-        >Play</button>
+        <Button name='Start' onSubmit={() => {
+          router.push(RoutePaths.Game)
+        }} />
       </div>
     </Layout>
   )

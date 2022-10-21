@@ -5,8 +5,7 @@ import {Topic} from '@/db/sequelize';
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (req.method === 'POST') {
-      const topicData = JSON.parse(req.body);
-
+      const topicData = req.body;
       const {
         title,
         text,

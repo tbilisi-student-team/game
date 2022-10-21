@@ -8,26 +8,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const commentData = JSON.parse(req.body);
 
       const {
-        id,
         text,
-        authorId,
-        topicId,
+        authorName,
+        ParentCommentId,
       } = commentData;
 
       if (
-        typeof id === 'number' &&
         typeof text === 'string' &&
-        typeof authorId === 'number' &&
-        typeof topicId === 'number'
+        typeof authorName === 'string' &&
+        typeof ParentCommentId === 'number'
       ) {
         const comment = await Comment.create({
-          where: { id },
-          defaults: {
-            id,
-            text,
-            authorId,
-            topicId,
-          }
+          text,
+          authorName,
+          ParentCommentId,
         });
 
         res.status(200).send(comment);

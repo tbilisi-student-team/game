@@ -1,4 +1,4 @@
-import {Sequelize, DataTypes, Model} from 'sequelize';
+import {Sequelize, DataTypes} from 'sequelize';
 
 export const sequelize = new Sequelize({
     dialect: 'postgres',
@@ -9,44 +9,25 @@ export const sequelize = new Sequelize({
     username: process.env.PGSQL_USER,
 });
 
-export const User = sequelize.define('User', {
+const User = sequelize.define('User', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
     },
     theme: {
         type: DataTypes.STRING
-    }
-}, {
-    // Other model options go here
+    },
 });
 
-export const Author = sequelize.define('Author', {
+const Topic = sequelize.define('Topic', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
     },
-    name: {
+    authorName: {
         type: DataTypes.STRING,
-        allowNull: false,
-    },
-    topicIds: {
-        type: DataTypes.ARRAY(DataTypes.INTEGER),
-        defaultValue: [],
-    },
-    commentIds: {
-        type: DataTypes.ARRAY(DataTypes.INTEGER),
-        defaultValue: [],
-    }
-});
-
-export const Topic = sequelize.define('Topic', {
-    id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
         allowNull: false,
     },
     title: {
@@ -57,43 +38,62 @@ export const Topic = sequelize.define('Topic', {
         type: DataTypes.TEXT,
         allowNull: false,
     },
-    authorId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-    },
-    commentIds: {
-        type: DataTypes.ARRAY(DataTypes.INTEGER),
-        defaultValue: [],
-    }
-})
+});
 
-export const Comment = sequelize.define('Comment', {
+const Comment = sequelize.define('Comment', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
     },
+    authorName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
     text: {
         type: DataTypes.TEXT,
         allowNull: false,
     },
-    authorId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-    },
-    topicId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-    },
-    childCommentId: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-    },
-    emotions: {
-        type: DataTypes.ARRAY(DataTypes.STRING),
-        defaultValue: [],
-    }
 });
+
+const Emotion = sequelize.define('Emotion', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+    },
+    authorName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    text: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+    },
+});
+
+// Associations
+// one-to-many - hasMany, belongsTo
+
+// Topic-Comment
+Topic.hasMany(Comment);
+Comment.belongsTo(Topic);
+
+// Comment-Emotion
+Comment.hasMany(Emotion);
+Emotion.belongsTo(Comment);
+
+// Comment-Comment
+Comment.hasMany(Comment, { as: 'ChildComment', foreignKey: 'ChildCommentId' });
+Comment.belongsTo(Comment, { as: 'ParentComment', foreignKey: 'ParentCommentId' });
+
+export {
+  User,
+  Topic,
+  Comment,
+  Emotion,
+};
 
 sequelize.sync().catch(error => console.error('Sequelize sync error', error));

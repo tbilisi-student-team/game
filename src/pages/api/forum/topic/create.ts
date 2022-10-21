@@ -8,31 +8,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const topicData = JSON.parse(req.body);
 
       const {
-        id,
         title,
         text,
-        authorId,
+        authorName,
       } = topicData;
 
       if (
-        typeof id === 'number' &&
         typeof title === 'string' &&
         typeof text === 'string' &&
-        typeof authorId === 'number'
+        typeof authorName === 'string'
       ) {
         const topic = await Topic.create({
-          where: { id },
-          defaults: {
-            id,
-            title,
-            text,
-            authorId,
-          },
+          title,
+          text,
+          authorName,
         });
 
         res.status(200).send(topic);
       } else {
-        res.status(400).send('400 Bad Request.')
+        res.status(400).send('400 Bad Request.');
       }
     } else {
       res.status(405).send('405 Method Not Allowed.')

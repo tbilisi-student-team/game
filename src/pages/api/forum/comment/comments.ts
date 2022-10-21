@@ -1,22 +1,15 @@
 import {NextApiRequest, NextApiResponse} from 'next';
-
-import {Author} from '@/db/sequelize';
+import {Comment} from '@/db/sequelize';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (req.method === 'GET') {
-      const requestQueryId = req.query.id;
+      const requestQueryParentCommentId = req.query.parentCommentId;
 
-      if (typeof requestQueryId === 'string') {
-        const authorId = parseInt(requestQueryId, 10);
+      if (typeof requestQueryParentCommentId === 'string') {
+        const childComments = await Comment.findAll({ where: { ParentCommentId: parseInt(requestQueryParentCommentId, 10) } });
 
-        const author = await Author.findOne({ where: { id: authorId }, raw: true, });
-
-        if (author) {
-          res.status(200).send(author);
-        } else {
-          res.status(404).send('404 Not Found');
-        }
+        res.status(200).send(childComments);
       } else {
         res.status(400).send('400 Bad Request.')
       }

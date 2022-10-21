@@ -4,17 +4,17 @@ import {Comment} from '@/db/sequelize';
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (req.method === 'GET') {
-      const requestQueryIds = req.query.ids;
+      const requestQueryTopicId = req.query.topicId;
 
-      let comments = [];
+      console.log(requestQueryTopicId)
 
-      if (Array.isArray(requestQueryIds) && !!requestQueryIds.length) {
-        comments = await Comment.findAll({ where: { id: requestQueryIds }, raw: true, })
+      if (typeof requestQueryTopicId === 'string') {
+        const comments = await Comment.findAll({ where: { TopicId: requestQueryTopicId } });
+
+        res.status(200).send(comments);
       } else {
-        comments = await Comment.findAll({ raw: true });
+        res.status(400).send('400 Bad Request.')
       }
-
-      res.status(200).send(comments);
     } else {
       res.status(405).send('405 Method Not Allowed.')
     }

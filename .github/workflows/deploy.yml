@@ -1,0 +1,74 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+      - deploy
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      #- uses: actions/setup-node@v1
+
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          known_hosts: unnecessary
+
+      - name: Adding Known Hosts
+        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Restart Node Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            rm -rf pew-game
+
+            #Команды ниже нужно выполнить 1 раз после покупки сервера (Установка Docker)
+            #curl -fsSL https://get.docker.com -o get-docker.sh
+            #DRY_RUN=1 sh ./get-docker.sh
+            #sudo sh get-docker.sh
+
+            sudo usermod -a -G docker $USER
+            #docker -v
+            git clone https://github.com/tbilisi-student-team/game.git -b main ./pew-game
+            cd pew-game
+
+            #Удаляем демонстрационный .env файл
+            #rm .env
+
+            #Создаем прод .env файл
+            #touch .env
+
+            #Наполняем прод .env файл
+            printf '%s\n' \
+            'GITHUB_ID=${{ secrets.OAUTH_GITHUB_ID }}' \
+            'GITHUB_SECRET=${{ secrets.OAUTH_GITHUB_SECRET }}' \
+            'YANDEX_ID=${{ secrets.OAUTH_GITHUB_ID }}' \
+            'YANDEX_SECRET=${{ secrets.OAUTH_GITHUB_SECRET }}' \
+            'PGSQL_HOST=host.docker.internal' \
+            'PGSQL_PORT=49153' \
+            'PGSQL_DATABASE=postgres' \
+            'PGSQL_USER=postgres' \
+            'PGSQL_PASSWORD=${{ secrets.PGSQL_PASSWORD }}' \
+            > .env        
+                             
+            docker stop pew-app                 
+            docker build --tag pew-app .
+            docker run -d -p 127.0.0.1:3000:3000 --name pew-app pew-app
+
+            #Сбрасываем запущенные контейнеры
+            #docker compose down
+
+            #Удаляем старую сборку
+            #docker-compose rm -f
+
+            #Запускаем новую сборку
+            #docker compose up --build -d

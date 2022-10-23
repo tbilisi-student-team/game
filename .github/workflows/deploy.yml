@@ -11,8 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      #- uses: actions/setup-node@v1
-
+      
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
@@ -31,41 +30,3 @@ jobs:
           debug: true
           script: |
             echo 'Executing server tasks...'
-            
-            #sudo usermod -a -G docker $USER
-            docker -v
-            
-            #git clone https://AlexeiA:${{ secrets.GH_ACCESS_TOKEN }}@github.com/tbilisi-student-team/game.git -b ${{ github.ref_name }} ./pew-game
-            cd pew-game
-
-            #Удаляем демонстрационный .env файл
-            #rm .env
-
-            #Создаем прод .env файл
-            #touch .env
-
-            #Наполняем прод .env файл
-            #printf '%s\n' \
-            #'GITHUB_ID=${{ secrets.OAUTH_GITHUB_ID }}' \
-            #'GITHUB_SECRET=${{ secrets.OAUTH_GITHUB_SECRET }}' \
-            #'YANDEX_ID=${{ secrets.OAUTH_GITHUB_ID }}' \
-            #'YANDEX_SECRET=${{ secrets.OAUTH_GITHUB_SECRET }}' \
-            #'PGSQL_HOST=host.docker.internal' \
-            #'PGSQL_PORT=49153' \
-            #'PGSQL_DATABASE=postgres' \
-            #'PGSQL_USER=postgres' \
-            #'PGSQL_PASSWORD=${{ secrets.PGSQL_PASSWORD }}' \
-            #> .env        
-                             
-            docker stop pew-app                 
-            docker build --tag pew-app .
-            docker run -d -p 127.0.0.1:3000:3000 --name pew-app pew-app
-
-            #Сбрасываем запущенные контейнеры
-            #docker compose down
-
-            #Удаляем старую сборку
-            #docker-compose rm -f
-
-            #Запускаем новую сборку
-            #docker compose up --build -d

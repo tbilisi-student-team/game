@@ -38,7 +38,7 @@ jobs:
 
             sudo usermod -a -G docker $USER
             #docker -v
-            git clone https://github.com/tbilisi-student-team/game.git -b main ./pew-game
+            git clone https://AlexeiA:${{ secrets.GH_ACCESS_TOKEN }}github.com/tbilisi-student-team/game.git -b main ./pew-game
             cd pew-game
 
             #Удаляем демонстрационный .env файл

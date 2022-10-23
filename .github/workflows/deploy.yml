@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - deploy
 
 jobs:
   deploy:
@@ -25,4 +24,5 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
+          use_insecure_cipher: true
           script: whoami       

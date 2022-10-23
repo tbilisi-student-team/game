@@ -1,5 +1,5 @@
 import {NextApiRequest, NextApiResponse} from 'next';
-import {Comment} from '@/db/sequelize';
+import {Emotion} from '@/db/sequelize';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -7,9 +7,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const requestQueryTopicId = req.query.topicId;
 
       if (typeof requestQueryTopicId === 'string') {
-        const comments = await Comment.findAll({ where: { TopicId: requestQueryTopicId } });
+        const emotions = await Emotion.findAll({ where: { TopicId: requestQueryTopicId } });
 
-        res.status(200).send(comments);
+        res.status(200).send(emotions);
       } else {
         res.status(400).send('400 Bad Request.')
       }

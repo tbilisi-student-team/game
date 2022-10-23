@@ -1,32 +1,32 @@
 import {NextApiRequest, NextApiResponse} from 'next';
 
-import {Comment} from '@/db/sequelize';
+import {Emotion} from '@/db/sequelize';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (req.method === 'POST') {
-      const commentData = JSON.parse(req.body);
+      const emotionData = JSON.parse(req.body);
 
       const {
         text,
         authorName,
         TopicId,
-      } = commentData;
+      } = emotionData;
 
       if (
         typeof text === 'string' &&
         typeof authorName === 'string' &&
         typeof TopicId === 'number'
       ) {
-        const comment = await Comment.create({
+        const emotion = await Emotion.create({
           text,
           authorName,
           TopicId,
         });
 
-        const comments = await Comment.findAll({ where: { TopicId } });
+        const emotions = await Emotion.findAll({ where: { TopicId } })
 
-        res.status(200).send(comments);
+        res.status(200).send(emotions);
       } else {
         res.status(400).send('400 Bad Request.')
       }

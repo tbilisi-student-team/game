@@ -81,9 +81,9 @@ const Emotion = sequelize.define('Emotion', {
 Topic.hasMany(Comment);
 Comment.belongsTo(Topic);
 
-// Comment-Emotion
-Comment.hasMany(Emotion);
-Emotion.belongsTo(Comment);
+// Topic-Emotion
+Topic.hasMany(Emotion);
+Emotion.belongsTo(Topic);
 
 // Comment-Comment
 Comment.hasMany(Comment, { as: 'ChildComment', foreignKey: 'ChildCommentId' });

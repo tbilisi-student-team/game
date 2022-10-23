@@ -24,7 +24,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           ParentCommentId,
         });
 
-        res.status(200).send(comment);
+        const comments = await Comment.findAll({ where: { ParentCommentId } });
+
+        res.status(200).send(comments);
       } else {
         res.status(400).send('400 Bad Request.')
       }

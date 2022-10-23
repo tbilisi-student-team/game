@@ -25,6 +25,11 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            whoami
-            touch hello.world       
-            echo 'touched'
+            if [ -d game ]; then cd game && git pull git@github.com:tbilisi-student-team/game.git;
+            else git clone git@github.com:tbilisi-student-team/game.git && cd game; fi
+            
+            npm ci
+            
+            docker stop pew-game
+            docker build --tag pew-game-image .
+            docker run --name pew-game -p 127.0.0.1:3000:3000 -d pew-game-app

@@ -27,10 +27,9 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          debug: true
           script: |
-            echo 'Executing server tasks...'
-            if [ -d game ]; then cd game && git pull https://AlexeiA:${{ secrets.GH_ACCESS_TOKEN }}@github.com/tbilisi-student-team/game.git; \
-            else git pull https://AlexeiA:${{ secrets.GH_ACCESS_TOKEN }}@github.com/tbilisi-student-team/game.git -b ${{ github.ref_name }} && cd game;
-            
             whoami
+            echo 'Executing server tasks...'
+            
+            if [ -d game ]; then cd game && git pull https://AlexeiA:${{ secrets.GH_ACCESS_TOKEN }}@github.com/tbilisi-student-team/game.git; \
+            else git pull https://AlexeiA:${{ secrets.GH_ACCESS_TOKEN }}@github.com/tbilisi-student-team/game.git -b ${{ github.ref_name }} && cd game;            

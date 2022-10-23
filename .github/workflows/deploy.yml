@@ -22,23 +22,19 @@ jobs:
       - name: Adding Known Hosts
         run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Restart Node Server
+      - name: Do Server Job
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            rm -rf pew-game
-
-            #Команды ниже нужно выполнить 1 раз после покупки сервера (Установка Docker)
-            #curl -fsSL https://get.docker.com -o get-docker.sh
-            #DRY_RUN=1 sh ./get-docker.sh
-            #sudo sh get-docker.sh
-
+            echo 'Executing server tasks...'
+            
             sudo usermod -a -G docker $USER
-            #docker -v
-            git clone https://AlexeiA:${{ secrets.GH_ACCESS_TOKEN }}@github.com/tbilisi-student-team/game.git -b main ./pew-game
+            docker -v
+            
+            #git clone https://AlexeiA:${{ secrets.GH_ACCESS_TOKEN }}@github.com/tbilisi-student-team/game.git -b main ./pew-game
             cd pew-game
 
             #Удаляем демонстрационный .env файл
@@ -48,17 +44,17 @@ jobs:
             #touch .env
 
             #Наполняем прод .env файл
-            printf '%s\n' \
-            'GITHUB_ID=${{ secrets.OAUTH_GITHUB_ID }}' \
-            'GITHUB_SECRET=${{ secrets.OAUTH_GITHUB_SECRET }}' \
-            'YANDEX_ID=${{ secrets.OAUTH_GITHUB_ID }}' \
-            'YANDEX_SECRET=${{ secrets.OAUTH_GITHUB_SECRET }}' \
-            'PGSQL_HOST=host.docker.internal' \
-            'PGSQL_PORT=49153' \
-            'PGSQL_DATABASE=postgres' \
-            'PGSQL_USER=postgres' \
-            'PGSQL_PASSWORD=${{ secrets.PGSQL_PASSWORD }}' \
-            > .env        
+            #printf '%s\n' \
+            #'GITHUB_ID=${{ secrets.OAUTH_GITHUB_ID }}' \
+            #'GITHUB_SECRET=${{ secrets.OAUTH_GITHUB_SECRET }}' \
+            #'YANDEX_ID=${{ secrets.OAUTH_GITHUB_ID }}' \
+            #'YANDEX_SECRET=${{ secrets.OAUTH_GITHUB_SECRET }}' \
+            #'PGSQL_HOST=host.docker.internal' \
+            #'PGSQL_PORT=49153' \
+            #'PGSQL_DATABASE=postgres' \
+            #'PGSQL_USER=postgres' \
+            #'PGSQL_PASSWORD=${{ secrets.PGSQL_PASSWORD }}' \
+            #> .env        
                              
             docker stop pew-app                 
             docker build --tag pew-app .

@@ -32,7 +32,7 @@ jobs:
           script: |
             echo 'Executing server tasks...'
             
-            sudo usermod -a -G docker $USER
+            #sudo usermod -a -G docker $USER
             docker -v
             
             #git clone https://AlexeiA:${{ secrets.GH_ACCESS_TOKEN }}@github.com/tbilisi-student-team/game.git -b ${{ github.ref_name }} ./pew-game

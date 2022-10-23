@@ -1,1 +1,1 @@
-export { HTTPClient } from './ypTechHTTPClient';
+export { HTTPClient } from './HTTPClient';

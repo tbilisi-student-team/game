@@ -18,12 +18,13 @@ jobs:
       - name: Adding Known Hosts
         run: ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
 
-      - name: Execute server tasks
-        uses: garygrossgarten/github-action-ssh@0.7.0
+      - name: Do Server Job
+        uses: appleboy/ssh-action@v0.1.4
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          privateKey: ${{ secrets.SSH_KEY }}
-          command: |
-            touch hello.world
+          key: ${{ secrets.SSH_KEY }}
+          script: |
             whoami
+            touch hello.world       
+            echo 'touched'

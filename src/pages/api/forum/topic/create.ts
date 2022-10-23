@@ -23,9 +23,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           authorName,
         });
 
-        const topics = await Topic.findAll();
-
-        res.status(200).send(topics);
+        res.status(200).send(topic);
       } else {
         res.status(400).send('400 Bad Request.');
       }

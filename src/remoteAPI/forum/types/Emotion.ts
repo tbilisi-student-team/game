@@ -2,8 +2,8 @@ type ForumEmotion = {
   id: number,
   authorName: string,
   text: string,
-  createdAt: Date,
-  updatedAt: Date,
+  createdAt: string,
+  updatedAt: string,
   TopicId: number,
 };
 

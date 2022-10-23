@@ -3,8 +3,8 @@ type ForumTopic = {
   authorName: string,
   title: string,
   text: string,
-  createdAt: Date,
-  updatedAt: Date,
+  createdAt: string,
+  updatedAt: string,
 }
 
 export default ForumTopic;

@@ -11,5 +11,5 @@ export type CreateForumTopicRequest = {
 }
 
 export function createForumTopic(data: CreateForumTopicRequest, config?: AxiosRequestConfig) {
-  return HTTPClient.post<Topic[]>('/api/forum/topic/create', data, config);
+  return HTTPClient.post<Topic>('/api/forum/topic/create', data, config);
 }

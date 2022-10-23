@@ -55,12 +55,14 @@ form {
   }
 }
 
-.header-link {
+.header-link,
+.table-body__data-link {
   text-decoration: none;
   color: var(--theme-color);
 }
 
-.header-link:hover {
+.header-link:hover,
+.table-body__data-link:hover {
   color: var(--grey);
 }
 
@@ -279,22 +281,32 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
   cursor:pointer;
 }
 
-.table-header {
+.table-header {}
+
+.table-body {}
+
+.table-body__row {}
+
+.table-body__data-text {}
+
+.table-head__row {
   width: 100%;
   background: var(--whiteheader);
   height: 40px;
   font-weight: 700;
 }
 
-.forum-table-header-cell {
+.table-header__cell {
   border-radius: 5px;
 }
 
-.forum-table-cell {
+.table-body__data {
   padding-left: 10px;
 }
 
-.forum-table {
+.table-body__data-heading {}
+
+.table {
   border-radius: 10px;
   width: 100%;
   border: 1px solid var(--white);

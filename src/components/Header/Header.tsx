@@ -58,8 +58,16 @@ export const Header = () => {
       <div className='left__container'>
         <Link href='/'><a className='header-link'>Home</a></Link>
         <span className='deriver'> | </span>
-        <Link href={RoutePaths.Forum}><a className='header-link'>Forum</a></Link>
-        <span className='deriver'> | </span>
+
+        {(currentUserState.data || session.data) && (
+          <>
+            <Link href={RoutePaths.Forum}><a className='header-link'>Forum</a></Link>
+            <span className='deriver'> | </span>
+
+            <Link href={`${RoutePaths.Forum}/create/topic`}><a className='header-link'>Create topic</a></Link>
+            <span className='deriver'> | </span>
+          </>
+        )}
         <Link href={RoutePaths.Leaderboard}><a className='header-link'>Our champions</a></Link>
       </div>
       <div className='right__container'>

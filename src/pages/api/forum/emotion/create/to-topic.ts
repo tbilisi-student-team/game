@@ -5,7 +5,7 @@ import {Emotion} from '@/db/sequelize';
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (req.method === 'POST') {
-      const emotionData = JSON.parse(req.body);
+      const emotionData = req.body;
 
       const {
         text,

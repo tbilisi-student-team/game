@@ -11,5 +11,5 @@ export type CreateForumCommentToCommentRequest = {
 }
 
 export function createForumCommentToComment(data: CreateForumCommentToCommentRequest, config?: AxiosRequestConfig) {
-  return HTTPClient.post<Comment[]>('/api/forum/comment/create/to-comment', data, config);
+  return HTTPClient.post<{ comments: Comment[], comment: Comment }>('/api/forum/comment/create/to-comment', data, config);
 }

@@ -5,7 +5,7 @@ import {Comment} from '@/db/sequelize';
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (req.method === 'POST') {
-      const commentData = JSON.parse(req.body);
+      const commentData = req.body;
 
       const {
         text,
@@ -26,7 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         const comments = await Comment.findAll({ where: { TopicId } });
 
-        res.status(200).send(comments);
+        res.status(200).send({ comments, comment });
       } else {
         res.status(400).send('400 Bad Request.')
       }

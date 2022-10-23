@@ -11,12 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
-      - name: Install SSH Key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.SSH_KEY }}
-          known_hosts: unnecessary
 
       - name: Adding Known Hosts
         run: ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
@@ -27,9 +21,4 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          script: |
-            whoami
-            echo 'Executing server tasks...'
-            
-            if [ -d game ]; then cd game && git pull https://AlexeiA:${{ secrets.GH_ACCESS_TOKEN }}@github.com/tbilisi-student-team/game.git; \
-            else git pull https://AlexeiA:${{ secrets.GH_ACCESS_TOKEN }}@github.com/tbilisi-student-team/game.git -b ${{ github.ref_name }} && cd game;            
+          script: whoami       

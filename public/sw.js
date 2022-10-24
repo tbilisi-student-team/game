@@ -1,6 +1,6 @@
 const CACHE_NAME = 'game-cache_v_1'
 
-const CACHING_URLS = ['/game']
+const CACHING_URLS = ['/game', '/public']
 
 const sw = self
 

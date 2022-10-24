@@ -176,8 +176,9 @@ h3{
 
 .button {
   background-color: var(--white);
-  width: 30%;
+  min-width: 30%;
   margin: 1% auto 3% auto;
+  padding: 0 15px;
   height: 50px;
   opacity: 80%;
   border-radius: 10px;
@@ -287,7 +288,9 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
 
 .table-body__row {}
 
-.table-body__data-text {}
+.table-body__data-text {
+  font-size: 10px;
+}
 
 .table-head__row {
   width: 100%;
@@ -304,11 +307,23 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
   padding-left: 10px;
 }
 
-.table-body__data-heading {}
+.table-body__data-heading {
+  font-size: 20px;
+  margin: 0;
+}
 
-.table {
+.forum {
+  width: '100%';
+}
+
+.icon {
+  padding: 0 10px;
+}
+
+.forum-table {
   border-radius: 10px;
-  width: 100%;
+  /* width: 100%; */
+  min-width: 600px;
   border: 1px solid var(--white);
   margin: 20px 0 40px 0;
   background-color: #00000044;
@@ -376,4 +391,88 @@ canvas {
 .avatar button {
   text-align: center;
   translate: 0 -50%;
+}
+
+.topic-plaque__main {
+  padding: 20px;
+  border-bottom: 1px solid var(--grey);
+}
+
+.topic-data {
+  font-size: 13px;
+  padding: 5px;
+}
+
+.topic-plaque {
+  margin-top: 40px;
+  padding: 20px 20px;
+  background-color: #ffffff20;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+.emotion-tags {
+  display: flex;
+  flex-direction: row;
+}
+
+.emotions-header {
+  display: flex;
+  flex-direction: row;
+  padding: 10px 0;
+}
+
+.emotions-options {
+  margin: 0 0 0 auto;
+}
+
+.emotion-tag {
+  background-color: #ffffff50;
+  padding: 5px;
+  border-radius: 7px;
+  margin: 0 15px 0 0;
+}
+
+.emotions-icon {
+  cursor: pointer;
+}
+
+.emotions-icon:hover {
+  color: var(--grey);
+}
+
+.topic-data__row {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  margin-top: 20px;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.topic-text {
+  margin-top: 50px;
+}
+
+.topic-options {
+  display: flex;
+  flex-direction: row;
+  margin: 5px 0;
+  justify-content: end;
+}
+
+.topic-option {
+  padding: 0 10px;
+}
+
+.topic-option:hover {
+  color: var(--grey);
+  cursor: pointer;
+}
+
+.reply {
+  display: inline-block;
+  padding: 0 5px;
 }

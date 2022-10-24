@@ -63,9 +63,6 @@ export const Header = () => {
           <>
             <Link href={RoutePaths.Forum}><a className='header-link'>Forum</a></Link>
             <span className='deriver'> | </span>
-
-            <Link href={`${RoutePaths.Forum}/create/topic`}><a className='header-link'>Create topic</a></Link>
-            <span className='deriver'> | </span>
           </>
         )}
         <Link href={RoutePaths.Leaderboard}><a className='header-link'>Our champions</a></Link>

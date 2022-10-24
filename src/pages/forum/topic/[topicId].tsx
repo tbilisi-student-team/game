@@ -18,6 +18,11 @@ import {ErrorResponse} from "@/remoteAPI/ErrorResponse";
 import {useRouter} from "next/router";
 import Emotion from "@/remoteAPI/forum/types/Emotion";
 import {Input} from "@/ui/Input";
+import { Button } from '@/ui/Button';
+import moment from 'moment';
+import { faArrowsRotate, faPlus, faMessage } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import {createForumEmotionToTopic, CreateForumEmotionToTopicRequest} from "@/remoteAPI/forum/createForumEmotionToTopic";
 
 type TopicState = {
@@ -105,9 +110,9 @@ function Emotion (
   }: EmotionProps
 ) {
   return (
-    <p>
+    <div>
       {text}
-    </p>
+    </div>
   )
 }
 
@@ -126,12 +131,17 @@ function Topic (
     updatedAt,
   }: TopicProps
 ) {
+
+  const date = moment(updatedAt).format('D MMM YYYY');
   return (
-    <article>
-      <h4>{title}</h4>
-      <p>{authorName}</p>
-      <p>{text}</p>
-      <p>{updatedAt}</p>
+    <article className="topic-plaque__main">
+      <h3>{title}</h3>
+      <p className='topic-text'>{text}</p>
+      <div className='topic-data__row'>
+        <div className="topic-data">{authorName}, </div>
+        <div className="topic-data">{date}</div>
+      </div>
+      
     </article>
   )
 }
@@ -174,26 +184,40 @@ function Comment(
 
   const requestDataIsValid = !!requestData && !!requestData.text.length && !!requestData.authorName.length;
 
-  return (
-    <div style={{ outline: '1px solid' }}>
-      <h5>{authorName}</h5>
-      <p>{text}</p>
-      <p>{updatedAt}</p>
-      <button
-        onClick={() => {
-          onGetCommentCommentsByParentCommentId(id);
-        }}
-        className={'button'}
-        type={'button'}
-        disabled={childCommentsLoading}
-      >
-        <span className={'button-title'}>
-          Get more comments
-        </span>
-      </button>
+  const [isInputVisible, setIsInputVisible] = useState(false)
 
-      {(onSetCommentsWithCommentsRequestDataValue && onCreateCommentToComment && requestData) && (
+  const date = moment(updatedAt).format('D MMM YYYY');
+
+  return (
+    <div className="topic-plaque">
+      <div className="topic-child">
+        <div className='topic-data__row'>
+          <div className="topic-data">{authorName}, </div>
+          <div className="topic-data">{date}</div>
+        </div>
+        <p>{text}</p>
+      </div>
+      <div className="topic-options">
+      <div className="topic-option" onClick={() => setIsInputVisible(!isInputVisible)} > Reply </div>
+       <div> | </div> 
+        <div className="topic-option" onClick={() => !childCommentsLoading && onGetCommentCommentsByParentCommentId(id)} > Get more comments </div>
+      </div>
+      {/* <Button name='Get more comments' onSubmit={() => onGetCommentCommentsByParentCommentId(id)} disabled={childCommentsLoading} /> */}
+
+
+      {isInputVisible && (onSetCommentsWithCommentsRequestDataValue && onCreateCommentToComment && requestData) && (
         <form>
+          <Input
+            label={'Your name'}
+            name={'authorName'}
+            id={'authorName'}
+            placeholder={'Your name'}
+            value={requestData.authorName}
+            setValue={(value, name) => {
+              onSetCommentsWithCommentsRequestDataValue(id, value, name);
+            }}
+          />
+
           <Input
             label={'Text'}
             name={'text'}
@@ -205,29 +229,8 @@ function Comment(
             }}
           />
 
-          <Input
-            label={'Author name'}
-            name={'authorName'}
-            id={'authorName'}
-            placeholder={'Author name'}
-            value={requestData.authorName}
-            setValue={(value, name) => {
-              onSetCommentsWithCommentsRequestDataValue(id, value, name);
-            }}
-          />
+          <Button name='Submit a child comment' onSubmit={() => onCreateCommentToComment(id)} disabled={!requestDataIsValid} />
 
-          <button
-            onClick={() => {
-              onCreateCommentToComment(id);
-            }}
-            className={'button'}
-            type={'button'}
-            disabled={!requestDataIsValid}
-          >
-          <span className={'button-title'}>
-            Create comment to comment
-          </span>
-          </button>
         </form>
       )}
 
@@ -256,6 +259,7 @@ export default function Index() {
   const { topicId } = nextRouter.query;
 
   const [topicState, setTopicState] = useState<TopicState>(INITIAL_TOPIC_STATE);
+  const [isNewCommentVisible, setIsNewCommentVisible] = useState(false)
 
   useEffect(() => {
     if (typeof topicId === 'string') {
@@ -290,6 +294,9 @@ export default function Index() {
   }, [topicId])
 
   const [topicEmotionsState, setTopicEmotionsState] = useState<TopicEmotionsState>(INITIAL_TOPIC_EMOTIONS_STATE);
+
+  const [isAddEmotionVisible, setIsAddEmotionVisible] = useState(false)
+
 
   useEffect(() => {
     if (typeof topicId === 'string') {
@@ -726,11 +733,17 @@ export default function Index() {
     !!rootCommentsState.requestData.text.length
     && rootCommentsState.requestData.authorName.length;
 
+
+  const onAddEmotion = () => {
+    setIsAddEmotionVisible(!isAddEmotionVisible)
+  }
+
   return (
-    <Layout heading={'Topic'}>
+    <Layout heading={''} subheading={''}>
       <div>
+      <div className="topic-plaque">
         {!!topicState.topic && (
-          <div style={{ outline: '1px solid' }}>
+          <div>
             <Topic
               text={topicState.topic.text}
               title={topicState.topic.title}
@@ -740,37 +753,46 @@ export default function Index() {
           </div>
         )}
 
-        <div style={{ outline: '1px solid' }}>
-          <h3>Emotions:</h3>
+        <div>
+          <div className="emotions-header">
+            {topicEmotionsState.topicEmotions.length > 0 && <div>Emotions:</div>}
+            <div className='emotions-options'>
+              <div className='emotions-icon reply' onClick={() => setIsNewCommentVisible(!isNewCommentVisible)}>Reply</div>
+              <div className='emotions-icon reply'> | </div>
+              <div className='emotions-icon reply' onClick={onAddEmotion}>Add an emotion</div>
+              <div className='emotions-icon reply'> | </div>
+              <FontAwesomeIcon icon={faArrowsRotate} className='icon emotions-icon' onClick={handleGetEmotions} />
+            </div>
+           
+            
+          </div>
+          
 
           {(!!topicEmotionsState.topicEmotions && !!topicEmotionsState.topicEmotions.length) && (
-            <>
-              <ul>
-                {topicEmotionsState.topicEmotions.map((topicEmotion) => (
-                  <li key={topicEmotion.id}>
+            <div className='emotion-tags'>{topicEmotionsState.topicEmotions.map((topicEmotion) => (
+                  <div className='emotion-tag' key={topicEmotion.id}>
                     <Emotion text={topicEmotion.text}/>
-                  </li>
+                  </div>
                 ))}
-              </ul>
-            </>
+            </div>
           )}
 
-          <button
-            onClick={handleGetEmotions}
-            className={'button'}
-            type={'button'}
-            disabled={topicEmotionsState.status === Status.Pending}
-          >
-              <span className={'button-title'}>
-                Update emotions
-              </span>
-          </button>
+          {/* <Button name='Update emotions' onSubmit={handleGetEmotions} disabled={topicEmotionsState.status === Status.Pending} /> */}
+
         </div>
 
-        <div style={{ outline: '1px solid' }}>
+        {isAddEmotionVisible && (<div>
           <form>
             <Input
-              label={'Text'}
+                label={'Your name'}
+                name={'authorName'}
+                id={'authorName'}
+                placeholder={'Author name'}
+                value={topicEmotionsState.requestData.authorName}
+                setValue={handleSetTopicEmotionRequestDataValue}
+              />
+            <Input
+              label={'Your emotion'}
               name={'text'}
               id={'text'}
               placeholder={'Text'}
@@ -778,64 +800,19 @@ export default function Index() {
               setValue={handleSetTopicEmotionRequestDataValue}
             />
 
-            <Input
-              label={'Author name'}
-              name={'authorName'}
-              id={'authorName'}
-              placeholder={'Author name'}
-              value={topicEmotionsState.requestData.authorName}
-              setValue={handleSetTopicEmotionRequestDataValue}
-            />
+            <Button name='Add an emotion' onSubmit={handleCreateEmotionToTopic} disabled={!topicEmotionRequestDataIsValid} />
 
-            <button
-              onClick={handleCreateEmotionToTopic}
-              className={'button'}
-              type={'button'}
-              disabled={!topicEmotionRequestDataIsValid}
-            >
-          <span className={'button-title'}>
-            Create new emotion
-          </span>
-            </button>
           </form>
-        </div>
+        </div>)}
+
+      </div>
 
 
-        <div style={{ outline: '1px solid' }}>
-          <h3>Comments:</h3>
 
-          <form>
-            <Input
-              label={'Text'}
-              name={'text'}
-              id={'text'}
-              placeholder={'Text'}
-              value={rootCommentsState.requestData.text}
-              setValue={handleSetRootCommentsRequestDataValue}
-            />
 
-            <Input
-              label={'Author name'}
-              name={'authorName'}
-              id={'authorName'}
-              placeholder={'Author name'}
-              value={rootCommentsState.requestData.authorName}
-              setValue={handleSetRootCommentsRequestDataValue}
-            />
+      {isNewCommentVisible && <div className="topic-plaque">
 
-            <button
-              onClick={handleCreateCommentToTopic}
-              className={'button'}
-              type={'button'}
-              disabled={!rootCommentsRequestDataIsValid}
-            >
-            <span className={'button-title'}>
-              Create comment to topic
-            </span>
-            </button>
-          </form>
-
-          {(!!rootCommentsState.rootComments && !!rootCommentsState.rootComments.length) && (
+          { (!!rootCommentsState.rootComments && !!rootCommentsState.rootComments.length) && (
             <ul>
               {rootCommentsState.rootComments.map((rootComment) => (
                 <li key={rootComment.id}>
@@ -856,9 +833,35 @@ export default function Index() {
               ))}
             </ul>
           )}
-        </div>
+
+            <h3>Add a new comment:</h3>
+
+            <form>
+              <Input
+                  label={'Your name'}
+                  name={'authorName'}
+                  id={'authorName'}
+                  placeholder={'Author name'}
+                  value={rootCommentsState.requestData.authorName}
+                  setValue={handleSetRootCommentsRequestDataValue}
+                />
+              <Input
+                label={'Text'}
+                name={'text'}
+                id={'text'}
+                placeholder={'Text'}
+                value={rootCommentsState.requestData.text}
+                setValue={handleSetRootCommentsRequestDataValue}
+              />
+
+              <Button name='Submit' onSubmit={handleCreateCommentToTopic} disabled={!rootCommentsRequestDataIsValid} />
+
+            </form>
+
+        </div>}
 
       </div>
+
     </Layout>
   );
 };

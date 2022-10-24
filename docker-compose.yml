@@ -12,9 +12,12 @@ services:
       - db
     build: .
     ports:
-      - "3001:3000"
+      # используем локалхост, чтобы не светить в интернете
+      - "127.0.0.1:3000:3000"
     networks:
+      # используем внутреннюю сеть для доступа к pg
       - int
 networks:
   int:
     driver: bridge
+    internal: true

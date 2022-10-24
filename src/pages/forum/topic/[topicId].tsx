@@ -662,6 +662,21 @@ export default function Index() {
         if (axiosResponse.status === 200) {
           const comments = axiosResponse.data;
 
+          const parentCommentsWithCommentsMap: ParentCommentsWithCommentsMap = comments.reduce((prev, curr) => {
+            return {
+              ...prev,
+              [curr.id]: {
+                status: Status.Idle,
+                error: null,
+                comments: [],
+                requestData: {
+                  text: '',
+                  authorName: '',
+                }
+              }
+            }
+          }, {});
+
           setCommentsWithCommentsState((prev) => {
             return {
               ...prev,
@@ -675,7 +690,8 @@ export default function Index() {
                     text: '',
                     authorName: '',
                   }
-                }
+                },
+                ...parentCommentsWithCommentsMap,
               }
             }
           })

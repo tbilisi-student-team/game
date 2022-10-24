@@ -28,6 +28,15 @@ jobs:
             if [ -d game ]; then cd game && git pull git@github.com:tbilisi-student-team/game.git;
             else git clone git@github.com:tbilisi-student-team/game.git && cd game; fi
             
+            # Populate .env
+            printf '%s\n' \
+            'PGSQL_USER=postgres' \
+            'PGSQL_PASSWORD=${{ secrets.PGSQL_PASSWORD }}' \
+            'PGSQL_HOST=pg' \
+            'PGSQL_PORT=5432' \
+            'PGSQL_DATABASE=postgres' \
+            > .env
+            
             docker compose down
             docker compose build
-            docker compose up
+            docker compose up -d

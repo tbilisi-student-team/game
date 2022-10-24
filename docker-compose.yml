@@ -1,23 +1,14 @@
 services:
   db:
+    container_name: pg
     image: postgres:15.0
     environment:
       POSTGRES_PASSWORD: ${PGSQL_PASSWORD}
-    ports:
-      - "${PGSQL_PORT}:5432"
-    networks:
-      - int
+    expose:
+      - 5432
   web:
     depends_on:
       - db
     build: .
     ports:
-      # используем локалхост, чтобы не светить в интернете
       - "127.0.0.1:3000:3000"
-    networks:
-      # используем внутреннюю сеть для доступа к pg
-      - int
-networks:
-  int:
-    driver: bridge
-    internal: true

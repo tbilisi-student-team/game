@@ -23,9 +23,11 @@
     "paths": {
       "@/appContext/*": ["src/appContext/*"],
       "@/components/*": ["src/components/*"],
+      "@/db/*": ["src/db/*"],
       "@/config/*": ["src/config/*"],
       "@/hooks/*": ["src/hooks/*"],
       "@/pages/*": ["src/pages/*"],
+      "@/public/*": ["public/*"],
       "@/reduxStore/*": ["src/reduxStore/*"],
       "@/remoteAPI/*": ["src/remoteAPI/*"],
       "@/styles/*": ["src/styles/*"],
@@ -33,7 +35,7 @@
       "@/ui/*": ["src/ui/*"],
       "@/utils/*": ["src/utils/*"],
       "@/YPTechHTTPClient/*": ["src/YPTechHTTPClient/*"],
-      "@/public/*": ["public/*"],
+      "@/HTTPClient/*": ["src/HTTPClient/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

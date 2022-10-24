@@ -1,0 +1,172 @@
+{
+	"info": {
+		"_postman_id": "7c10b248-aeb6-4b91-99a2-77320563c7a1",
+		"name": "pew-game-forum",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "forum/topics/all",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/forum/topics/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"forum",
+						"topics",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "forum/comment/comments",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/forum/comment/comments?parentCommentId=4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"forum",
+						"comment",
+						"comments"
+					],
+					"query": [
+						{
+							"key": "parentCommentId",
+							"value": "4"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "forum/topic/comments",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/forum/topic/comments?topicId=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"forum",
+						"topic",
+						"comments"
+					],
+					"query": [
+						{
+							"key": "topicId",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "forum/topic/create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"topic title\",\n    \"text\": \"topic text\",\n    \"authorName\": \"topic authorName\"\n}",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/forum/topic/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"forum",
+						"topic",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "forum/comment/create/to-comment",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"text\": \"comment text\",\n    \"authorName\": \"comment authorName\",\n    \"ParentCommentId\": 16\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/forum/comment/create/to-comment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"forum",
+						"comment",
+						"create",
+						"to-comment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "forum/comment/create/to-topic",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"text\": \"comment text\",\n    \"authorName\": \"comment authorName\",\n    \"TopicId\": 2\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/forum/comment/create/to-topic",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"forum",
+						"comment",
+						"create",
+						"to-topic"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

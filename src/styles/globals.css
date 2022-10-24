@@ -10,10 +10,9 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
-  font-family: "Averia Serif Libre";
-  color: var(--white);
-  background: url(../../public/background.jpeg) no-repeat;
-  background-attachment: fixed;
+  font-family: "Averia Serif Libre", serif;
+  color: var(--theme-color);
+  background: var(--theme-body-bg);
   background-size: 100% 100%;
 }
 form {
@@ -56,12 +55,14 @@ form {
   }
 }
 
-.header-link {
+.header-link,
+.table-body__data-link {
   text-decoration: none;
-  color: var(--white);
+  color: var(--theme-color);
 }
 
-.header-link:hover {
+.header-link:hover,
+.table-body__data-link:hover {
   color: var(--grey);
 }
 
@@ -74,7 +75,7 @@ form {
 }
 
 .main {
-  padding: 7% 0%;
+  padding: 7% 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -135,7 +136,7 @@ h3{
 }
 
 .input {
-  padding: 3% 0%;
+  padding: 3% 0;
   width: 100%;
 }
 
@@ -149,7 +150,7 @@ h3{
   text-align: center;
   outline: none;
   margin-top: 3px;
-  color: var(--white)
+  color: var(--theme-color)
 }
 
 .input-focus {
@@ -209,7 +210,7 @@ h3{
   border-radius: 10px;
   display: flex;
   align-items: center;
-  border: 1px solid var(--white);
+  border: 1px solid var(--theme-color);
   justify-content: center;
   color: black;
 }
@@ -254,7 +255,7 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
   border: none;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
-  color: var(--white);
+  color: var(--theme-color);
 }
 
 .search-icon:hover {
@@ -280,22 +281,32 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
   cursor:pointer;
 }
 
-.table-header {
+.table-header {}
+
+.table-body {}
+
+.table-body__row {}
+
+.table-body__data-text {}
+
+.table-head__row {
   width: 100%;
   background: var(--whiteheader);
   height: 40px;
   font-weight: 700;
 }
 
-.forum-table-header-cell {
+.table-header__cell {
   border-radius: 5px;
 }
 
-.forum-table-cell {
+.table-body__data {
   padding-left: 10px;
 }
 
-.forum-table {
+.table-body__data-heading {}
+
+.table {
   border-radius: 10px;
   width: 100%;
   border: 1px solid var(--white);
@@ -321,7 +332,7 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
   padding: 20px;
   width: fit-content;
   font-size: 50px;
-  color: #fff;
+  color: var(--theme-color);
   text-decoration: auto;
   border: 3px solid;
   border-radius: 25px;

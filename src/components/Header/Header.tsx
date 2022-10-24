@@ -1,10 +1,17 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 import {RoutePaths} from '@/types/RoutePaths';
 import {useAppContext} from '@/appContext/index';
 import {logout} from "@/remoteAPI/auth";
 import {signOut, useSession} from 'next-auth/react';
+
+let currentTheme = 'dark';
+
+function switchTheme(theme: string) {
+  currentTheme = theme;
+  document.documentElement.dataset.theme = currentTheme;
+}
 
 export const Header = () => {
   const {
@@ -14,6 +21,24 @@ export const Header = () => {
   const nextRouter = useRouter();
 
   const session = useSession();
+
+  function toggleTheme() {
+    switchTheme(currentTheme === 'light' ? 'dark' : 'light');
+    if (currentUserState.data) {
+      //Сохраняем тему пользователя
+      fetch('/api/user', {method: 'POST', body: JSON.stringify({id: currentUserState.data.id, theme: currentTheme})});
+    }
+  }
+
+  useEffect(() => {
+    if (currentUserState.data) {
+      fetch(`/api/user/${currentUserState.data.id}`)
+        .then(resp => resp.json())
+        .then(json => {
+          switchTheme(json.theme);
+        });
+    }
+  }, [currentUserState.data]);
 
   const handleLogout = () => {
     logout({ withCredentials: true })
@@ -33,8 +58,16 @@ export const Header = () => {
       <div className='left__container'>
         <Link href='/'><a className='header-link'>Home</a></Link>
         <span className='deriver'> | </span>
-        <Link href={RoutePaths.Forum}><a className='header-link'>Forum</a></Link>
-        <span className='deriver'> | </span>
+
+        {(currentUserState.data || session.data) && (
+          <>
+            <Link href={RoutePaths.Forum}><a className='header-link'>Forum</a></Link>
+            <span className='deriver'> | </span>
+
+            <Link href={`${RoutePaths.Forum}/create/topic`}><a className='header-link'>Create topic</a></Link>
+            <span className='deriver'> | </span>
+          </>
+        )}
         <Link href={RoutePaths.Leaderboard}><a className='header-link'>Our champions</a></Link>
       </div>
       <div className='right__container'>
@@ -65,9 +98,21 @@ export const Header = () => {
               </a>
           </Link>
         </>}
+        <span className='deriver'> | </span>
+        <Link href=''>
+          <a
+            className='header-link'
+            onClick={(event) => {
+              event.preventDefault();
+              toggleTheme();
+            }}
+          >
+            Switch theme
+          </a>
+        </Link>
       </div>
     </header>
   )
 }
 
-export default Header
+export default Header;

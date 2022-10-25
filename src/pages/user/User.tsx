@@ -114,8 +114,10 @@ export default function User () {
         <div className={`avatar ${styles.avatar}`}>
           <Image
             src={ profileFormData.avatar ? `${BASE_URL}/resources${profileFormData.avatar}` : buddy1 }
-            alt={'Avatar'}>
-          </Image>
+            alt={'Avatar'}
+            width={200}
+            height={200}
+          />
           <br></br>
           <button type={'button'} onClick={() => { fileInputRef.current?.click() }}>Change</button>
           <input ref={fileInputRef} type={'file'} style={{ display: 'none' }} onChange={handleChangeAvatar} />

@@ -2,7 +2,8 @@ import {NextApiRequest, NextApiResponse} from 'next';
 
 import {User, YandexUser} from '@/db/sequelize';
 
-import fs from 'fs';
+import {signin, signup} from "@/remoteAPI/auth";
+import {nanoid} from "nanoid";
 
 // type YandexTokenData = {
 //     token_type: string,
@@ -15,6 +16,8 @@ import fs from 'fs';
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
         if (req.method === 'GET') {
+            console.log('cookies', req.cookies);
+
             const {code, error} = req.query;
             if (typeof code === 'string') {
                 const response = await fetch('https://oauth.yandex.ru/token', {
@@ -22,8 +25,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     body: new URLSearchParams({
                         grant_type: 'authorization_code',
                         code,
-                        client_id: '8bdead37c1ae47f38b253570589183ff',
-                        client_secret: '5a7187fce0ff44bab45112884633339e',
+                        client_id: process.env.NEXT_PUBLIC_YANDEX_ID!,
+                        client_secret: process.env.YANDEX_SECRET!,
                     }),
                 });
                 const tokenData = await response.json();
@@ -43,10 +46,40 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
                     const yUser = await YandexUser.findOne({where: {id: info.id}});
                     if (yUser) {
-                        await yUser.update('data', JSON.stringify(tokenData));
+                        await yUser.update({data: JSON.stringify(tokenData)});
                     }
                     else {
                         await YandexUser.create({id: info.id, data: JSON.stringify(tokenData)});
+                    }
+                    let headers;
+                    const user = await User.findOne({where: {YandexUserId: info.id}});
+                    if (user) {
+                        const signinResponse = await signin({login: info.id, password: 'Passw0rd!'});
+                        headers = signinResponse.headers;
+                    }
+                    else {
+                        const signupResponse = await signup({
+                            login: info.id,
+                            email: nanoid(8) + "@e.mail",
+                            phone: '1234567890',
+                            password: 'Passw0rd!',
+                            first_name: info.first_name,
+                            second_name: info.last_name,
+                        }, {withCredentials: true});
+                        if (signupResponse) {
+                            await User.create({
+                                id: signupResponse.data.id,
+                                YandexUserId: info.id,
+                            })
+                        }
+                        headers = signupResponse.headers;
+                    }
+                    console.log(headers);
+                    const cookies = headers['set-cookie'];
+                    console.log(cookies);
+                    if (cookies) {
+                        res.setHeader('set-cookie', cookies);
+                        console.log(res.getHeader('set-cookie'));
                     }
                     res.redirect('/user');
                 }

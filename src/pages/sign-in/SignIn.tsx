@@ -10,7 +10,6 @@ import { useAppContext } from '@/appContext/index';
 
 import { signin, SignInErrorResponse, SignInResponse } from '@/remoteAPI/index';
 import {Layout} from "@/components/Layout";
-import {useSession, signIn} from "next-auth/react";
 
 
 export default function SignIn () {
@@ -20,7 +19,7 @@ export default function SignIn () {
     signIn: [ state, actions ],
   } = useAppContext();
 
-  const { data: session } = useSession();
+  const session = {data:false}
 
   const handleSignIn = () => {
     actions.loadingStart();
@@ -87,12 +86,17 @@ export default function SignIn () {
             {'Sign in'}
           </span>
         </button>
+
+        <button type='button' onClick={() => {
+          window.location.href = 'https://oauth.yandex.ru/authorize?response_type=code&client_id=8bdead37c1ae47f38b253570589183ff&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fapi%2Fauth%2Fcallback%2Fyandex';
+        }}>Yandex</button>
+
         {session == null && <button
           type={'button'}
           className={'button'}
           title={'GitHub and Yandex'}
           onClick={() => {
-             signIn(undefined, {callbackUrl: RoutePaths.Main});
+             // signIn(undefined, {callbackUrl: RoutePaths.Main});
           }}
         >
           Use other methods

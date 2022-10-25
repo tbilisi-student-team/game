@@ -4,7 +4,7 @@ import {useRouter} from 'next/router';
 import {RoutePaths} from '@/types/RoutePaths';
 import {useAppContext} from '@/appContext/index';
 import {logout} from "@/remoteAPI/auth";
-import {signOut, useSession} from 'next-auth/react';
+// import {signOut, useSession} from 'next-auth/react';
 
 let currentTheme = 'dark';
 
@@ -20,7 +20,7 @@ export const Header = () => {
 
   const nextRouter = useRouter();
 
-  const session = useSession();
+  const session = { data: false };
 
   function toggleTheme() {
     switchTheme(currentTheme === 'light' ? 'dark' : 'light');
@@ -68,12 +68,12 @@ export const Header = () => {
         <Link href={RoutePaths.Leaderboard}><a className='header-link'>Our champions</a></Link>
       </div>
       <div className='right__container'>
-        {currentUserState.data == null && session.data == null && <>
+        {currentUserState.data == null && <>
           <Link href={RoutePaths.SignIn}><a className='header-link'>Sign in</a></Link>
           <span className='deriver'> | </span>
           <Link href={RoutePaths.SignUp}><a className='header-link'>Sign up</a></Link>
         </>}
-        {(currentUserState.data || session.data) && <>
+        {currentUserState.data && <>
           {nextRouter.pathname != RoutePaths.User && <>
             <Link href={RoutePaths.User}><a className='header-link'>Profile</a></Link>
             <span className='deriver'> | </span>
@@ -84,7 +84,7 @@ export const Header = () => {
                 onClick={(event) => {
                   event.preventDefault();
                   if (session) {
-                    signOut({callbackUrl: '/'});
+                    // signOut({callbackUrl: '/'});
                   }
                   else {
                     handleLogout();

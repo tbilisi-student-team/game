@@ -19,6 +19,18 @@ const User = sequelize.define('User', {
     },
 });
 
+const YandexUser = sequelize.define('YandexUser', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+    },
+    data: {
+        type: DataTypes.TEXT,
+    }
+});
+
+YandexUser.hasOne(User);
+
 const Topic = sequelize.define('Topic', {
     id: {
         type: DataTypes.INTEGER,
@@ -91,6 +103,7 @@ Comment.belongsTo(Comment, { as: 'ParentComment', foreignKey: 'ParentCommentId' 
 
 export {
   User,
+  YandexUser,
   Topic,
   Comment,
   Emotion,

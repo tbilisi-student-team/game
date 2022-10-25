@@ -7,7 +7,7 @@ import { fetchCurrentUserData, reduxStore } from '@/reduxStore/index';
 import { ErrorBoundary } from '@/components/index';
 import { startServiceWorker } from '@/utils/index';
 import { AppContextProvider } from '@/appContext/index';
-import { SessionProvider } from 'next-auth/react';
+// import { SessionProvider } from 'next-auth/react';
 
 import '../styles/index.css';
 
@@ -24,9 +24,7 @@ function App({ Component, pageProps }: AppProps) {
     <ErrorBoundary>
       <AppContextProvider>
         <Provider store={reduxStore}>
-          <SessionProvider>
             <Component {...pageProps} />
-          </SessionProvider>
         </Provider>
       </AppContextProvider>
     </ErrorBoundary>

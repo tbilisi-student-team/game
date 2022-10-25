@@ -313,7 +313,7 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
 }
 
 .forum {
-  width: '100%';
+  width: 100%;
 }
 
 .icon {
@@ -444,7 +444,7 @@ canvas {
 .topic-data__row {
   display: flex;
   flex-direction: row;
-  justify-content: end;
+  justify-content: flex-end;
   margin-top: 20px;
 }
 
@@ -460,7 +460,7 @@ ul {
   display: flex;
   flex-direction: row;
   margin: 5px 0;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .topic-option {

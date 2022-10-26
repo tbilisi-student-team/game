@@ -3,12 +3,11 @@ import { Button } from '@/ui/Button';
 import { RoutePaths } from '@/types/index';
 import { Layout } from '@/components/Layout';
 import { useRouter } from 'next/router';
-import {GetServerSideProps, GetServerSidePropsContext} from "next";
-import {getServerSideProps as getProps, GlobalServerSideProps} from "@/utils/getServerSideProps";
+import { GlobalServerSideProps } from "@/utils/getServerSideProps";
 
 export default function Main(props: GlobalServerSideProps) {
   const router = useRouter();
-
+  console.log(props)
   return (
     <Layout theme={props.theme}>
       <div className='description'>
@@ -37,8 +36,4 @@ export default function Main(props: GlobalServerSideProps) {
       </div>
     </Layout>
   )
-}
-
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-    return getProps(context);
 }

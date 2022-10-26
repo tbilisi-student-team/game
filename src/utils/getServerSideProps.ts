@@ -1,28 +1,24 @@
 import {GetServerSideProps} from "next";
-import {getCurrentUser, UserResponse} from "@/remoteAPI/users";
 import {User} from "@/db/sequelize";
+import {getToken} from "next-auth/jwt";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const {
         res,
         req,
     } = context;
-
     try {
-        console.log(context.params);
-        const axiosResponseForCurrentUser = await getCurrentUser({
-            headers: {
-                Cookie: `authCookie=${req.cookies['authCookie']}; uuid=${req.cookies['uuid']}`,
+        const token = await getToken({ req });
+        if (token && token.sub) {
+            const userFromDB = await User.findOne({where: {id: token.sub}});
+            return {
+                props: {
+                    theme: userFromDB?.theme,
+                },
             }
-        });
-
-        const userData = axiosResponseForCurrentUser.data;
-        const userFromDB = await User.findOne({where: {id: userData.id}});
-
+        }
         return {
-            props: {
-                data: {theme: userFromDB?.theme},
-            },
+            props: {}
         }
     }
     catch (error) {
@@ -35,5 +31,5 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 export type GlobalServerSideProps = {
-    theme: string;
+    theme: 'light' | 'dark';
 };

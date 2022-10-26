@@ -12,10 +12,10 @@ export type LayoutProps = {
   children?: ReactNode,
   heading?: string,
   subheading?: string,
-  theme?: string,
+  theme?: 'dark' | 'light',
 }
 
-export const Layout = ({ children, heading = DEFAULT_HEADING, subheading = DEFAULT_SUBHEADING, theme = 'black' }: LayoutProps) => (
+export const Layout = ({ children, heading = DEFAULT_HEADING, subheading = DEFAULT_SUBHEADING, theme = 'dark' }: LayoutProps) => (
   <div className="wrapper" data-theme={theme}>
     <Header/>
 

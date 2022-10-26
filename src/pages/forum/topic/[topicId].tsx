@@ -141,7 +141,7 @@ function Topic (
         <div className="topic-data">{authorName}, </div>
         <div className="topic-data">{date}</div>
       </div>
-      
+
     </article>
   )
 }
@@ -199,7 +199,7 @@ function Comment(
       </div>
       <div className="topic-options">
       <div className="topic-option" onClick={() => setIsInputVisible(!isInputVisible)} > Reply </div>
-       <div> | </div> 
+       <div> | </div>
         <div className="topic-option" onClick={() => !childCommentsLoading && onGetCommentCommentsByParentCommentId(id)} > Get more comments </div>
       </div>
       {/* <Button name='Get more comments' onSubmit={() => onGetCommentCommentsByParentCommentId(id)} disabled={childCommentsLoading} /> */}
@@ -229,7 +229,7 @@ function Comment(
             }}
           />
 
-          <Button name='Submit a child comment' onSubmit={() => onCreateCommentToComment(id)} disabled={!requestDataIsValid} />
+          <Button name='Add a child comment' onSubmit={() => onCreateCommentToComment(id)} disabled={!requestDataIsValid} />
 
         </form>
       )}
@@ -259,7 +259,6 @@ export default function Index() {
   const { topicId } = nextRouter.query;
 
   const [topicState, setTopicState] = useState<TopicState>(INITIAL_TOPIC_STATE);
-  const [isNewCommentVisible, setIsNewCommentVisible] = useState(false)
 
   useEffect(() => {
     if (typeof topicId === 'string') {
@@ -294,8 +293,6 @@ export default function Index() {
   }, [topicId])
 
   const [topicEmotionsState, setTopicEmotionsState] = useState<TopicEmotionsState>(INITIAL_TOPIC_EMOTIONS_STATE);
-
-  const [isAddEmotionVisible, setIsAddEmotionVisible] = useState(false)
 
 
   useEffect(() => {
@@ -693,6 +690,10 @@ export default function Index() {
                   ...prev.parentCommentsWithCommentsMap[parentCommentId],
                   status: Status.Fulfilled,
                   comments,
+                  requestData: {
+                    text: '',
+                    authorName: '',
+                  }
                 },
                 ...parentCommentsWithCommentsMap,
               }
@@ -729,11 +730,6 @@ export default function Index() {
     !!rootCommentsState.requestData.text.length
     && rootCommentsState.requestData.authorName.length;
 
-
-  const onAddEmotion = () => {
-    setIsAddEmotionVisible(!isAddEmotionVisible)
-  }
-
   return (
     <Layout heading={''} subheading={''}>
       <div>
@@ -753,16 +749,10 @@ export default function Index() {
           <div className="emotions-header">
             {topicEmotionsState.topicEmotions.length > 0 && <div>Emotions:</div>}
             <div className='emotions-options'>
-              <div className='emotions-icon reply' onClick={() => setIsNewCommentVisible(!isNewCommentVisible)}>Reply</div>
-              <div className='emotions-icon reply'> | </div>
-              <div className='emotions-icon reply' onClick={onAddEmotion}>Add an emotion</div>
-              <div className='emotions-icon reply'> | </div>
               <FontAwesomeIcon icon={faArrowsRotate} className='icon emotions-icon' onClick={handleGetEmotions} />
             </div>
-           
-            
           </div>
-          
+
 
           {(!!topicEmotionsState.topicEmotions && !!topicEmotionsState.topicEmotions.length) && (
             <div className='emotion-tags'>{topicEmotionsState.topicEmotions.map((topicEmotion) => (
@@ -772,41 +762,34 @@ export default function Index() {
                 ))}
             </div>
           )}
-
-          {/* <Button name='Update emotions' onSubmit={handleGetEmotions} disabled={topicEmotionsState.status === Status.Pending} /> */}
-
         </div>
 
-        {isAddEmotionVisible && (<div>
-          <form>
-            <Input
-                label={'Your name'}
-                name={'authorName'}
-                id={'authorName'}
-                placeholder={'Author name'}
-                value={topicEmotionsState.requestData.authorName}
-                setValue={handleSetTopicEmotionRequestDataValue}
-              />
-            <Input
-              label={'Your emotion'}
-              name={'text'}
-              id={'text'}
-              placeholder={'Text'}
-              value={topicEmotionsState.requestData.text}
-              setValue={handleSetTopicEmotionRequestDataValue}
-            />
+        <form>
+          <Input
+            label={'Your name'}
+            name={'authorName'}
+            id={'authorName'}
+            placeholder={'Author name'}
+            value={topicEmotionsState.requestData.authorName}
+            setValue={handleSetTopicEmotionRequestDataValue}
+          />
+          <Input
+            label={'Your emotion'}
+            name={'text'}
+            id={'text'}
+            placeholder={'Text'}
+            value={topicEmotionsState.requestData.text}
+            setValue={handleSetTopicEmotionRequestDataValue}
+          />
 
-            <Button name='Add an emotion' onSubmit={handleCreateEmotionToTopic} disabled={!topicEmotionRequestDataIsValid} />
+          <Button name='Add emotion to topic' onSubmit={handleCreateEmotionToTopic} disabled={!topicEmotionRequestDataIsValid} />
 
-          </form>
-        </div>)}
+        </form>
 
       </div>
 
 
-
-
-      {isNewCommentVisible && <div className="topic-plaque">
+      <div className="topic-plaque">
 
           { (!!rootCommentsState.rootComments && !!rootCommentsState.rootComments.length) && (
             <ul>
@@ -830,7 +813,7 @@ export default function Index() {
             </ul>
           )}
 
-            <h3>Add a new comment:</h3>
+            <h3>Add a comment to a topic:</h3>
 
             <form>
               <Input
@@ -850,11 +833,11 @@ export default function Index() {
                 setValue={handleSetRootCommentsRequestDataValue}
               />
 
-              <Button name='Submit' onSubmit={handleCreateCommentToTopic} disabled={!rootCommentsRequestDataIsValid} />
+              <Button name='Add a comment to a topic' onSubmit={handleCreateCommentToTopic} disabled={!rootCommentsRequestDataIsValid} />
 
             </form>
 
-        </div>}
+      </div>
 
       </div>
 

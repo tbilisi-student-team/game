@@ -1,4 +1,4 @@
-import {Sequelize, DataTypes} from 'sequelize';
+import {Sequelize, DataTypes, InferAttributes, InferCreationAttributes, Model, CreationOptional} from 'sequelize';
 
 export const sequelize = new Sequelize({
     dialect: 'postgres',
@@ -9,7 +9,13 @@ export const sequelize = new Sequelize({
     username: process.env.PGSQL_USER,
 });
 
-const User = sequelize.define('User', {
+interface UserModel extends Model<InferAttributes<UserModel>, InferCreationAttributes<UserModel>> {
+    // Some fields are optional when calling UserModel.create() or UserModel.build()
+    id: number;
+    theme: string;
+}
+
+const User = sequelize.define<UserModel>('User', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,

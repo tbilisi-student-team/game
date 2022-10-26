@@ -10,7 +10,7 @@ let currentTheme = 'dark';
 
 function switchTheme(theme: string) {
   currentTheme = theme;
-  document.documentElement.dataset.theme = currentTheme;
+  (document.querySelector('.wrapper') as HTMLElement).dataset.theme = currentTheme;
 }
 
 export const Header = () => {

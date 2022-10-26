@@ -7,9 +7,7 @@ export type SignInRequest = {
   password: string,
 }
 
-export type SignInResponse = {
-  id: number,
-}
+export type SignInResponse = string;
 
 export type SignInErrorResponse = {
   reason: string,

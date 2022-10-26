@@ -3,12 +3,14 @@ import { Button } from '@/ui/Button';
 import { RoutePaths } from '@/types/index';
 import { Layout } from '@/components/Layout';
 import { useRouter } from 'next/router';
+import {GetServerSideProps, GetServerSidePropsContext} from "next";
+import {getServerSideProps as getProps, GlobalServerSideProps} from "@/utils/getServerSideProps";
 
-export default function Main () {
+export default function Main(props: GlobalServerSideProps) {
   const router = useRouter();
 
   return (
-    <Layout>
+    <Layout theme={props.theme}>
       <div className='description'>
         <p>
           We offer to your attention a funny game where your character gather fruits for his kids. 
@@ -35,4 +37,8 @@ export default function Main () {
       </div>
     </Layout>
   )
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+    return getProps(context);
 }

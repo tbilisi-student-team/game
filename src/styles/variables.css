@@ -1,4 +1,4 @@
-:root {
+.wrapper {
     --white: #ffffff;
     --grey: #d3d3d3;
     --whiteinput: #ffffff50;
@@ -6,10 +6,13 @@
     --tablebackground: #00000044;
 
     --theme-color: white;
-    --theme-body-bg: url(../../public/background.jpeg) no-repeat fixed;
+
+    /*noinspection CssUnknownTarget*/
+    --theme-body-bg: url(/background.jpeg) no-repeat fixed;
 }
 
-[data-theme=light] {
+.wrapper[data-theme=light] {
   --theme-color: black;
-  --theme-body-bg: url(../../public/background-light.jpeg) no-repeat fixed;
+  /*noinspection CssUnknownTarget*/
+  --theme-body-bg: url(/background-light.jpeg) no-repeat fixed;
 }

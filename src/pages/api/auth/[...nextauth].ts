@@ -6,9 +6,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import {signin} from "@/remoteAPI/auth";
 import {NextApiRequest, NextApiResponse} from "next";
 import {getCurrentUser} from "@/remoteAPI/users";
-import {AxiosRequestHeaders} from "axios";
-import {ypTechHTTPClient} from "@/YPTechHTTPClient/ypTechHTTPClient";
-import {AXIOS_REQUEST_CONFIG} from "@/config/AxiosRequestConfig";
+import {User} from '@/db/sequelize';
 
 const authOptions: (req: NextApiRequest, res: NextApiResponse) => NextAuthOptions = (req, res) => { return {
   providers: [
@@ -43,20 +41,10 @@ const authOptions: (req: NextApiRequest, res: NextApiResponse) => NextAuthOption
 
           if (cookies) {
             res.setHeader('set-cookie', cookies);
-            const cookie = cookies.map(cookie => cookie.split(';')[0]).join(';')
-            console.log(cookie);
-            // const userResponse = await fetch('https://ya-praktikum.tech/api/v2/auth/user', {
-            //   headers: {'cookie': cookies.map(cookie => {
-            //     return cookie.split(';')[0];
-            //   }).join(';')}
-            // });
-
-            const userResponse = await getCurrentUser({headers: {Cookie: cookie}});
-            console.log(userResponse);
-            // const user = await userResponse.json();
+            const cookie = cookies.map(cookie => cookie.split(';')[0]).reverse().slice(0, 2).join(';');
+            const userResponse = await getCurrentUser({headers: {cookie}});
             const user = userResponse.data;
-            console.log(user);
-            return user;
+            return userResponse.data;
           }
 
           return null;
@@ -72,13 +60,25 @@ const authOptions: (req: NextApiRequest, res: NextApiResponse) => NextAuthOption
     newUser: RoutePaths.User,
   },
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
-      console.log('signIn', user, account, profile, email, credentials);
+    async signIn({ user, account, profile, credentials }) {
+      console.log('signIn', user, account, profile, credentials);
       return true;
     },
-    async session({ session , user}) {
-      console.log('session', session, user);
-
+    async jwt({ token, account, profile }) {
+      console.log('jwt', token, account, profile);
+      // Persist the OAuth access_token and or the user id to the token right after signin
+      // if (account) {
+      //   token.accessToken = account.access_token
+      //   token.id = profile.id
+      // }
+      return token;
+    },
+    async session({ session , user, token}) {
+      console.log('session', session, token, user);
+      if (req && req.query.update && req.body) {
+        console.log(req.body);
+        // const ypUser:
+      }
       return session;
     },
   }

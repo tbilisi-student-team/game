@@ -23,7 +23,8 @@ form {
   color: var(--theme-color);
   background: var(--theme-body-bg);
   background-size: 100% 100%;
-  height: max(100%, max-content);
+  height: fit-content;
+  min-height: 100%;
 }
 
 .header {

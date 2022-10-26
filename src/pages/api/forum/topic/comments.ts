@@ -7,7 +7,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const requestQueryTopicId = req.query.topicId;
 
       if (typeof requestQueryTopicId === 'string') {
-        const comments = await Comment.findAll({ where: { TopicId: requestQueryTopicId } });
+        const comments = await Comment.findAll({ where: { TopicId: parseInt(requestQueryTopicId, 10) } });
 
         res.status(200).send(comments);
       } else {

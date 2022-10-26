@@ -686,10 +686,6 @@ export default function Index() {
                   ...prev.parentCommentsWithCommentsMap[parentCommentId],
                   status: Status.Fulfilled,
                   comments,
-                  requestData: {
-                    text: '',
-                    authorName: '',
-                  }
                 },
                 ...parentCommentsWithCommentsMap,
               }

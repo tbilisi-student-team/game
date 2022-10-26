@@ -11,10 +11,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         const token = await getToken({ req });
         if (token && token.sub) {
             const userFromDB = await User.findOne({where: {id: token.sub}});
-            return {
-                props: {
-                    theme: userFromDB?.theme,
-                },
+            if (userFromDB) {
+                return {
+                    props: {
+                        theme: userFromDB.theme,
+                    },
+                }
             }
         }
         return {

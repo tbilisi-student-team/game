@@ -22,10 +22,10 @@ export default function Leaderboard () {
     <Layout>
       <table className='leaderboard-table'>
         <thead>
-        <tr className='table-header'>
-          <th className='forum-table-header-cell'><FontAwesomeIcon icon={faTrophy} /></th>
-          <th className='forum-table-header-cell'>User Name</th>
-          <th className='forum-table-header-cell'><FontAwesomeIcon icon={faDumbbell} /></th>
+        <tr className='table-head__row'>
+          <th className='table-head__cell'><FontAwesomeIcon icon={faTrophy} /></th>
+          <th className='table-head__cell'>User Name</th>
+          <th className='table-head__cell'><FontAwesomeIcon icon={faDumbbell} /></th>
         </tr>
         </thead>
         <tbody>{leaderboard && leaderboard.map(

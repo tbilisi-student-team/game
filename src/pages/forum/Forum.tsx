@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarDays, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faCalendarDays, faUser, faPlus } from '@fortawesome/free-solid-svg-icons'
 import {Layout} from "@/components/Layout";
 import Link from "next/link";
 import {RoutePaths, Status} from '@/types/index';
@@ -56,13 +56,14 @@ export default function Forum() {
 
   return (
     <Layout heading={'Forum'}>
-      <div>
+      <div className='forum'>
         <Link href={`${RoutePaths.Forum}/create/topic`}>
           <a className='table-body__data-link'>
+            <FontAwesomeIcon icon={faPlus} className="icon"/>
             Create topic
           </a>
         </Link>
-        <table className='table'>
+        <table className='forum-table'>
           <thead className={'table-head'}>
             <tr className='table-head__row'>
               <th className='table-head__cell'>Topic</th>
@@ -77,15 +78,13 @@ export default function Forum() {
               className={'table-body__row theme'}
             >
               <td className='table-body__data'>
-                <h3 className={'table-body__data-heading'}>
-                  {topic.title}
-                </h3>
-
-                <Link href={`${RoutePaths.Forum}/topic/${topic.id}`}>
-                  <a className='table-body__data-link'>
-                    Link
-                  </a>
-                </Link>
+              <Link href={`${RoutePaths.Forum}/topic/${topic.id}`}>
+                <a className='table-body__data-link'>
+                  <div className={'table-body__data-heading'}>
+                    {topic.title}
+                  </div>
+                </a>
+              </Link>
 
                 <p className={'table-body__data-text'}>
                   {topic.text}

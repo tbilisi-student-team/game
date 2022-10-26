@@ -1,18 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarDays, faUser } from '@fortawesome/free-solid-svg-icons'
+import React, {useState} from 'react';
 import {Layout} from "@/components/Layout";
-import Link from "next/link";
 import {RoutePaths, Status} from '@/types/index';
-import Topic from "@/remoteAPI/forum/types/Topic";
-import {getForumTopics} from "@/remoteAPI/forum";
 import {AxiosError} from "axios";
 import {ErrorResponse} from "@/remoteAPI/ErrorResponse";
 import {createForumTopic, CreateForumTopicRequest} from "@/remoteAPI/forum";
-import {useAppContext} from "@/appContext/AppContext";
 import {useRouter} from "next/router";
-import {useSession} from "next-auth/react";
 import {Input} from "@/ui/Input";
+import { Button } from '@/ui/Button';
+
 
 type State = {
   status: Status,
@@ -113,17 +108,8 @@ export default function Index() {
           value={state.requestData.authorName}
           setValue={handleSetValue}
         />
-
-        <button
-          onClick={handleCreateForumTopic}
-          className={'button'}
-          type={'button'}
-          disabled={!requestDataIsValid}
-        >
-          <span className={'button-title'}>
-            Create new topic
-          </span>
-        </button>
+        
+        <Button name='Create new topic' onSubmit={handleCreateForumTopic} disabled={!requestDataIsValid} />
       </form>
     </Layout>
   );

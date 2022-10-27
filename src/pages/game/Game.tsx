@@ -257,10 +257,12 @@ export default function Game() {
   }, [ onAnimationFrame ]);
 
   return (
-    <canvas
-      ref={canvasRef}
-      width={windowVisualViewportSize.width}
-      height={windowVisualViewportSize.height}>
-    </canvas>
+    <div className={'wrapper'}>
+      <canvas
+        ref={canvasRef}
+        width={windowVisualViewportSize.width}
+        height={windowVisualViewportSize.height}>
+      </canvas>
+    </div>
   )
 }

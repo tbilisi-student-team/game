@@ -1,18 +1,15 @@
-import React, {useEffect, useState} from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarDays, faUser } from '@fortawesome/free-solid-svg-icons'
+import React, {useState} from 'react';
 import {Layout} from "@/components/Layout";
-import Link from "next/link";
 import {RoutePaths, Status} from '@/types/index';
-import Topic from "@/remoteAPI/forum/types/Topic";
-import {getForumTopics} from "@/remoteAPI/forum";
 import {AxiosError} from "axios";
 import {ErrorResponse} from "@/remoteAPI/ErrorResponse";
 import {createForumTopic, CreateForumTopicRequest} from "@/remoteAPI/forum";
-import {useAppContext} from "@/appContext/AppContext";
 import {useRouter} from "next/router";
-import {useSession} from "next-auth/react";
 import {Input} from "@/ui/Input";
+import { Button } from '@/ui/Button';
+import {useSession} from "next-auth/react";
+import {useAppContext} from "@/appContext/AppContext";
+
 
 type State = {
   status: Status,
@@ -31,6 +28,13 @@ const INITIAL_STATE: State = {
 }
 
 export default function Index() {
+  const { data: session, status } = useSession();
+  const {
+    currentUser: [ currentUserState, actions ]
+  } = useAppContext();
+
+  const { data, isLoading } = currentUserState;
+
   const nextRouter = useRouter();
 
   const [state, setState] = useState<State>(INITIAL_STATE);
@@ -84,6 +88,14 @@ export default function Index() {
     && !!state.requestData.title.length
     && !!state.requestData.authorName.length;
 
+  if (status === "loading" || isLoading) {
+    return <Layout heading={'Loading...'} subheading={''}/>
+  }
+
+  if (status === "unauthenticated" && !data) {
+    return <Layout heading={'Access denied'} subheading={''}/>
+  }
+
   return (
     <Layout heading={'Forum'}>
       <form>
@@ -114,16 +126,7 @@ export default function Index() {
           setValue={handleSetValue}
         />
 
-        <button
-          onClick={handleCreateForumTopic}
-          className={'button'}
-          type={'button'}
-          disabled={!requestDataIsValid}
-        >
-          <span className={'button-title'}>
-            Create new topic
-          </span>
-        </button>
+        <Button name='Create new topic' onSubmit={handleCreateForumTopic} disabled={!requestDataIsValid} />
       </form>
     </Layout>
   );

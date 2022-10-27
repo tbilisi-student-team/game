@@ -12,6 +12,7 @@ import { Input } from '@/ui/Input';
 import styles from './index.module.css';
 
 import buddy1 from '@/public/buddy-1.png';
+import {useSession} from "next-auth/react";
 
 type ProfileFormDataState = Omit<UserResponse, 'id'>;
 
@@ -26,6 +27,7 @@ const INITIAL_PROFILE_FORM_DATA_STATE: ProfileFormDataState = {
 }
 
 export default function User () {
+  const { data: session, status } = useSession();
   const {
     currentUser: [ state, actions ]
   } = useAppContext();
@@ -102,10 +104,12 @@ export default function User () {
     setNewPasswordError('New passwords are not equal');
   }
 
-  if (isLoading) {
-    return (
-      <Layout heading={'Loading'} subheading={''}/>
-    )
+  if (status === "loading" || isLoading) {
+    return <Layout heading={'Loading...'} subheading={''}/>
+  }
+
+  if (status === "unauthenticated" && !data) {
+    return <Layout heading={'Access denied'} subheading={''}/>
   }
 
   return (
@@ -114,8 +118,10 @@ export default function User () {
         <div className={`avatar ${styles.avatar}`}>
           <Image
             src={ profileFormData.avatar ? `${BASE_URL}/resources${profileFormData.avatar}` : buddy1 }
-            alt={'Avatar'}>
-          </Image>
+            alt={'Avatar'}
+            width={200}
+            height={200}
+          />
           <br></br>
           <button type={'button'} onClick={() => { fileInputRef.current?.click() }}>Change</button>
           <input ref={fileInputRef} type={'file'} style={{ display: 'none' }} onChange={handleChangeAvatar} />

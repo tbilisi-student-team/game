@@ -8,12 +8,13 @@ import { Input } from '@/ui/index';
 import { RoutePaths } from '@/types/index'
 import { useAppContext } from '@/appContext/index';
 
-import { signin, SignInErrorResponse, SignInResponse } from '@/remoteAPI/index';
 import {Layout} from "@/components/Layout";
-import {useSession, signIn} from "next-auth/react";
+import {useSession, signIn, SignInResponse as NextAuthSignInResponse} from "next-auth/react";
+import {signin, SignInErrorResponse, SignInResponse} from "@/remoteAPI/auth";
+import {getCurrentUser} from "@/remoteAPI/users";
 
 
-export default function SignIn () {
+export default function SignIn() {
   const nextRouter = useRouter();
 
   const {
@@ -24,16 +25,31 @@ export default function SignIn () {
 
   const handleSignIn = () => {
     actions.loadingStart();
-
     signin(state.requestData)
       .then((axiosResponse: AxiosResponse<SignInResponse>) => {
         if (axiosResponse.status === 200) {
-          const responseData = axiosResponse.data;
-
-          actions.loadingSuccess(responseData);
-
-          nextRouter.push(RoutePaths.Game);
-        } else {
+          getCurrentUser().then((res) => {
+            const user = res.data;
+            signIn('credentials', {...state.requestData, redirect: false}, `id=${user.id}`).then((res?: NextAuthSignInResponse) => {
+              if (res?.ok) {
+                actions.loadingSuccess('OK');
+                nextRouter.push(RoutePaths.Game);
+              }
+              else {
+                console.error(res);
+                const error = res?.error || 'Unknown error';
+                actions.loadingError(Error(error));
+              }
+            }).catch((reason) => {
+              console.error(reason);
+              actions.loadingError(reason);
+            });
+          }).catch((reason) => {
+            console.error(reason);
+            actions.loadingError(reason);
+          });
+        }
+        else {
           throw new Error(`${axiosResponse.status}: Unexpected error.`);
         }
       })
@@ -92,10 +108,10 @@ export default function SignIn () {
           className={'button'}
           title={'GitHub and Yandex'}
           onClick={() => {
-             signIn(undefined, {callbackUrl: RoutePaths.Main});
+             signIn('yandex', {callbackUrl: RoutePaths.Main});
           }}
         >
-          Use other methods
+          <span className={'button-title'}><span style={{color: 'white', backgroundColor: 'red', borderRadius: '1em', width: '2em', height: '2em', display: 'inline-block', verticalAlign: 'middle'}}><span style={{lineHeight: '2em'}}>Я</span></span> Sign in with Yandex</span>
         </button>}
         {state.error && (
           <div>{state.error.message}</div>

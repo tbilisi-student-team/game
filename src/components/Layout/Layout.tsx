@@ -12,11 +12,12 @@ export type LayoutProps = {
   children?: ReactNode,
   heading?: string,
   subheading?: string,
+  theme?: 'dark' | 'light',
 }
 
-export const Layout = ({ children, heading = DEFAULT_HEADING, subheading = DEFAULT_SUBHEADING, }: LayoutProps) => (
-  <div className="wrapper">
-    <Header />
+export const Layout = ({ children, heading = DEFAULT_HEADING, subheading = DEFAULT_SUBHEADING, theme = 'dark' }: LayoutProps) => (
+  <div className="wrapper" data-theme={theme}>
+    <Header/>
 
     {heading && (
       <h1>
@@ -40,8 +41,8 @@ export const Layout = ({ children, heading = DEFAULT_HEADING, subheading = DEFAU
       )}
 
       <div className='right-character-wrapper'>
-        <Image src={buddy2} alt='Buddy Two' className='right-character' />
+        <Image src={buddy2} alt='Buddy Two' className='right-character'/>
       </div>
     </div>
   </div>
-);
+)

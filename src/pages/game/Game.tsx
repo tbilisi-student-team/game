@@ -26,7 +26,6 @@ import  PlaySounds from '../../components/game/utils/PlaySounds';
 import { useRouter } from 'next/router'
 import { RoutePaths } from '@/types/index'
 
-
 export default function Game() {
   const windowVisualViewportSize = useWindowVisualViewportSize(
     {
@@ -63,7 +62,7 @@ export default function Game() {
         drawerRef.current.debug = !drawerRef.current.debug;
         break;
       case 'KeyF':
-            toggleFullscreen();
+        toggleFullscreen();
         break;
       case 'KeyH':
         router.push(RoutePaths.Main)
@@ -74,21 +73,20 @@ export default function Game() {
   const onMouse = useCallback(function (e: MouseEvent) {
     switch (e.type) {
       case 'mousemove':
-            stateRef.current.mouseState.x += e.movementX;
-            stateRef.current.mouseState.y += e.movementY;
+        stateRef.current.mouseState.x = e.clientX;
+        stateRef.current.mouseState.y = e.clientY;
         break;
       case 'mousedown':
-            stateRef.current.mouseState.pressX += e.movementX;
-            stateRef.current.mouseState.pressY += e.movementY;
+        stateRef.current.mouseState.pressX = e.clientX;
+        stateRef.current.mouseState.pressY = e.clientY;
         stateRef.current.mouseState.isPressed = true;
         canvasRef.current?.classList.add('grabbing');
         break;
-        case 'mouseup':
-            
+      case 'mouseup':
         stateRef.current.mouseState.isPressed = false;
         canvasRef.current?.classList.remove('grabbing');
-            pew(stateRef.current.mouseState.pressX - stateRef.current.mouseState.x, stateRef.current.mouseState.pressY - stateRef.current.mouseState.y);
-        if (stateRef.current.isGameStarted&&stateRef.current.isPause&&stateRef.current.isGameOver) {
+        pew(stateRef.current.mouseState.pressX - e.x, stateRef.current.mouseState.pressY - e.y);
+        if (stateRef.current.isGameStarted&&!stateRef.current.isPause&&!stateRef.current.isGameOver) {
           PlaySounds(['pew-1','pew-2','pew-3','pew-4','pew-5','pew-6','pew-7']);
         }
         break;
@@ -205,29 +203,18 @@ export default function Game() {
 
   useLayoutEffect(function addListeners() {
     const canvas = canvasRef.current;
-      document.onclick = function () {
-          canvas?.requestPointerLock();
-      };
 
-      document.addEventListener('pointerlockchange', lockChangeAlert);
+    document.addEventListener('keydown', onKeyDown);
+    canvas?.addEventListener('mousedown', onMouse);
+    canvas?.addEventListener('mousemove', onMouse);
+    canvas?.addEventListener('mouseup', onMouse);
 
-      function lockChangeAlert() {
-          if (document.pointerLockElement === canvas) {
-              document.addEventListener('keydown', onKeyDown);
-              canvas?.addEventListener('mousedown', onMouse);
-              canvas?.addEventListener('mousemove', onMouse);
-              canvas?.addEventListener('mouseup', onMouse);
-          } else {
-
-              return function removeListeners() {
-                  document.removeEventListener('keydown', onKeyDown);
-                  canvas?.removeEventListener('mousedown', onMouse);
-                  canvas?.removeEventListener('mousemove', onMouse);
-                  canvas?.removeEventListener('mouseup', onMouse);
-              }
-          }
-      }
-
+    return function removeListeners() {
+      document.removeEventListener('keydown', onKeyDown);
+      canvas?.removeEventListener('mousedown', onMouse);
+      canvas?.removeEventListener('mousemove', onMouse);
+      canvas?.removeEventListener('mouseup', onMouse);
+    }
   }, [ onKeyDown, onMouse ])
 
   const onAnimationFrame = useCallback((time: DOMHighResTimeStamp) => {

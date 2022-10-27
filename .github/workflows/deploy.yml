@@ -25,7 +25,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            if [ -d game ]; then cd game && git pull git@github.com:tbilisi-student-team/game.git;
+            if [ -d game ]; then cd game && git pull origin main:main;
             else git clone git@github.com:tbilisi-student-team/game.git && cd game; fi
             
             # Populate .env
@@ -38,6 +38,7 @@ jobs:
             'NEXT_PUBLIC_YANDEX_ID=${{ secrets.OAUTH_YANDEX_ID }}' \
             'YANDEX_SECRET=${{ secrets.OAUTH_YANDEX_SECRET }}' \
             'NEXTAUTH_URL=https://tbilisi-pew-16.ya-praktikum.tech' \
+            'NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}' \
             > .env
             
             docker compose down

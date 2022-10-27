@@ -35,6 +35,9 @@ jobs:
             'PGSQL_HOST=pg' \
             'PGSQL_PORT=5432' \
             'PGSQL_DATABASE=postgres' \
+            'NEXT_PUBLIC_YANDEX_ID=${{ secrets.OAUTH_YANDEX_ID }}' \
+            'YANDEX_SECRET=${{ secrets.OAUTH_YANDEX_SECRET }}' \
+            'NEXTAUTH_URL=https://tbilisi-pew-16.ya-praktikum.tech' \
             > .env
             
             docker compose down

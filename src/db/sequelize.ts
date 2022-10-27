@@ -13,7 +13,7 @@ interface UserModel extends Model<InferAttributes<UserModel>, InferCreationAttri
     // Some fields are optional when calling UserModel.create() or UserModel.build()
     id: number;
     theme?: string;
-    YandexUserId?: number,
+    YandexUserId?: string;
 }
 
 const User = sequelize.define<UserModel>('User', {
@@ -28,7 +28,7 @@ const User = sequelize.define<UserModel>('User', {
 
 const YandexUser = sequelize.define('YandexUser', {
     id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         primaryKey: true,
     },
     data: {

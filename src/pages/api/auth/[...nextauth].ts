@@ -62,8 +62,7 @@ const authOptions: (req: NextApiRequest, res: NextApiResponse) => NextAuthOption
   callbacks: {
     async signIn({ user, account, profile, credentials }) {
       console.log('signIn', user, account, profile, credentials);
-      if (account.provider == 'yandex') {
-        const yId = Number(profile.id);
+      if (account.provider == 'yandex' && typeof profile.id == 'string') {
         const yUser = await YandexUser.findOne({where: {id: profile.id}});
         if (yUser) {
           await yUser.update({data: JSON.stringify(profile)});
@@ -72,27 +71,35 @@ const authOptions: (req: NextApiRequest, res: NextApiResponse) => NextAuthOption
           await YandexUser.create({id: profile.id, data: JSON.stringify(profile)});
         }
         let headers;
-        const user = await User.findOne({where: {YandexUserId: yId}});
-        if (user) {
-          const signinResponse = await signin({login: profile.email as string, password: 'Passw0rd!'});
-          headers = signinResponse.headers;
-        }
-        else {
-          const signupResponse = await signup({
-            login: profile.email!,
-            email: profile.email!,
-            phone: '1234567890',
-            password: 'Passw0rd!',
-            first_name: profile.first_name as string,
-            second_name: profile.last_name as string,
-          }, {withCredentials: true});
-          if (signupResponse) {
-            await User.create({
-              id: signupResponse.data.id,
-              YandexUserId: yId,
+        try
+        {
+          const user = await User.findOne({where: {YandexUserId: profile.id}});
+          if (user) {
+            const signinResponse = await signin({login: profile.default_email as string, password: 'Passw0rd!'});
+            console.log(signinResponse);
+            headers = signinResponse.headers;
+          } else {
+            const signupResponse = await signup({
+              login: profile.default_email as string,
+              email: profile.default_email as string,
+              phone: '1234567890',
+              password: 'Passw0rd!',
+              first_name: profile.first_name as string,
+              second_name: profile.last_name as string,
             });
+            console.log(signupResponse);
+            if (signupResponse) {
+              await User.create({
+                id: signupResponse.data.id,
+                YandexUserId: profile.id,
+              });
+            }
+            headers = signupResponse.headers;
           }
-          headers = signupResponse.headers;
+        }
+        catch (error) {
+          console.error(error);
+          throw error;
         }
         const cookies = headers['set-cookie'];
         if (cookies) {

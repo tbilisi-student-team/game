@@ -7,6 +7,7 @@ import {createForumTopic, CreateForumTopicRequest} from "@/remoteAPI/forum";
 import {useRouter} from "next/router";
 import {Input} from "@/ui/Input";
 import { Button } from '@/ui/Button';
+import {useSession} from "next-auth/react";
 
 
 type State = {
@@ -26,6 +27,8 @@ const INITIAL_STATE: State = {
 }
 
 export default function Index() {
+  const { data: session, status } = useSession();
+
   const nextRouter = useRouter();
 
   const [state, setState] = useState<State>(INITIAL_STATE);
@@ -79,6 +82,14 @@ export default function Index() {
     && !!state.requestData.title.length
     && !!state.requestData.authorName.length;
 
+  if (status === "loading") {
+    return <Layout heading={'Loading...'} subheading={''}/>
+  }
+
+  if (status === "unauthenticated") {
+    return <Layout heading={'Access denied'} subheading={''}/>
+  }
+
   return (
     <Layout heading={'Forum'}>
       <form>
@@ -108,7 +119,7 @@ export default function Index() {
           value={state.requestData.authorName}
           setValue={handleSetValue}
         />
-        
+
         <Button name='Create new topic' onSubmit={handleCreateForumTopic} disabled={!requestDataIsValid} />
       </form>
     </Layout>

@@ -12,6 +12,7 @@ import { Input } from '@/ui/Input';
 import styles from './index.module.css';
 
 import buddy1 from '@/public/buddy-1.png';
+import {useSession} from "next-auth/react";
 
 type ProfileFormDataState = Omit<UserResponse, 'id'>;
 
@@ -26,6 +27,8 @@ const INITIAL_PROFILE_FORM_DATA_STATE: ProfileFormDataState = {
 }
 
 export default function User () {
+  const { data: session, status } = useSession();
+
   const {
     currentUser: [ state, actions ]
   } = useAppContext();
@@ -104,8 +107,16 @@ export default function User () {
 
   if (isLoading) {
     return (
-      <Layout heading={'Loading'} subheading={''}/>
+      <Layout heading={'Loading...'} subheading={''}/>
     )
+  }
+
+  if (status === "loading") {
+    return <Layout heading={'Loading...'} subheading={''}/>
+  }
+
+  if (status === "unauthenticated") {
+    return <Layout heading={'Access denied'} subheading={''}/>
   }
 
   return (

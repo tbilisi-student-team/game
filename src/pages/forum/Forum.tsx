@@ -8,6 +8,7 @@ import Topic from "@/remoteAPI/forum/types/Topic";
 import {getForumTopics} from "@/remoteAPI/forum";
 import {AxiosError} from "axios";
 import {ErrorResponse} from "@/remoteAPI/ErrorResponse";
+import {useSession} from "next-auth/react";
 
 type State = {
   status: Status,
@@ -22,6 +23,8 @@ const INITIAL_STATE: State = {
 }
 
 export default function Forum() {
+  const { data: session, status } = useSession()
+
   const [state, setState] = useState<State>(INITIAL_STATE);
 
   useEffect(() => {
@@ -53,6 +56,14 @@ export default function Forum() {
         })
       })
   }, [])
+
+  if (status === "loading") {
+    return <Layout heading={'Loading...'} subheading={''}/>
+  }
+
+  if (status === "unauthenticated") {
+    return <Layout heading={'Access denied'} subheading={''}/>
+  }
 
   return (
     <Layout heading={'Forum'}>

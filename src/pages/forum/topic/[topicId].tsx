@@ -24,6 +24,7 @@ import { faArrowsRotate, faPlus, faMessage } from '@fortawesome/free-solid-svg-i
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {createForumEmotionToTopic, CreateForumEmotionToTopicRequest} from "@/remoteAPI/forum/createForumEmotionToTopic";
+import {useSession} from "next-auth/react";
 
 type TopicState = {
   status: Status,
@@ -254,6 +255,7 @@ function Comment(
 }
 
 export default function Index() {
+  const { data: session, status } = useSession()
   const nextRouter = useRouter();
 
   const { topicId } = nextRouter.query;
@@ -729,6 +731,14 @@ export default function Index() {
   const rootCommentsRequestDataIsValid =
     !!rootCommentsState.requestData.text.length
     && rootCommentsState.requestData.authorName.length;
+
+  if (status === "loading") {
+    return <Layout heading={'Loading...'} subheading={''}/>
+  }
+
+  if (status === "unauthenticated") {
+    return <Layout heading={'Access denied'} subheading={''}/>
+  }
 
   return (
     <Layout heading={''} subheading={''}>

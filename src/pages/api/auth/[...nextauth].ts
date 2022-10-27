@@ -8,7 +8,7 @@ import {NextApiRequest, NextApiResponse} from "next";
 import {getCurrentUser} from "@/remoteAPI/users";
 import {User, YandexUser} from "@/db/sequelize";
 
-const authOptions: (req: NextApiRequest, res: NextApiResponse) => NextAuthOptions = (req, res) => { return {
+export const authOptions: (req: NextApiRequest, res: NextApiResponse) => NextAuthOptions = (req, res) => { return {
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_ID!,

@@ -36,16 +36,17 @@ export const Header = () => {
   }
 
   const handleLogout = () => {
-    logout({ withCredentials: true })
-      .then((res) => {
-        if (res.status === 200) {
-          currentUserActions.reset();
-          nextRouter.push(RoutePaths.Main);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      })
+    Promise.all(
+      [
+        signOut({callbackUrl: '/'}),
+        logout({ withCredentials: true })
+      ]
+    ).then(([ signOutOAuth, signOutYandexAxiosResponse ]) => {
+      currentUserActions.reset();
+      nextRouter.push(RoutePaths.Main);
+    }).catch((error) => {
+      console.error(error);
+    })
   }
 
   return (
@@ -77,13 +78,7 @@ export const Header = () => {
               <a
                 className='header-link'
                 onClick={(event) => {
-                  event.preventDefault();
-                  if (session) {
-                    signOut({callbackUrl: '/'});
-                  }
-                  else {
-                    handleLogout();
-                  }
+                  handleLogout();
                 }}
               >
                 Sign out

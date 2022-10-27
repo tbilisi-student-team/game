@@ -1,6 +1,8 @@
 [![Deploy](https://github.com/tbilisi-student-team/game/actions/workflows/deploy.yml/badge.svg)](https://github.com/tbilisi-student-team/game/actions/workflows/deploy.yml)
 # "Pew"
 
+[деплой](https://tbilisi-pew-16.ya-praktikum.tech/)
+
 Коммандный учебный проект
 
 ### Команда:

@@ -25,6 +25,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {createForumEmotionToTopic, CreateForumEmotionToTopicRequest} from "@/remoteAPI/forum/createForumEmotionToTopic";
 import {useSession} from "next-auth/react";
+import {useAppContext} from "@/appContext/AppContext";
 
 type TopicState = {
   status: Status,
@@ -256,6 +257,12 @@ function Comment(
 
 export default function Index() {
   const { data: session, status } = useSession()
+  const {
+    currentUser: [ currentUserState, actions ]
+  } = useAppContext();
+
+  const { data, isLoading } = currentUserState;
+
   const nextRouter = useRouter();
 
   const { topicId } = nextRouter.query;
@@ -732,11 +739,11 @@ export default function Index() {
     !!rootCommentsState.requestData.text.length
     && rootCommentsState.requestData.authorName.length;
 
-  if (status === "loading") {
+  if (status === "loading" || isLoading) {
     return <Layout heading={'Loading...'} subheading={''}/>
   }
 
-  if (status === "unauthenticated") {
+  if (status === "unauthenticated" && !data) {
     return <Layout heading={'Access denied'} subheading={''}/>
   }
 

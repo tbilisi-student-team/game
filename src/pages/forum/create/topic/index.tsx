@@ -8,6 +8,7 @@ import {useRouter} from "next/router";
 import {Input} from "@/ui/Input";
 import { Button } from '@/ui/Button';
 import {useSession} from "next-auth/react";
+import {useAppContext} from "@/appContext/AppContext";
 
 
 type State = {
@@ -28,6 +29,11 @@ const INITIAL_STATE: State = {
 
 export default function Index() {
   const { data: session, status } = useSession();
+  const {
+    currentUser: [ currentUserState, actions ]
+  } = useAppContext();
+
+  const { data, isLoading } = currentUserState;
 
   const nextRouter = useRouter();
 
@@ -82,11 +88,11 @@ export default function Index() {
     && !!state.requestData.title.length
     && !!state.requestData.authorName.length;
 
-  if (status === "loading") {
+  if (status === "loading" || isLoading) {
     return <Layout heading={'Loading...'} subheading={''}/>
   }
 
-  if (status === "unauthenticated") {
+  if (status === "unauthenticated" && !data) {
     return <Layout heading={'Access denied'} subheading={''}/>
   }
 

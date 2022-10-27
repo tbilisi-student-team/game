@@ -28,7 +28,6 @@ const INITIAL_PROFILE_FORM_DATA_STATE: ProfileFormDataState = {
 
 export default function User () {
   const { data: session, status } = useSession();
-
   const {
     currentUser: [ state, actions ]
   } = useAppContext();
@@ -105,17 +104,11 @@ export default function User () {
     setNewPasswordError('New passwords are not equal');
   }
 
-  if (isLoading) {
-    return (
-      <Layout heading={'Loading...'} subheading={''}/>
-    )
-  }
-
-  if (status === "loading") {
+  if (status === "loading" || isLoading) {
     return <Layout heading={'Loading...'} subheading={''}/>
   }
 
-  if (status === "unauthenticated") {
+  if (status === "unauthenticated" && !data) {
     return <Layout heading={'Access denied'} subheading={''}/>
   }
 

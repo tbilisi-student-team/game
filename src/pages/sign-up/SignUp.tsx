@@ -9,8 +9,9 @@ import { RoutePaths } from '@/types/index'
 import { useAppContext } from '@/appContext/index';
 import { signup, SignUpErrorResponse, SignUpResponse } from '@/remoteAPI/index';
 import {Layout} from "@/components/Layout";
+import {GlobalServerSideProps} from "@/utils/getServerSideProps";
 
-export default function SignUp () {
+export default function SignUp (props: GlobalServerSideProps) {
   const nextRouter = useRouter();
 
   const {
@@ -54,7 +55,7 @@ export default function SignUp () {
   }
 
   return (
-    <Layout heading={'Sign up'} subheading={'Fill out the form'}>
+    <Layout theme={props.theme} heading={'Sign up'} subheading={'Fill out the form'}>
       {state.loading ? (
         <div>Loading...</div>
       ) : (

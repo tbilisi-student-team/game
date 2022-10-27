@@ -26,6 +26,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {createForumEmotionToTopic, CreateForumEmotionToTopicRequest} from "@/remoteAPI/forum/createForumEmotionToTopic";
 import {useSession} from "next-auth/react";
 import {useAppContext} from "@/appContext/AppContext";
+import {GlobalServerSideProps} from "@/utils/getServerSideProps";
 
 type TopicState = {
   status: Status,
@@ -255,7 +256,7 @@ function Comment(
   )
 }
 
-export default function Index() {
+export default function Index(props: GlobalServerSideProps) {
   const { data: session, status } = useSession()
   const {
     currentUser: [ currentUserState, actions ]
@@ -740,15 +741,15 @@ export default function Index() {
     && rootCommentsState.requestData.authorName.length;
 
   if (status === "loading" || isLoading) {
-    return <Layout heading={'Loading...'} subheading={''}/>
+    return <Layout theme={props.theme} heading={'Loading...'} subheading={''}/>
   }
 
   if (status === "unauthenticated" && !data) {
-    return <Layout heading={'Access denied'} subheading={''}/>
+    return <Layout theme={props.theme} heading={'Access denied'} subheading={''}/>
   }
 
   return (
-    <Layout heading={''} subheading={''}>
+    <Layout theme={props.theme} heading={''} subheading={''}>
       <div>
       <div className="topic-plaque">
         {!!topicState.topic && (
@@ -861,3 +862,5 @@ export default function Index() {
     </Layout>
   );
 };
+
+export { getServerSideProps } from '@/utils/getServerSideProps';

@@ -55,12 +55,13 @@ export const authOptions: (req: NextApiRequest, res: NextApiResponse) => NextAut
         let headers;
         try
         {
-          const user = await User.findOne({where: {YandexUserId: profile.id}});
-          if (user) {
+          try {
             const signinResponse = await signin({login: profile.default_email as string, password: 'Passw0rd!'});
             console.log(signinResponse);
             headers = signinResponse.headers;
-          } else {
+          }
+          catch (signinError) {
+            console.warn(signinError);
             const signupResponse = await signup({
               login: profile.default_email as string,
               email: profile.default_email as string,

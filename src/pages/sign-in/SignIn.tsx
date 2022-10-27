@@ -12,9 +12,10 @@ import {Layout} from "@/components/Layout";
 import {useSession, signIn, SignInResponse as NextAuthSignInResponse} from "next-auth/react";
 import {signin, SignInErrorResponse, SignInResponse} from "@/remoteAPI/auth";
 import {getCurrentUser} from "@/remoteAPI/users";
+import {GlobalServerSideProps} from "@/utils/getServerSideProps";
 
 
-export default function SignIn() {
+export default function SignIn(props: GlobalServerSideProps) {
   const nextRouter = useRouter();
 
   const {
@@ -75,7 +76,7 @@ export default function SignIn() {
   }
 
   return (
-    <Layout heading={'Sign in'} subheading={'Fill out the form'}>
+    <Layout theme={props.theme} heading={'Sign in'} subheading={'Fill out the form'}>
       <form className='signin-form'>
         <Input
           type='text'

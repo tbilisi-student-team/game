@@ -10,6 +10,7 @@ import {AxiosError} from "axios";
 import {ErrorResponse} from "@/remoteAPI/ErrorResponse";
 import {useSession} from "next-auth/react";
 import {useAppContext} from "@/appContext/AppContext";
+import {GlobalServerSideProps} from "@/utils/getServerSideProps";
 
 type State = {
   status: Status,
@@ -23,7 +24,7 @@ const INITIAL_STATE: State = {
   topics: [],
 }
 
-export default function Forum() {
+export default function Forum(props: GlobalServerSideProps) {
   const { data: session, status } = useSession()
   const {
     currentUser: [ currentUserState, actions ]
@@ -64,15 +65,15 @@ export default function Forum() {
   }, [])
 
   if (status === "loading" || isLoading) {
-    return <Layout heading={'Loading...'} subheading={''}/>
+    return <Layout theme={props.theme} heading={'Loading...'} subheading={''}/>
   }
 
   if (status === "unauthenticated" && !data) {
-    return <Layout heading={'Access denied'} subheading={''}/>
+    return <Layout theme={props.theme} heading={'Access denied'} subheading={''}/>
   }
 
   return (
-    <Layout heading={'Forum'}>
+    <Layout theme={props.theme} heading={'Forum'}>
       <div className='forum'>
         <Link href={`${RoutePaths.Forum}/create/topic`}>
           <a className='table-body__data-link'>

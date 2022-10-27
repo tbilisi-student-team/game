@@ -7,15 +7,19 @@ import { AxiosError, AxiosResponse } from 'axios';
 import { Input } from '@/ui/index';
 import { RoutePaths } from '@/types/index'
 import { useAppContext } from '@/appContext/index';
-import { signup, SignUpErrorResponse, SignUpResponse } from '@/remoteAPI/index';
+import {getCurrentUser, signup, SignUpErrorResponse, SignUpResponse} from '@/remoteAPI/index';
 import {Layout} from "@/components/Layout";
 import {GlobalServerSideProps} from "@/utils/getServerSideProps";
+import {signIn} from "next-auth/react";
+import {SignInResponse as NextAuthSignInResponse} from "next-auth/react/types";
 
 export default function SignUp (props: GlobalServerSideProps) {
   const nextRouter = useRouter();
 
   const {
     signUp: [ state, actions ],
+    signIn: [ signInState, signInActions ],
+    currentUser: [ currentUserState, currentUserActions ]
   } = useAppContext();
 
   const handleSignUp = () => {
@@ -28,7 +32,27 @@ export default function SignUp (props: GlobalServerSideProps) {
 
           actions.loadingSuccess(responseData);
 
-          nextRouter.push(`${RoutePaths.User}`);
+          getCurrentUser().then((res) => {
+            const user = res.data;
+            currentUserActions.loadingSuccess(user);
+            signIn('credentials', {...state.requestData, redirect: false}, `id=${user.id}`).then((res?: NextAuthSignInResponse) => {
+              if (res?.ok) {
+                signInActions.loadingSuccess('OK');
+                nextRouter.push(RoutePaths.User);
+              }
+              else {
+                console.error(res);
+                const error = res?.error || 'Unknown error';
+                actions.loadingError(Error(error));
+              }
+            }).catch((reason) => {
+              console.error(reason);
+              actions.loadingError(reason);
+            });
+          }).catch((reason) => {
+            console.error(reason);
+            actions.loadingError(reason);
+          });
         } else {
           throw new Error(`${axiosResponse.status}: Unexpected error.`);
         }

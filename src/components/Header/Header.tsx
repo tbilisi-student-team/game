@@ -6,13 +6,6 @@ import {useAppContext} from '@/appContext/index';
 import {logout} from "@/remoteAPI/auth";
 import {signOut, useSession} from 'next-auth/react';
 
-let currentTheme = 'dark';
-
-function switchTheme(theme: string) {
-  currentTheme = theme;
-  document.documentElement.dataset.theme = currentTheme;
-}
-
 export const Header = () => {
   const {
     currentUser: [ currentUserState, currentUserActions ],
@@ -23,22 +16,24 @@ export const Header = () => {
   const session = useSession();
 
   function toggleTheme() {
-    switchTheme(currentTheme === 'light' ? 'dark' : 'light');
-    if (currentUserState.data) {
-      //Сохраняем тему пользователя
-      fetch('/api/user', {method: 'POST', body: JSON.stringify({id: currentUserState.data.id, theme: currentTheme})});
+    const wrapper = document.querySelector('.wrapper') as HTMLElement;
+    if (wrapper) {
+      const currentTheme = wrapper.dataset.theme;
+      const nextTheme = currentTheme == 'light' ? 'dark' : 'light';
+      switchTheme(nextTheme);
     }
   }
 
-  useEffect(() => {
-    if (currentUserState.data) {
-      fetch(`/api/user/${currentUserState.data.id}`)
-        .then(resp => resp.json())
-        .then(json => {
-          switchTheme(json.theme);
-        });
+  function switchTheme(theme: string) {
+    const wrapper = document.querySelector('.wrapper') as HTMLElement;
+    if (wrapper) {
+      wrapper.dataset.theme = theme;
+      //Сохраняем тему пользователя
+      if (currentUserState.data) {
+        fetch('/api/user', {method: 'POST', body: JSON.stringify({id: currentUserState.data.id, theme})});
+      }
     }
-  }, [currentUserState.data]);
+  }
 
   const handleLogout = () => {
     logout({ withCredentials: true })

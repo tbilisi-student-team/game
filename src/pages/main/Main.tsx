@@ -3,12 +3,13 @@ import { Button } from '@/ui/Button';
 import { RoutePaths } from '@/types/index';
 import { Layout } from '@/components/Layout';
 import { useRouter } from 'next/router';
+import { GlobalServerSideProps } from "@/utils/getServerSideProps";
 
-export default function Main () {
+export default function Main(props: GlobalServerSideProps) {
   const router = useRouter();
-
+  console.log(props)
   return (
-    <Layout>
+    <Layout theme={props.theme}>
       <div className='description'>
         <p>
           We offer to your attention a funny game where your character gather fruits for his kids. 

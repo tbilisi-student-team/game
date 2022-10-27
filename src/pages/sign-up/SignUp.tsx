@@ -27,7 +27,7 @@ export default function SignUp () {
 
           actions.loadingSuccess(responseData);
 
-          nextRouter.push(`${RoutePaths.User}/${responseData.id}`);
+          nextRouter.push(`${RoutePaths.User}`);
         } else {
           throw new Error(`${axiosResponse.status}: Unexpected error.`);
         }

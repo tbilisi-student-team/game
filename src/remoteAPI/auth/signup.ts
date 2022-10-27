@@ -20,5 +20,5 @@ export type SignUpErrorResponse = {
 }
 
 export function signup(data: SignUpRequest, config?: AxiosRequestConfig) {
-  return ypTechHTTPClient.post<SignUpResponse>('/auth/signup', data, config);
+  return ypTechHTTPClient.post<SignUpResponse>('/auth/signup', data, { withCredentials: true, ...config });
 }

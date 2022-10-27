@@ -21,6 +21,3 @@
 ![персонаж из игры "Pew"](./public/buddy-2-otr.png)
 
 В течении 5 спринтов в командной работе были реализованы задачи из [чеклиста для самопроверки перед защитой диплома](https://github.com/tbilisi-student-team/game/issues/98)
-
-# game
-game designed by students

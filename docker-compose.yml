@@ -1,20 +1,14 @@
 services:
   db:
+    container_name: pg
     image: postgres:15.0
     environment:
       POSTGRES_PASSWORD: ${PGSQL_PASSWORD}
-    ports:
-      - "${PGSQL_PORT}:5432"
-    networks:
-      - int
+    expose:
+      - 5432
   web:
     depends_on:
       - db
     build: .
     ports:
-      - "3001:3000"
-    networks:
-      - int
-networks:
-  int:
-    driver: bridge
+      - "127.0.0.1:3000:3000"

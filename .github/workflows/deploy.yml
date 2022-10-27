@@ -1,0 +1,45 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          known_hosts: unnecessary
+
+      - name: Adding Known Hosts
+        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
+
+      - name: Do Server Job
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            if [ -d game ]; then cd game && git pull git@github.com:tbilisi-student-team/game.git;
+            else git clone git@github.com:tbilisi-student-team/game.git && cd game; fi
+            
+            # Populate .env
+            printf '%s\n' \
+            'PGSQL_USER=postgres' \
+            'PGSQL_PASSWORD=${{ secrets.PGSQL_PASSWORD }}' \
+            'PGSQL_HOST=pg' \
+            'PGSQL_PORT=5432' \
+            'PGSQL_DATABASE=postgres' \
+            'NEXT_PUBLIC_YANDEX_ID=${{ secrets.OAUTH_YANDEX_ID }}' \
+            'YANDEX_SECRET=${{ secrets.OAUTH_YANDEX_SECRET }}' \
+            'NEXTAUTH_URL=https://tbilisi-pew-16.ya-praktikum.tech' \
+            > .env
+            
+            docker compose down
+            docker compose build
+            docker compose up -d

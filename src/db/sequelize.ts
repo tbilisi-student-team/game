@@ -12,7 +12,8 @@ export const sequelize = new Sequelize({
 interface UserModel extends Model<InferAttributes<UserModel>, InferCreationAttributes<UserModel>> {
     // Some fields are optional when calling UserModel.create() or UserModel.build()
     id: number;
-    theme: string;
+    theme?: string;
+    YandexUserId?: number,
 }
 
 const User = sequelize.define<UserModel>('User', {
@@ -24,6 +25,18 @@ const User = sequelize.define<UserModel>('User', {
         type: DataTypes.STRING
     },
 });
+
+const YandexUser = sequelize.define('YandexUser', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+    },
+    data: {
+        type: DataTypes.TEXT,
+    }
+});
+
+YandexUser.hasOne(User);
 
 const Topic = sequelize.define('Topic', {
     id: {
@@ -97,6 +110,7 @@ Comment.belongsTo(Comment, { as: 'ParentComment', foreignKey: 'ParentCommentId' 
 
 export {
   User,
+  YandexUser,
   Topic,
   Comment,
   Emotion,

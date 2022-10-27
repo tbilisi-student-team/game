@@ -29,25 +29,7 @@ const authOptions: (req: NextApiRequest, res: NextApiResponse) => NextAuthOption
           if (credentials == null) {
             return null;
           }
-
-          const payload = {
-            login: credentials.login,
-            password: credentials.password,
-          }
-
-          const response = await signin(payload);
-          const cookies = response.headers['set-cookie'];
-          console.log(cookies);
-
-          if (cookies) {
-            res.setHeader('set-cookie', cookies);
-            const cookie = cookies.map(cookie => cookie.split(';')[0]).reverse().slice(0, 2).join(';');
-            const userResponse = await getCurrentUser({headers: {cookie}});
-            const user = userResponse.data;
-            return userResponse.data;
-          }
-
-          return null;
+          return { id: req.query?.id };
         }
         catch (error) {
           console.error(error);

@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 
-import { GameState } from './types';
-import { Bullet, Fruit } from './models';
-import { Drawer } from './controllers';
+import { GameState } from '../../components/game/types';
+import { Bullet, Fruit } from '../../components/game/models';
+import { Drawer } from '../../components/game/controllers';
 import {
   INITIAL_GAME_STATE,
   GAME_TIME,
@@ -14,15 +14,15 @@ import {
   BULLET_SPEED_MAX,
   BULLET_START_X,
   BULLET_START_Y,
-} from './consts';
-import { getGameImages, getElapsedTime, getPauseTime } from './utils';
+} from '../../components/game/consts';
+import { getGameImages, getElapsedTime, getPauseTime } from '../../components/game/utils';
 import { toggleFullscreen } from '@/utils/index';
 import { useWindowVisualViewportSize } from '@/hooks/index';
 import { useSelector } from 'react-redux';
 import { addNewLeader } from '@/remoteAPI/leaderboard/addNewLeader';
 import { selectCurrentUserData } from '@/reduxStore/slices';
 import { RootState } from '@/reduxStore/types';
-import  PlaySounds from './utils/PlaySounds';
+import  PlaySounds from '../../components/game/utils/PlaySounds';
 import { useRouter } from 'next/router'
 import { RoutePaths } from '@/types/index'
 

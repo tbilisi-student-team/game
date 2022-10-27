@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux'
 
 import { Layout } from '@/components/index';
-import ListItem from './ui';
+import ListItem from '../../components/leaderboard/ui';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDumbbell, faTrophy } from '@fortawesome/free-solid-svg-icons';
 import { fetchTeamLeadersData, Leader, selectLeaderboardData} from '@/reduxStore/slices';

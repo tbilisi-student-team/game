@@ -8,8 +8,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDumbbell, faTrophy } from '@fortawesome/free-solid-svg-icons';
 import { fetchTeamLeadersData, Leader, selectLeaderboardData} from '@/reduxStore/slices';
 import { reduxStore } from '@/reduxStore/reduxStore';
+import {GlobalServerSideProps} from "@/utils/getServerSideProps";
 
-export default function Leaderboard () {
+export default function Leaderboard (props: GlobalServerSideProps) {
   const leaderboard = useSelector(selectLeaderboardData);
 
   console.log(leaderboard);
@@ -19,7 +20,7 @@ export default function Leaderboard () {
   }, []);
 
   return (
-    <Layout>
+    <Layout theme={props.theme}>
       <table className='leaderboard-table'>
         <thead>
         <tr className='table-head__row'>

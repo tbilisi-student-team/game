@@ -13,6 +13,7 @@ import styles from './index.module.css';
 
 import buddy1 from '@/public/buddy-1.png';
 import {useSession} from "next-auth/react";
+import {GlobalServerSideProps} from "@/utils/getServerSideProps";
 
 type ProfileFormDataState = Omit<UserResponse, 'id'>;
 
@@ -26,7 +27,7 @@ const INITIAL_PROFILE_FORM_DATA_STATE: ProfileFormDataState = {
   avatar: '',
 }
 
-export default function User () {
+export default function User (props: GlobalServerSideProps) {
   const { data: session, status } = useSession();
   const {
     currentUser: [ state, actions ]
@@ -105,15 +106,15 @@ export default function User () {
   }
 
   if (status === "loading" || isLoading) {
-    return <Layout heading={'Loading...'} subheading={''}/>
+    return <Layout theme={props.theme} heading={'Loading...'} subheading={''}/>
   }
 
   if (status === "unauthenticated" && !data) {
-    return <Layout heading={'Access denied'} subheading={''}/>
+    return <Layout theme={props.theme} heading={'Access denied'} subheading={''}/>
   }
 
   return (
-    <Layout heading={''} subheading={''}>
+    <Layout theme={props.theme} heading={''} subheading={''}>
       <div className='description'>
         <div className={`avatar ${styles.avatar}`}>
           <Image

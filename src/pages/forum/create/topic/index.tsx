@@ -9,6 +9,7 @@ import {Input} from "@/ui/Input";
 import { Button } from '@/ui/Button';
 import {useSession} from "next-auth/react";
 import {useAppContext} from "@/appContext/AppContext";
+import {GlobalServerSideProps} from "@/utils/getServerSideProps";
 
 
 type State = {
@@ -27,7 +28,7 @@ const INITIAL_STATE: State = {
   }
 }
 
-export default function Index() {
+export default function Index(props: GlobalServerSideProps) {
   const { data: session, status } = useSession();
   const {
     currentUser: [ currentUserState, actions ]
@@ -89,15 +90,15 @@ export default function Index() {
     && !!state.requestData.authorName.length;
 
   if (status === "loading" || isLoading) {
-    return <Layout heading={'Loading...'} subheading={''}/>
+    return <Layout theme={props.theme} heading={'Loading...'} subheading={''}/>
   }
 
   if (status === "unauthenticated" && !data) {
-    return <Layout heading={'Access denied'} subheading={''}/>
+    return <Layout theme={props.theme} heading={'Access denied'} subheading={''}/>
   }
 
   return (
-    <Layout heading={'Forum'}>
+    <Layout theme={props.theme} heading={'Forum'}>
       <form>
         <Input
           label={'Title'}
@@ -131,3 +132,5 @@ export default function Index() {
     </Layout>
   );
 };
+
+export { getServerSideProps } from '@/utils/getServerSideProps';
